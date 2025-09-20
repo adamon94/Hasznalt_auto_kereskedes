@@ -34,9 +34,10 @@ import NavBar from './navBar.vue';
     padding:50px;
     position: absolute;
     top: 15px;
+    left:-40px;
     width: 25%;
     border-radius: 1.5rem;
-    transform: skewX(30deg);
+    transform: skewX(40deg);
     
     
 }
