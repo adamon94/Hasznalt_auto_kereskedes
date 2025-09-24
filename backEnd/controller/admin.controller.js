@@ -8,31 +8,17 @@ const router = express.Router();
 
 
 router.post("/addCar", async (req, res) => {
-     const {ev,model,marka,tipus,ar,km, owners, 
-        serulesek, tomeg, meghajtas, 
-        fogyasztas,sebvaltorendszer, uzemanyag,
-         hengerUr, ujitasok} = req.body;
+     const {ev,model,marka,tomeg,megtettKm} = req.body;
          try {
-            await p.cars.create({
+            await p.autok.create({
                 data:{
                  
-                    gyartasEve: Number(ev),
-                    model: model,
-                    marka:marka,
-                    tipus:tipus,
-                    tomeg: Number(tomeg),
-                    ar: Number(ar),
-                    megtettKm: Number(km),
-                    tulajdonsokSzama: Number(owners),
-                    serulesek: serulesek,
-                    //utolsoMuszakiVizsga: new Date(utsoMuszaki),
-                    meghajtas: meghajtas,
-                    fogyasztas: Number(fogyasztas),
-                    sebessegvaltoRendszer: sebvaltorendszer,
-                    hengerUrtartalom: Number(hengerUr),
-                    komolyabbFelujitasok: ujitasok,
-                    fuel: uzemanyag,
-                },
+                  gyartasEve: Number(ev),
+                  model,
+                  marka,
+                  tomeg:Number(tomeg),
+                  megtettKm:Number(megtettKm)
+               }
                 
             });
             res.status(201).json({ uzenet: "Az autó közétéve!"})
@@ -42,5 +28,16 @@ router.post("/addCar", async (req, res) => {
             res.status(400).json({uzenet: "Hiba történt!"})
          }
 });
+
+
+router.get("/kedvencek", async (req,res) => {
+   const data = await p.kedvencek.findMany({
+      include:{
+         Autok:true
+      },
+   })
+   res.status(200).json(data);
+})
+
 
 export { router };
