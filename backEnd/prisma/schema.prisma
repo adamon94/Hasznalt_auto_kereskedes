@@ -1,15 +1,81 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
   output   = "../generated/prisma"
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
+}
+
+model cars {
+  id                    Int         @id @default(autoincrement())
+  gyartasEve            Int
+  model                 String      @db.VarChar(255)
+  marka                 String      @db.VarChar(255)
+  tipus                 String      @db.VarChar(255)
+  ar                    Int
+  megtettKm             Int
+  tulajdonsokSzama      Int
+  serulesek             String      @db.VarChar(255)
+  utolsoMuszakiVizsga   DateTime?   @db.Date
+  tomeg                 Float
+  meghajtas             String      @db.VarChar(255)
+  fogyasztas            Int
+  fuel        String                @db.VarChar(255)
+  sebessegvaltoRendszer String      @db.VarChar(255)
+  hengerUrtartalom      Int
+  komolyabbFelujitasok  String      @db.VarChar(255)
+  img Bytes                         @db.LongBlob
+  testdrive             testdrive   @relation(fields: [id], references: [autoId], onDelete: Cascade, map: "cars_ibfk_1")
+  kedvencek             kedvencek[]
+}
+
+model kedvencek {
+  id        Int         @id @default(autoincrement())
+  autoId    Int
+  userId    Int @unique
+  cars      cars        @relation(fields: [autoId], references: [id], onDelete: Cascade, map: "kedvencek_ibfk_1")
+  testdrive testdrive[]
+  users     users?
+
+  @@index([autoId], map: "autoId")
+  @@index([userId], map: "userId")
+}
+
+model kivansaglista {
+  id                     Int    @id @default(autoincrement())
+  kivantMarka            String @db.VarChar(255)
+  kivantTipus            String @db.VarChar(255)
+  kivantSebesegvalto     String @db.VarChar(255)
+  kivantMegtettKm        Int
+  userId                 Int
+  kivantHengerUrtartalom Int
+  kivantFogyasztas       Float
+  users                  users  @relation(fields: [userId], references: [id], onDelete: Cascade, map: "kivansaglista_ibfk_1")
+
+  @@index([userId], map: "userId")
+}
+
+model testdrive {
+  id        Int       @id @default(autoincrement())
+  date      DateTime  @db.Date
+  autoId    Int @unique
+  userId    Int
+  cars      cars?
+  kedvencek kedvencek @relation(fields: [userId], references: [id], onDelete: Cascade, map: "testdrive_ibfk_1")
+
+  @@index([autoId], map: "autoId")
+  @@index([userId], map: "userId")
+}
+
+model users {
+  id            Int             @id @default(autoincrement())
+  userName      String          @db.VarChar(255)
+  Password      String          @db.VarChar(255)
+  email         String          @db.VarChar(255)
+  accessLevel   Int
+  telSzam       String          @db.VarChar(15)
+  kivansaglista kivansaglista[]
+  kedvencek     kedvencek       @relation(fields: [id], references: [userId], onDelete: Cascade, map: "users_ibfk_1")
 }

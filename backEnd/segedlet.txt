@@ -1,0 +1,126 @@
+1.
+npm init
+2.
+package.json file-ban "Type":"module"
+3.
+npm i express prisma
+4.
+index.js létrehozássa
+5.
+importok:   import express from "express";
+            import { PrismaClient } from './generated/prisma/index.js'
+alkalmazás létrehozássa:  const app = express();
+json formátum engedélyezése:  app.use(express.json())
+
+6.
+Prisma inciailizálása:  npx prisma init
+7.
+Schema és env file átírása:
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+DATABASE_URL="mysql://root@localhost:0000/adatbázis_neve"
+8.
+prisma schema létrehozásssa, előkészítésse
+npx prisma db pull
+npx migrate reset
+npx migrate dev
+rekordok beszúrása
+9.
+Alkalmazás és prisma kliens létrehozássa:
+const app = express();
+const prisma = new PrismaClient();
+const port = 3200
+Szerver megadás:
+app.listen(port,()=>{
+    console.log("Az alkalmazás elindult!")
+})
+10.
+http utasítások:
+  - Adatok lekérése:  app.get("/api/lekérés", async(req,res)=>{
+    try{
+        const data = await prisma.model.findMany(
+            {
+               include: {
+                    egyMásikModel:true  =>  HA EGY MÁSIK MODELT AKKAROK BESZÚRNI    
+                }
+            }
+        );
+        res.status(200).json(data);
+    }
+    catch(err){
+        console.error(err)
+        res.status(400).json(err)
+    }
+})
+
+  - Egy adat lekérése:
+    app.get("/api/keresett/:id",async(req,res)=>{
+    const keresettId = Number(req.params.id)
+
+    try{
+    const data = await prisma.model.findUnique({
+        where: {
+            id:keresettId
+        },
+        include:{
+            kategoriak: true
+        }
+    });
+    res.status(200).json(data);
+} catch (err){
+    console.error(err);
+    res.status(400).json(err)
+} 
+})
+    - egy adat módosítása:
+app.put("/api/update/:id",async(req,res)=>{
+    const keresettId = Number(req.params.id)
+    const {nev, keszet, leiras, ar} = req.body;
+
+    try{
+    const data = await prisma.model.update({
+        where: {
+            id:keresettId
+        },
+       data:{
+        nev:nev,
+        leiras:leiras,
+        keszlet:Number(keszet),
+        ar:Number(ar)
+       }
+    });
+    res.status(200).json({
+        Értesítés: "A módosítás sikeressen megtörtént!"
+    });
+} catch (err){
+    console.error(err);
+    res.status(400).json({Értessítés: "Módosítás sikertelen!"})
+} 
+});
+
+    - egy adat törlése:
+
+app.delete("/api/delete/:id",async(req,res)=>{
+    const keresettId = Number(req.params.id)
+    
+
+    try{
+    const data = await prisma.model.delete({
+        where: {
+            id:keresettId
+        },
+    });
+    res.status(200).json({
+        Értesítés: "A törlés sikeressen megtörtént!"
+    });
+} catch (err){
+    console.error(err);
+    res.status(400).json({Értessítés: "A törlés sikertelen!"})
+} 
+});
+
+
+
