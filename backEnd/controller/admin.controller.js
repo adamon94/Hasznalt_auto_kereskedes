@@ -16,6 +16,7 @@ router.post("/addCar", async (req, res) => {
                   gyartasEve: Number(ev),
                   model,
                   marka,
+                  
                   tomeg:Number(tomeg),
                   megtettKm:Number(megtettKm)
                }

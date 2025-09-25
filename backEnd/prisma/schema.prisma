@@ -13,7 +13,17 @@ model autok{
   gyartasEve Int
   model String
   marka String
+  ar Int
   tomeg Float
+  meghajtas String
+  hengerUrTartalom String
+  sebessegValtoRendszer String
+  uzemAnyagTipus String
+  fogyasztas Int
+  tulajdonosokSzama Int
+  serulesek String
+  utolsoMuszakiVizsga DateTime
+  felujitasok String
   megtettKm Int
   Kedencek kedvencek[]
   Teszezetesek tesztVezetesek[]
@@ -25,7 +35,8 @@ model users{
   id Int @id @default(autoincrement())
   name String
   passsword String
-  accessLLevel Int
+  accessLevel Int
+  email String
   Kedencek kedvencek[]
   Teszezetesek tesztVezetesek[]
   Kivansaglista kivansagLlista[]
@@ -56,5 +67,10 @@ model kivansagLlista{
   kivantMarka String
   kivantSebValto String
   kivantMegtettKm Int
+  kivantHengerUrTartalom String
+  kiantFogyasztas Int
+  kivantTipus String
+
+  
 }
 
