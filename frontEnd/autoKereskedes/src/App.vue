@@ -1,12 +1,14 @@
 <script setup>
-import Head from "./components/Head.vue";
+import { useController } from "./stores/UIcontrol";
 import { RouterView } from "vue-router";
+import RegistrationModal from "./components/registrationModal.vue";
+const useStore = useController()
+const modalState = useStore.modalState
 </script>
 
 <template>
-<Head></Head>
-
-
+    <RegistrationModal/>
+    <router-view></router-view>
 </template>
 
 <style>

@@ -6,7 +6,7 @@ const router = createRouter({
     {
       path: "/",
       component: import("./pages/home.vue"),
-    },
+    }
     /*{
       path: "/add-employee",
       component: import("../pages/AddEmployee.vue"),
