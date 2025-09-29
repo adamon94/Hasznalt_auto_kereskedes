@@ -1,7 +1,10 @@
 import { defineStore } from "pinia"
 
 export const useController = defineStore('control', {
-  state: () => ({ modalState: false, name: 'mod' }),
+  state: () => ({ 
+    modalState: false,
+    logModal:false, 
+  }),
   actions:{
     showModal(){
       this.modalState = true
@@ -12,14 +15,33 @@ export const useController = defineStore('control', {
       console.log(this.modalState)
     },
     
+    showLog(){
+      this.logModal = true
+      
+    },
+    closeLog(){
+      this.logModal = false
+    },
+
+   
   
-  }, getters:{
+  },
+  
+  getters:{
 
     modalValue(){
       if(this.modalState === true){
         return true
       }
+    },
+
+    logValue(){
+       if(this.logModal === true){
+        return true
+      }
     }
+    
+
 
   }
   

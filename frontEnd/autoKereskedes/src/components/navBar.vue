@@ -41,24 +41,11 @@ onMounted(()=>{
 </li>
 
 <li>
-<div class="dropdown">
-  <button class="btn btn-secondary dropdown-toggle"
-          type="button"
-          data-bs-toggle="dropdown"
-          aria-expanded="false"
-  >
-    Kínálatunk
-  </button>
-  <ul class="dropdown-menu">
-    <li><a class="dropdown-item" href="#">Városi autóink</a></li>
-    <li><a class="dropdown-item" href="#">Luxus autóink</a></li>
-    <li><a class="dropdown-item" href="#">Terepjárók</a></li>
-  </ul>
-</div>
+<button @click="useStore.showModal" class="navBtn">Kínálatunk</button>
 
 </li>
 <li><button @click="useStore.showModal" class="navBtn">Regisztráció</button></li>
-<li><button class="navBtn">Bejelentkezés</button></li>
+<li><button @click="useStore.showLog" class="navBtn">Bejelentkezés</button></li>
 
 
 </ul>
