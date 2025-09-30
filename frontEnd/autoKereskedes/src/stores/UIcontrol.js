@@ -3,16 +3,22 @@ import { defineStore } from "pinia"
 export const useController = defineStore('control', {
   state: () => ({ 
     modalState: false,
-    logModal:false, 
+    logModal:false,
+    isLogged:false
   }),
   actions:{
+    logIn(){
+        this.isLogged = true
+        console.log("Bejelentkezve")
+    },
+
     showModal(){
       this.modalState = true
-      console.log(this.modalState)
+      
     },
     closeModal(){
       this.modalState = false
-      console.log(this.modalState)
+      
     },
     
     showLog(){
@@ -30,13 +36,20 @@ export const useController = defineStore('control', {
   getters:{
 
     modalValue(){
-      if(this.modalState === true){
+      if(this.modalState){
         return true
       }
     },
 
     logValue(){
-       if(this.logModal === true){
+       if(this.logModal){
+        return true
+      }
+    
+    },
+
+    logged(){
+      if(this.isLogged){
         return true
       }
     }

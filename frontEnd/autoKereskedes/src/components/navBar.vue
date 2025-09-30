@@ -2,16 +2,10 @@
 import RegistrationModal from './registrationModal.vue';
 import { useController } from '../stores/UIcontrol';
 import { onMounted } from 'vue';
+import { RouterLink } from 'vue-router';
 
 const useStore = useController();
-const modalState = useStore.modalState
 
-const showModal = ()=>{
-    modalState = true
-}
-onMounted(()=>{
-  console.log(useStore.modalState)
-})
 
 </script>
 
@@ -33,7 +27,7 @@ onMounted(()=>{
     Szolgáltatásaink
   </button>
   <ul class="dropdown-menu">
-    <li><a class="dropdown-item" href="#">Teszt vezetések</a></li>
+    <li><router-link class="dropdown-item" href="#">Teszt vezetések</router-link></li>
     <li><a class="dropdown-item" href="#">Beszámítás</a></li>
     <li><a class="dropdown-item" href="#">Kedvező finanszírozás</a></li>
   </ul>
@@ -41,11 +35,29 @@ onMounted(()=>{
 </li>
 
 <li>
-<button @click="useStore.showModal" class="navBtn">Kínálatunk</button>
+  <div class="dropdown">
+  <button class="btn btn-secondary dropdown-toggle"
+          type="button"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+  >
+    Fiok adatok
+  </button>
+  <ul class="dropdown-menu">
+    <li><router-link class="dropdown-item" href="#">Kedvenceim</router-link></li>
+    <li><a class="dropdown-item" href="#">Keresett autóim</a></li>
+    <li><a class="dropdown-item" href="#">Teszt vezetéseim</a></li>
+  </ul>
+</div>  
+</li>
+
+<li>
+<button class="navBtn">Kínálatunk</button>
 
 </li>
 <li><button @click="useStore.showModal" class="navBtn">Regisztráció</button></li>
-<li><button @click="useStore.showLog" class="navBtn">Bejelentkezés</button></li>
+<li ><button @click="useStore.showLog" class="navBtn">Bejelentkezés</button></li>
+
 
 
 </ul>
@@ -57,11 +69,11 @@ onMounted(()=>{
 <style scoped>
 
 .navBar{
+position: relative;
 margin:auto;
-width: 43%;
+width: 100%;
 padding: 10px;
-bottom: 33px;
-left: 35%;
+left: 4%;
 
 }
 
@@ -79,12 +91,20 @@ li{
 }
 .navBtn{
     text-decoration: none;
-    font-size: large;
+    font-size: medium;
     font-weight:bold;
     color: #536066;
     background-color: #C8BCCF;
     border: none;
     border-radius: 10px;
     padding:8px 25px;
+}
+
+.userLink{
+text-decoration: none;
+color: black;
+font-size: 20px;
+font-weight:bolder;
+
 }
 </style>

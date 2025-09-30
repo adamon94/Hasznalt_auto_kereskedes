@@ -3,6 +3,11 @@ import { useController } from '../stores/UIcontrol';
 
 const store = useController()
 
+const logIn = ()=>{
+store.logIn()
+store.closeLog()
+}
+
 </script>
 
 
@@ -23,7 +28,7 @@ const store = useController()
     <input type="text">
 </div>
 
-<button  class="mt-4" @click="store.closeLog">Bejelentkezés!</button>
+<button  class="mt-4" @click="logIn()">Bejelentkezés!</button>
 
 </form>
 
