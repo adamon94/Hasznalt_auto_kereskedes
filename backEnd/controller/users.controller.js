@@ -11,14 +11,16 @@ router.get("/getUsers", async (req, res) => {
 });
 
 router.post("/registration", async (req,res) => {
-    const {username, password, accessLevell} = req.body
+    const {name, password, accessLevell,email,telSzam} = req.body
     try{
          await p.users.create({
         data:{
             
-            name: username,
-            accessLevel: Number(accessLevell),
+            name,
             passsword: createHash(password),
+            accessLevel: Number(accessLevell),
+            email,
+            telSzam
         }
            
     })
@@ -27,9 +29,6 @@ router.post("/registration", async (req,res) => {
         console.error(err)
         res.status(400)
     }
-   
-    
-
 })
 
 export { router };

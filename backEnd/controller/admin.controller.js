@@ -8,21 +8,35 @@ const router = express.Router();
 
 
 router.post("/addCar", async (req, res) => {
-     const {ev,model,marka,tomeg,megtettKm} = req.body;
+     const {gyartasEve,model,marka,tipus,ar,tomeg,meghajtas,hengerUrTartalom,sebessegValtoRendszer,
+      ferohely, uzemAnyagTipus, fogyasztas,megtettKm,tulajdonosokSzama,
+      serulesek,utolsoMuszakiVizsga,felujitasok} = req.body;
+      
          try {
-            await p.autok.create({
+            const data = await p.autok.create({
                 data:{
                  
-                  gyartasEve: Number(ev),
+                  gyartasEve: Number(gyartasEve),
                   model,
                   marka,
-                  
+                  tipus,
+                  ar: Number(ar),
                   tomeg:Number(tomeg),
-                  megtettKm:Number(megtettKm)
+                  meghajtas,
+                  hengerUrTartalom : Number(hengerUrTartalom),
+                  sebessegValtoRendszer,
+                  ferohely: Number(ferohely),
+                  uzemAnyagTipus,
+                  fogyasztas:Number(fogyasztas),
+                  megtettKm:Number(megtettKm),
+                  tulajdonosokSzama:Number(tulajdonosokSzama),
+                  serulesek,
+                  utolsoMuszakiVizsga:new Date(utolsoMuszakiVizsga),
+                  felujitasok,
                }
                 
             });
-            res.status(201).json({ uzenet: "Az autó közétéve!"})
+            res.status(201).json({message:data.id})
          }
          catch(err){
             console.log(err);
