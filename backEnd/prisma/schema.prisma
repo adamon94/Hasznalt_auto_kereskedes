@@ -29,8 +29,16 @@ model autok{
   megtettKm Int
   Kedencek kedvencek[]
   Teszezetesek tesztVezetesek[]
-
+  Images images[]
 }
+
+model images {
+  image_id Int @id @default(autoincrement())
+  path String
+  carId Int
+  car autok @relation(fields: [carId], references: [id])
+}
+
 
 
 model users{
@@ -74,9 +82,6 @@ model kivansagLlista{
   kivantSebValto String
   kivantMegtettKm Int
   kivantHengerUrTartalom Int
-  kiantFogyasztas Int
-  
-
-  
+  kiantFogyasztas Int  
 }
 
