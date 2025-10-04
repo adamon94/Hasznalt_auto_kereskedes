@@ -6,11 +6,12 @@ const router = createRouter({
     {
       path: "/",
       component: import("./pages/home.vue"),
-    }
-    /*{
-      path: "/add-employee",
-      component: import("../pages/AddEmployee.vue"),
     },
+    {
+      path: "/cars",
+      component: import("./pages/cars.vue"),
+    },
+    /*
     {
       path: "/link-employee",
       component: import("../pages/LinkEmployee.vue"),

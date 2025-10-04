@@ -99,11 +99,74 @@ router.get("/userFavorites/:id",async(req,res)=>{
     }
 })
 
-
-
 /*tesztvezetés időpont felvétele*/
+router.post("/test/:userId/:autoId", async (req,res) => {
+    const userId = Number(req.params.userId)
+    const carId= Number(req.params.autoId)
+    const {date} = req.body
+   try{
+     const data = await p.tesztVezetesek.create({
+        data:{
+             userId:userId,
+             autoId:carId,
+             datum: new Date(date).toISOString()
+        }
+      })
+      res.json(data).status(201);} catch(err){console.error(err)}
+})
+
+
 /*tesztvezetés időpontok lekérdezése*/
+router.get("/geTest/:id",async (req,res) => {
+    const userId = Number(req.params.id)
+        const data = await p.tesztVezetesek.findMany({
+            where:{
+                userId:userId
+            },
+            include:{
+                Autok:true
+            }
+        })
+        res.json(data).status(200)
+})
+
 /*Kívánt autó felvétele*/
+
+router.post("/addWish/:id",async (req,res) => {
+    const userId = Number(req.params.id)
+    const {model}= req.body
+    const data = await p.kivansagLlista.upsert({
+        where:{
+            kivantModel_userId:{
+                kivantModel:model,
+                userId:userId
+            }
+        },
+        update:{
+
+        },
+        create:{
+            kivantModel:model,
+            userId:userId
+        }
+    })
+    res.json(data).status(201)
+})
+
 /*Azok lekérdezése*/
+
+router.get("/getWish/:id",async (req,res) => {
+    const userId = Number(req.params.id)
+        const data = await p.kivansagLlista.findMany({
+            where:{
+                userId:userId
+            },
+        })
+        res.json(data).status(200)
+})
+
+
+
+
 
 export { router };

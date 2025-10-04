@@ -3,9 +3,10 @@ import RegistrationModal from './registrationModal.vue';
 import { useController } from '../stores/UIcontrol';
 import { onMounted } from 'vue';
 import { RouterLink } from 'vue-router';
+import { useRouter } from 'vue-router';
 
+const router = useRouter()
 const useStore = useController();
-
 
 </script>
 
@@ -52,7 +53,7 @@ const useStore = useController();
 </li>
 
 <li>
-<button class="navBtn">Kínálatunk</button>
+<button @click="router.push('/cars')" class="navBtn">Kínálatunk</button>
 
 </li>
 <li><button @click="useStore.showModal" class="navBtn">Regisztráció</button></li>

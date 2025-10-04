@@ -77,11 +77,13 @@ model kivansagLlista{
   id Int @id @default(autoincrement())
   Users   users @relation(fields: [userId], references: [id])
   userId Int
-  kivantMarka String
-  kivantTipus String
-  kivantSebValto String
-  kivantMegtettKm Int
-  kivantHengerUrTartalom Int
-  kiantFogyasztas Int  
+  kivantModel String
+  kivantMarka String?
+  kivantTipus String?
+  kivantSebValto String?
+  kivantMegtettKm Int?
+  kivantHengerUrTartalom Int?
+  kiantFogyasztas Int  ?
+  @@unique([kivantModel,userId])
 }
 
