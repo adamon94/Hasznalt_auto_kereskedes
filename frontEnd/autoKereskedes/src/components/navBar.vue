@@ -60,7 +60,6 @@ const useStore = useController();
 <li ><button @click="useStore.showLog" class="navBtn">Bejelentkezés</button></li>
 
 
-
 </ul>
 
 </nav>
