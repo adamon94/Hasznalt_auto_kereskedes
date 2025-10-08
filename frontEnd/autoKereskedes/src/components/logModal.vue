@@ -4,8 +4,9 @@ import { useController } from '../stores/UIcontrol';
 const store = useController()
 
 const logIn = ()=>{
-store.logIn()
 store.closeLog()
+
+store.logIn()
 }
 
 </script>

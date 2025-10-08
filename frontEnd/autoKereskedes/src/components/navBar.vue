@@ -1,12 +1,15 @@
 <script setup>
 import RegistrationModal from './registrationModal.vue';
 import { useController } from '../stores/UIcontrol';
-import { onMounted } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { RouterLink } from 'vue-router';
 import { useRouter } from 'vue-router';
 
 const router = useRouter()
 const useStore = useController();
+
+const isloged = ref(false);
+
 
 </script>
 
@@ -59,7 +62,6 @@ const useStore = useController();
 <li><button @click="useStore.showModal" class="navBtn">Regisztráció</button></li>
 <li ><button @click="useStore.showLog" class="navBtn">Bejelentkezés</button></li>
 
-
 </ul>
 
 </nav>
@@ -71,7 +73,7 @@ const useStore = useController();
 .navBar{
 position: relative;
 margin:auto;
-width: 100%;
+width: 80%;
 padding: 10px;
 left: 4%;
 

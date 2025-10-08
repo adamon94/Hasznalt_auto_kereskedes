@@ -1,5 +1,6 @@
 <script setup>
 import { onMounted, ref } from 'vue';
+import Head from '../components/Head.vue';
 
 const cars = ref([])
 const carImages = ref()
@@ -8,14 +9,14 @@ onMounted(()=>{
     fetch("http://localhost:3300/cars/getCars").then(async (res) => {
     const data = await res.json();
     cars.value = data;
-    
+    console.log(cars.value)
   });
 })
 
  fetch("http://localhost:3300/cars/getCar/"+ 2).then(async (res) => {
     const data = await res.json();
     carImages.value = data.Images;
-    console.log(carImages.value)
+    //console.log(carImages.value)
   });
 
 
@@ -31,8 +32,9 @@ onMounted(()=>{
 </div>
 <ul><li v-for="i in carImages" :key="i.image_id"><img :src="'http://localhost:3300/images/' + i.path" alt=""></li></ul>
  !-->
- <section>
+<Head/>
 
+ <section>
   <div class="section__container deals__container">
   <h2 class="section__header">Most popular car rental deals</h2>
         <p class="section__description">
@@ -48,60 +50,59 @@ onMounted(()=>{
           <button class="btn" >Opel</button>
           <button class="btn" >Golf</button>
         </div>
-        <div class="tab__content">
+        
 
-             <div id="Tesla" class="tab__content active">
-
-               <div class="deals__card">
-            <img  alt="deals" />
-            
-            <h4>Tesla Model S</h4>
+      <div class="tab__content">
+          <div v-for="car in cars" :key="car.id" class="deals__card mb-4">
+            <img  :src="'http://localhost:3300/images/' + car.Images[0]?.path" alt="Deals" />
+            <h4>{{ car.model }}</h4>
             <div class="deals__card__grid">
               <div>
-                <span><i class="ri-group-line"></i></span> 4 People
+                <span><i class="ri-group-line"></i></span> Férőhley: {{ car.ferohely }}
               </div>
               <div>
-                <span><i class="ri-steering-2-line"></i></span> Autopilot
+                <span><i class="ri-steering-2-line"></i></span> Váltó rendszer: {{ car.sebessegValtoRendszer }}
               </div>
               <div>
-                <span><i class="ri-speed-up-line"></i></span> 400km
+                <span><i class="ri-speed-up-line"></i></span> henger űrtartalom: {{ car.hengerUrTartalom}} cm³
               </div>
               <div>
-                <span><i class="ri-car-line"></i></span> Electric
+                <span><i class="ri-car-line"></i></span> Üzemanyag: {{car.uzemAnyagTipus}}
               </div>
             </div>
             <hr />
             <div class="deals__card__footer">
-              <h3>$180<span>/Per Day</span></h3>
-              <a href="#">
-                Rent Now
+              <h3>{{car.ar}} HUF</h3>
+              <router-link :to="'/cars/' + car.id">
+                Tovább az adatlapra
                 <span><i class="ri-arrow-right-line"></i></span>
-              </a>
+              </router-link>
             </div>
           </div>
-
-
-
-             </div>
-
-          
-
-
-
-        </div>
-
-
-  </div>
-
+      </div>
+    </div>
  </section>
 </template>
 
 <style scoped>
 
-.section__container {
-  max-width: var(--max-width);
+
+section{
   margin: auto;
-  padding: 5rem 1rem;
+
+  padding: 100px;
+
+  background-color: #DDEDE9;
+}
+
+.tab__content{
+  
+}
+
+.section__container {
+  max-width:70%;
+  margin: auto;
+ 
 }
 
 .section__header {
@@ -126,7 +127,7 @@ onMounted(()=>{
   font-size: 1rem;
   color: var(--white);
   background-color: var(--primary-color);
-  border-radius: 0.5rem;
+  border-radius: 0.8rem;
   transition: 0.3s;
   cursor: pointer;
 }
@@ -138,6 +139,9 @@ onMounted(()=>{
 img {
   display: flex;
   width: 100%;
+  max-height: 500px;
+  border-radius: 0.8rem;
+  object-fit: cover;
 }
 
 .about__container .section__description {
@@ -158,32 +162,6 @@ img {
   text-align: center;
 }
 
-.about__card span {
-  display: inline-block;
-  margin-bottom: 2rem;
-  font-size: 2.5rem;
-  padding: 16px 20px;
-  border-radius: 1.25rem;
-  box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.05);
-}
-
-.about__card:nth-child(1) span {
-  color: #8a79f0;
-  background-color: #eeebfd;
-}
-
-
-.about__card h4 {
-  margin-bottom: 10px;
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: var(--text-dark);
-}
-
-.about__card p {
-  color: var(--text-light);
-  line-height: 1.5rem;
-}
 
 .deals {
   background-color: var(--extra-light);
@@ -218,28 +196,21 @@ img {
   animation: fadeEffect 1s;
 }*/
 
+
 .deals__container .tab__content {
   display: grid;
 }
 
-@keyframes fadeEffect {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
 .deals__card {
   padding: 1rem;
-  background-color: var(--white);
-  border-radius: 1rem;
+  background-color: #F0FAF6;
+  border-radius: 2rem;
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
 }
 
 .deals__card img {
   margin-bottom: 1rem;
+  border-radius: 0.8rem;
 }
 
 

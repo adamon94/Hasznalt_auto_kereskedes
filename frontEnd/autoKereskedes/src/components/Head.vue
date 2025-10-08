@@ -14,9 +14,6 @@ import RegistrationModal from './registrationModal.vue';
 <NavBar></NavBar>
 
 
-
-
-
 </header>
 
 </template>
@@ -26,6 +23,7 @@ import RegistrationModal from './registrationModal.vue';
 <style scoped>
 
 .head{
+    width: 100%;
     position: relative;
     height: 130px;
     /*background-color:D0D8D9 ;*/
