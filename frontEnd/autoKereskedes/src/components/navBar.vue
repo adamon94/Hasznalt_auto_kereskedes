@@ -1,14 +1,22 @@
 <script setup>
-import RegistrationModal from './registrationModal.vue';
 import { useController } from '../stores/UIcontrol';
-import { computed, onMounted, ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { RouterLink } from 'vue-router';
 import { useRouter } from 'vue-router';
 
 const router = useRouter()
 const useStore = useController();
 
-const isloged = ref(false);
+onMounted(()=>{
+  if(localStorage.getItem("isLogged")){
+    useStore.logIn()
+  }
+})
+
+const logOut = ()=>{
+  useStore.logOut()
+  router.push('/')
+}
 
 
 </script>
@@ -19,11 +27,11 @@ const isloged = ref(false);
 
 <nav class="navBar">
 
-<ul class="menu">
+<ul class="menu" :class="!useStore.isLogged ? 'menuGap ' : ''">
 
 <li>
     <div class="dropdown">
-  <button class="btn btn-secondary dropdown-toggle"
+  <button :class="{'menuBtnOut': !useStore.isLogged}" class="btn btn-secondary dropdown-toggle"
           type="button"
           data-bs-toggle="dropdown"
           aria-expanded="false"
@@ -38,8 +46,8 @@ const isloged = ref(false);
 </div>  
 </li>
 
-<li>
-  <div class="dropdown">
+<li v-if="useStore.isLogged">
+  <div  class="dropdown">
   <button class="btn btn-secondary dropdown-toggle"
           type="button"
           data-bs-toggle="dropdown"
@@ -49,18 +57,40 @@ const isloged = ref(false);
   </button>
   <ul class="dropdown-menu">
     <li><router-link class="dropdown-item" href="#">Kedvenceim</router-link></li>
-    <li><a class="dropdown-item" href="#">Keresett autóim</a></li>
+    <li><button class="dropdown-item" href="#">Keresett autóim</button></li>
     <li><a class="dropdown-item" href="#">Teszt vezetéseim</a></li>
   </ul>
 </div>  
 </li>
 
-<li>
-<button @click="router.push('/cars')" class="navBtn">Kínálatunk</button>
-
+<li v-else >
+  <div class="dropdown">
+  <button :class="{'menuBtnOut': !useStore.isLogged}" class="btn btn-secondary dropdown-toggle"
+          type="button"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+  >
+    Fiok
+  </button>
+  <ul class="dropdown-menu">
+    <li><button class="dropdown-item" @click="useStore.showLog">Bejelentkezés</button></li>
+    <li><button class="dropdown-item" @click="useStore.showModal">Regisztráció</button></li>
+  </ul>
+</div>  
 </li>
-<li><button @click="useStore.showModal" class="navBtn">Regisztráció</button></li>
-<li ><button @click="useStore.showLog" class="navBtn">Bejelentkezés</button></li>
+
+<li>
+<button @click="router.push('/about')" :class="{'menuBtnOut': !useStore.isLogged}" class="navBtn">Rólunk</button>
+</li>
+
+<li>
+<button @click="router.push('/contact')" :class="{'menuBtnOut': !useStore.isLogged}" class="navBtn">Kapcsolat</button>
+</li>
+
+<li>
+<button @click="router.push('/cars')" :class="{'menuBtnOut': !useStore.isLogged}" class="navBtn">Kínálatunk</button>
+</li>
+<li v-if="useStore.isLogged"><button @click="logOut" class="navBtn">Kijelentkezés</button></li>
 
 </ul>
 
@@ -75,7 +105,7 @@ position: relative;
 margin:auto;
 width: 80%;
 padding: 10px;
-left: 4%;
+left: 5%;
 
 }
 
@@ -86,7 +116,13 @@ left: 4%;
     align-items: center;
     margin-top: 20px;
     margin-left: 150px;
+    
 }
+.menuGap{
+   gap: 0.5rem;
+}
+
+
 li{
     margin-right: 2rem;
     margin-top: 10px;
@@ -100,6 +136,26 @@ li{
     border: none;
     border-radius: 10px;
     padding:8px 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.menuBtnOut{
+   padding:8px 40px;
+}
+.navBtn:hover {
+    background-color: #A3C9C4;
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(163, 201, 196, 0.4);
+}
+
+.navBtn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .userLink{

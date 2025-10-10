@@ -5,8 +5,8 @@ const store = useController()
 
 const logIn = ()=>{
 store.closeLog()
-
 store.logIn()
+localStorage.setItem("isLogged", true)
 }
 
 </script>

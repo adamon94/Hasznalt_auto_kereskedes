@@ -1,4 +1,5 @@
 import { defineStore } from "pinia"
+import { ro } from "vuetify/locale"
 
 export const useController = defineStore('control', {
   state: () => ({ 
@@ -10,6 +11,11 @@ export const useController = defineStore('control', {
     logIn(){
         this.isLogged = true
         console.log("Bejelentkezve")
+    },
+    logOut(){
+      this.isLogged = false
+      localStorage.removeItem("isLogged")
+      console.log("Kijelentkezve")
     },
 
     showModal(){
