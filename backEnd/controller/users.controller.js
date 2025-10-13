@@ -13,45 +13,16 @@ router.get("/getUsers", async (req, res) => {
 
 });
 
-/*router.post("/registration", async (req,res) => {
-    const {name, password, email,telSzam} = req.body
-    
-    if (name.trim("") === "" || email.trim("") === ""|| password.trim("") === "" ){
-
-        res.status(400).json({message:"Sikertelen regisztráció, kérem töltse ki az összes adatot!"})
-        return;
-    }
-    
-        const data = await p.users.create({
-        data:{
-            
-            name,
-            password: createHash(password),
-            accessLevel: 0,
-            email,
-            telSzam
-        }
-           
-    });
-    res.json({Message:"Created"}).status(201)
-})*/
-
 router.post("/registration",
     [
     body('name')
-        .notEmpty()
-        .withMessage("A név megadása kötelező!")
         .isLength({min:3})
         .withMessage("A névnek legalább 3 karakter hosszúnak kell lennie!")
         .trim(),
     body('password')
-        .notEmpty()
-        .withMessage("A jelszó megadása kötelező!")
         .isLength({min:8})
         .withMessage("A jelszónak legalább 8 karakter hosszúnak kell lennie!"),
     body('checkPassword')
-        .notEmpty()
-        .withMessage("A jelszó megerősítése kötelező!")
         .custom((value, { req }) => {
             if (value !== req.body.password) {
                 throw new Error("A jelszavaknak meg kell egyezniük!");
@@ -59,15 +30,15 @@ router.post("/registration",
             return true;
         }),
     body('email')
-        .notEmpty()
-        .withMessage("Az email megadása kötelező!")
         .isEmail()
         .withMessage("Kérem adjon meg egy érvényes email címet!")
+        .isAscii()
+        .withMessage("Az email cím csak alapvető karaktereket tartalmazhat (ékezetek nélkül)!")
         .normalizeEmail(),
     body('telSzam')
         .optional({ checkFalsy: true })
         .isString()
-        .withMessage("A telefonszám csak szöveg lehet!")
+        /*.withMessage("A telefonszám csak szöveg lehet!")*/
     ],
     async (req,res) => {
 
@@ -137,16 +108,6 @@ router.post("/registration",
 router.post("/login", async (req,res)=> {
     try {
         const {inputEmail, inputPassword} = req.body;
-
-        // Add input validation
-        if (!inputEmail || !inputPassword) {
-            return res.status(400).json({
-                isSuccess: false, 
-                message: "Email cím és jelszó megadása kötelező!"
-            });
-        }
-
-        console.log("Login attempt for user:", inputEmail); // Debug log
 
         // First find the user by email only
         const user = await p.users.findFirst({
