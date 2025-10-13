@@ -1,15 +1,28 @@
 <script setup>
 import { useController } from "./stores/UIcontrol";
 import { RouterView } from "vue-router";
-import RegistrationModal from "./components/registrationModal.vue";
 import LogModal from "./components/logModal.vue";
-const useStore = useController()
-const modalState = useStore.modalState
+import { onMounted } from "vue";
+
+const store = useController();
+
+
+onMounted(()=>{
+  document.title = "Auto Kereskedes"
+  const isLogged = localStorage.getItem("isLogged")
+  const userId = localStorage.getItem("token")
+  if(isLogged){
+    store.logIn()
+    store.id = Number(JSON.parse(userId))
+    console.log(store.id)
+  }
+
+})
+
 </script>
 
 <template>
     <LogModal/>
-    <RegistrationModal/>
     <router-view></router-view>
 </template>
 

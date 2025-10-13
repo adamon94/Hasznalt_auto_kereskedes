@@ -7,11 +7,7 @@ import { useRouter } from 'vue-router';
 const router = useRouter()
 const useStore = useController();
 
-onMounted(()=>{
-  if(localStorage.getItem("isLogged")){
-    useStore.logIn()
-  }
-})
+
 
 const logOut = ()=>{
   useStore.logOut()
@@ -74,7 +70,7 @@ const logOut = ()=>{
   </button>
   <ul class="dropdown-menu">
     <li><button class="dropdown-item" @click="useStore.showLog">Bejelentkezés</button></li>
-    <li><button class="dropdown-item" @click="useStore.showModal">Regisztráció</button></li>
+    <li><router-link class="dropdown-item" to="/registration">Regisztráció</router-link></li>
   </ul>
 </div>  
 </li>

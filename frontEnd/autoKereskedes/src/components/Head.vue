@@ -1,12 +1,10 @@
 <script setup>
 import NavBar from './navBar.vue';
-import RegistrationModal from './registrationModal.vue';
-
 
 
 </script>
 <template>
-<!--    <RegistrationModal/><!-->
+    
 <header class="head">
 
 <div class="mould"></div>

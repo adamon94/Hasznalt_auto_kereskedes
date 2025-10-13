@@ -43,10 +43,10 @@ model images {
 
 model users{
   id Int @id @default(autoincrement())
-  name String
-  passsword String
+  name String @unique
+  password String
   accessLevel Int
-  email String
+  email String @unique
   telSzam String?
   Kedencek kedvencek[]
   Teszezetesek tesztVezetesek[]

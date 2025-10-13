@@ -17,6 +17,10 @@ const router = createRouter({
       path: "/cars/:id",
       component: import("./pages/car.vue"),
     },
+    {
+      path: "/registration",
+      component: import("./pages/registrationPage.vue"),
+    },
     /*
     {
       path: "/details/:id",

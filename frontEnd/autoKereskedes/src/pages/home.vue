@@ -11,6 +11,5 @@ const store = useController()
 <template>
  
 <Head></Head>
-<h1>{{ useController.name }}</h1>
 
 </template>

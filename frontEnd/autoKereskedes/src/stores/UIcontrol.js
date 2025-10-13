@@ -1,11 +1,12 @@
 import { defineStore } from "pinia"
-import { ro } from "vuetify/locale"
+import { id, ro } from "vuetify/locale"
 
 export const useController = defineStore('control', {
   state: () => ({ 
     modalState: false,
     logModal:false,
-    isLogged:false
+    isLogged:false,
+    id: null
   }),
   actions:{
     logIn(){
@@ -15,6 +16,7 @@ export const useController = defineStore('control', {
     logOut(){
       this.isLogged = false
       localStorage.removeItem("isLogged")
+      localStorage.removeItem("token")
       console.log("Kijelentkezve")
     },
 
