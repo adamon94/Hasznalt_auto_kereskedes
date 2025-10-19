@@ -1,4 +1,6 @@
 <script setup>
+import { useController } from '../stores/UIcontrol';
+const store = useController();
 const props = defineProps({
   car: {
     type: Object,
@@ -9,6 +11,10 @@ const props = defineProps({
     required: true
   },
   onAddToFavorites: {
+    type: Function,
+    required: true
+  },
+  onRemoveFromFavorites: {
     type: Function,
     required: true
   },
@@ -30,6 +36,10 @@ const addToFavorites = () => {
   props.onAddToFavorites();
 };
 
+const removeFromFavorites = () => {
+  props.onRemoveFromFavorites();
+};
+
 const bookTestDrive = () => {
   props.onBookTestDrive();
 };
@@ -47,9 +57,13 @@ const goToNextCar = () => {
   <div class="footer-section">
     <!-- Primary Action Buttons -->
     <div class="action-buttons">
-      <button class="action-btn favorite-btn" @click="addToFavorites">
+      <button v-if="!store.isFav || store.isFav === null" class="action-btn favorite-btn" @click="addToFavorites">
         <i class="ri-heart-line"></i>
         Kedvencekhez adás
+      </button>
+      <button v-else class="action-btn favorite-btn" @click="removeFromFavorites">
+       <i class="ri-dislike-line"></i>
+        Törlés a kedvencek közül
       </button>
       <button class="action-btn test-drive-btn" @click="bookTestDrive">
         <i class="ri-car-line"></i>
@@ -106,7 +120,7 @@ const goToNextCar = () => {
 
 .favorite-btn {
   background-color: #C8BCCF;
-  color: #fff;
+  border-radius: 5px 0 0 5px; 
 }
 
 .favorite-btn:hover {
@@ -118,6 +132,7 @@ const goToNextCar = () => {
 .test-drive-btn {
   background-color: #A3C9C4;
   color: #fff;
+  border-radius: 0 5px 5px 0;
 }
 
 .test-drive-btn:hover {

@@ -11,7 +11,8 @@ const useStore = useController();
 
 const logOut = ()=>{
   useStore.logOut()
-  router.push('/')
+  //router.push('/')
+  location.reload();
 }
 
 
@@ -52,7 +53,7 @@ const logOut = ()=>{
     Fiok adatok
   </button>
   <ul class="dropdown-menu">
-    <li><router-link class="dropdown-item" href="#">Kedvenceim</router-link></li>
+    <li><router-link to="/kedvencek" class="dropdown-item">Kedvenceim</router-link></li>
     <li><button class="dropdown-item" href="#">Keresett autóim</button></li>
     <li><a class="dropdown-item" href="#">Teszt vezetéseim</a></li>
   </ul>

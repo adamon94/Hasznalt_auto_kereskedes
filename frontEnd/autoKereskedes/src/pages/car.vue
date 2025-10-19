@@ -1,13 +1,15 @@
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import Head from '../components/Head.vue';
 import CarData from '../components/carData.vue';
 import CarDataHeader from '../components/carDataHeader.vue';
 import CarDataFooter from '../components/carDataFooter.vue';
+import { useController } from '../stores/UIcontrol.js';
 
 const route = useRoute();
 const router = useRouter();
+const store = useController();
 
 
 const car = ref(null);
@@ -15,35 +17,98 @@ const allCars = ref([]);
 const currentCarIndex = ref(0);
 const carId = route.params.id || 1;
 
+
+const addFav = async () => {
+    try {
+      const response = await fetch(`http://localhost:3300/cars/addfav/${store.id}/${carId}`, {
+        method: 'POST',
+      });
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Added to favorites:', data);
+        favCheck(carId);
+      } else {
+        console.error('Error adding to favorites:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error adding to favorites:', error);
+    }
+};
+
+const removeFav = async () => {
+    try {
+      const response = await fetch(`http://localhost:3300/cars/removeFav/${store.id}/${carId}`, {
+        method: 'DELETE',
+      });
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Removed from favorites:', data);
+        favCheck(carId);
+      } else {
+        console.error('Error removing from favorites:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error removing from favorites:', error);
+    }
+};
+
+const favCheck = (car) => {
+    fetch(`http://localhost:3300/cars/userfav/${store.id}/${car}`, {
+      method: 'GET',
+    })
+      .then(async (res) => {
+        const data = await res.json();
+        store.isFav = data.isFav;
+        console.log('Fetched favorite status:', data.isFav);
+        console.log('Favorite status updated:', store.isFav);
+      })
+      .catch(error => {
+        console.error('Error fetching favorite status:', error);
+      });
+  }
+;
+
+watch(() => route.params.id, (newId) => {
+  if (newId) {
+    if(store.isLogged){
+      favCheck(newId);
+    }
+  }
+});
+        
+    
+
 onMounted(() => {
-  // Fetch all cars to enable navigation
+ 
+if (store.isLogged){
+    favCheck(carId);
+}
+
+
   fetch("http://localhost:3300/cars/getCars")
     .then(async (res) => {
       const data = await res.json();
       allCars.value = data;
       // Find current car index
       currentCarIndex.value = data.findIndex(c => c.id == carId);
+      car.value = data[currentCarIndex.value];
       if (currentCarIndex.value === -1) currentCarIndex.value = 0;
     })
     .catch(error => {
       console.error('Error fetching all cars:', error);
     });
-
-  // Fetch specific car details
-  fetch(`http://localhost:3300/cars/getCar/${carId}`)
-    .then(async (res) => {
-      const data = await res.json();
-      car.value = data;
-      console.log('Car details:', car.value);
-    })
-    .catch(error => {
-      console.error('Error fetching car details:', error);
-    });
 });
 
 const addToFavorites = () => {
   // TODO: Implement add to favorites functionality
+  addFav();
   console.log('Added to favorites:', car.value?.model);
+};
+
+const removeFromFavorites = () => {
+  // TODO: Implement remove from favorites functionality
+  removeFav();
+  console.log('Removed from favorites:', car.value?.model);
 };
 
 const bookTestDrive = () => {
@@ -73,7 +138,7 @@ const goToNextCar = () => {
   
   if (nextCar) {
     router.push(`/cars/${nextCar.id}`);
-    // Update current data
+    
     currentCarIndex.value = nextIndex;
     car.value = nextCar;
   }
@@ -96,6 +161,7 @@ const goToNextCar = () => {
         :car="car"
         :allCars="allCars"
         :onAddToFavorites="addToFavorites"
+        :onRemoveFromFavorites="removeFromFavorites"
         :onBookTestDrive="bookTestDrive"
         :onGoToPrevious="goToPreviousCar"
         :onGoToNext="goToNextCar"

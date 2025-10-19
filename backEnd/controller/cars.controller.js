@@ -43,6 +43,19 @@ router.post("/addFav/:userId/:autotId",async(req,res)=>{
     const userId = Number(req.params.userId)
     const autoId = Number(req.params.autotId)
 try{
+
+    const matchLink = await p.kedvencek.findUnique({
+        where:{
+            autoId_userId:{
+                autoId:autoId,
+                userId:userId
+            }
+        }
+    })
+    if(matchLink){
+        return res.status(409).json({message: "Már szerepel a kedvencek között"})
+    }
+
    const data = await p.kedvencek.upsert({
       where:{
         autoId_userId:{
@@ -59,8 +72,10 @@ try{
         }
         
     })
-   res.json(data).status(201)} catch{
-    res.status(400).json({message: "hiba"})
+   res.json(data).status(201)
+} catch (err){
+       console.error(err)
+       res.status(500).json({message: "Szerver hiba történt"})
    }
 
 })
@@ -77,10 +92,38 @@ router.get("/userfav/:userId/:autotId",async(req,res)=>{
             }
         }
     })
-    res.json({favBtn:false}).status(400)
+    try{
+    if(data){
+        res.json({isFav:true}).status(200)
+    }else {
+        res.json({isFav:false}).status(200)
+    }
+}catch (err){
+    console.error(err)
+    res.status(400).json({message: "hiba"})
+}
+    //res.json({favBtn:false}).status(400)
 })
 
+router.delete("/removeFav/:userId/:autotId",async(req,res)=>{
+    const userId = Number(req.params.userId)
+    const autoId = Number(req.params.autotId)
 
+    try{
+        const data = await p.kedvencek.delete({
+            where:{
+                autoId_userId:{
+                    userId:userId,
+                    autoId:autoId
+                }
+            }
+        })
+        res.json(data).status(200)
+    }catch (err){
+        console.error(err)
+        res.status(400).json({message: "hiba"})
+    }
+})
 
 /*1 felhasználó összes kedvence lekérdezése*/
 router.get("/userFavorites/:id",async(req,res)=>{

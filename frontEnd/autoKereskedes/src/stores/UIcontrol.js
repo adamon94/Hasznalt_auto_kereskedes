@@ -1,17 +1,19 @@
 import { defineStore } from "pinia"
-import { id, ro } from "vuetify/locale"
+
 
 export const useController = defineStore('control', {
   state: () => ({ 
     modalState: false,
     logModal:false,
     isLogged:false,
-    id: null
+    id: null,
+    isFav:null
   }),
   actions:{
     logIn(){
         this.isLogged = true
         console.log("Bejelentkezve")
+        
     },
     logOut(){
       this.isLogged = false

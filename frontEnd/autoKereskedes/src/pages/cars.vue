@@ -24,14 +24,7 @@ onMounted(()=>{
 
 
 <template>
- <!--
-<div v-for="ar in cars" :key="ar.id">
-    {{ ar.model }}
-    {{ ar.ar }}
-  <img :src="'http://localhost:3300/images/' + ar.Images[0]?.path" alt="">
-</div>
-<ul><li v-for="i in carImages" :key="i.image_id"><img :src="'http://localhost:3300/images/' + i.path" alt=""></li></ul>
- !-->
+
 <Head/>
 
  <section>

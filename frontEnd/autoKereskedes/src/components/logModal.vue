@@ -14,10 +14,6 @@ const errors = ref([]);
 const isLoading = ref(false);
 
 const logIn = async () => {
-  // Reset messages
-  msg.value = '';
-  errors.value = [];
-  isLoading.value = true;
 
   try {
     const response = await fetch("http://localhost:3300/users/login", {
@@ -48,11 +44,7 @@ const logIn = async () => {
         store.logIn();
         setTimeout(() => {
           store.closeLog();
-          // Reset form
-          email.value = '';
-          password.value = '';
-          msg.value = '';
-          errors.value = [];
+          location.reload();
         }, 1500);
         break;
       default:
@@ -68,23 +60,18 @@ const logIn = async () => {
 
 const closeModal = () => {
   store.closeLog();
-  // Reset form and messages
-  email.value = '';
-  password.value = '';
-  msg.value = '';
-  errors.value = [];
 };
 </script>
 
 
 <template>
-  <!-- Backdrop -->
+ 
   <div v-if="store.logValue" class="modal-backdrop" @click="closeModal"></div>
 
-  <!-- Modal Dialog -->
+  
   <div v-if="store.logValue" class="modal-dialog">
     <div class="modal-content">
-      <!-- Modal Header -->
+      
       <div class="modal-header">
         <h4 class="modal-title">
           <i class="ri-login-circle-line"></i>
@@ -95,10 +82,10 @@ const closeModal = () => {
         </button>
       </div>
 
-      <!-- Modal Body -->
+      
       <div class="modal-body">
         <form @submit.prevent="logIn" class="login-form">
-          <!-- Email Field -->
+          
           <div class="form-group mb-3">
             <label class="form-label">
               <i class="ri-mail-line"></i>
@@ -117,7 +104,7 @@ const closeModal = () => {
             </div>
           </div>
 
-          <!-- Password Field -->
+         
           <div class="form-group mb-4">
             <label class="form-label">
               <i class="ri-lock-line"></i>
@@ -136,7 +123,7 @@ const closeModal = () => {
             </div>
           </div>
 
-          <!-- Submit Button -->
+          
           <button type="submit" class="btn btn-login w-100 mb-3" :disabled="isLoading">
             <span v-if="isLoading" class="spinner-border spinner-border-sm me-2" role="status">
               <span class="visually-hidden">Loading...</span>
@@ -153,7 +140,7 @@ const closeModal = () => {
             {{ msg }}
           </div>
 
-          <!-- Error Messages -->
+         
           <div v-if="errors.length" class="error-section">
             <div class="alert alert-danger" role="alert">
               <i class="ri-error-warning-line"></i>
@@ -169,7 +156,7 @@ const closeModal = () => {
         </form>
       </div>
 
-      <!-- Modal Footer -->
+     
       <div class="modal-footer">
         <p class="text-muted mb-0">
           Nincs még fiókja? 
@@ -185,7 +172,7 @@ const closeModal = () => {
 
 
 <style scoped>
-/* Modal Backdrop */
+
 .modal-backdrop {
   position: fixed;
   top: 0;
