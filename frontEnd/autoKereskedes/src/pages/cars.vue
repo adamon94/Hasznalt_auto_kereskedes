@@ -1,9 +1,8 @@
 <script setup>
 import { onMounted, ref } from 'vue';
-import Head from '../components/Head.vue';
+
 
 const cars = ref([])
-const carImages = ref()
 
 onMounted(()=>{
     fetch("http://localhost:3300/cars/getCars").then(async (res) => {
@@ -13,20 +12,10 @@ onMounted(()=>{
   });
 })
 
- fetch("http://localhost:3300/cars/getCar/"+ 2).then(async (res) => {
-    const data = await res.json();
-    carImages.value = data.Images;
-    //console.log(carImages.value)
-  });
-
-
 </script>
 
 
 <template>
-
-<Head/>
-
  <section>
   <div class="section__container deals__container">
   <h2 class="section__header">Most popular car rental deals</h2>
@@ -88,9 +77,6 @@ section{
   background-color: #DDEDE9;
 }
 
-.tab__content{
-  
-}
 
 .section__container {
   max-width:70%;

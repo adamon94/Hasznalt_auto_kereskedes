@@ -4,7 +4,7 @@ import NavBar from './navBar.vue';
 
 </script>
 <template>
-    
+
 <header class="head">
 
 <div class="mould"></div>

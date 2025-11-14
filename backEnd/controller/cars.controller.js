@@ -105,6 +105,18 @@ router.get("/userfav/:userId/:autotId",async(req,res)=>{
     //res.json({favBtn:false}).status(400)
 })
 
+
+// Összes kedvenc kapcsolat lekérdezése
+router.get("/allFavs",async(req,res)=>{
+    try{
+        const data = await p.kedvencek.findMany()
+        res.json(data).status(200)
+    }catch (err){
+        console.error(err)
+        res.status(400).json({message: "hiba"})
+    }
+})
+
 router.delete("/removeFav/:userId/:autotId",async(req,res)=>{
     const userId = Number(req.params.userId)
     const autoId = Number(req.params.autotId)
@@ -134,7 +146,12 @@ router.get("/userFavorites/:id",async(req,res)=>{
             userId:userId
         },
          include:{
-            Autok:true
+            Autok:{
+                include:{
+                    Images:true
+                }
+            }
+            
          }
     }) 
     res.json(data).status(400)}catch(err){
@@ -148,6 +165,19 @@ router.post("/test/:userId/:autoId", async (req,res) => {
     const carId= Number(req.params.autoId)
     const {date} = req.body
    try{
+    const existingTestDrive = await p.tesztVezetesek.findFirst({
+        where:{
+            userId:userId,
+            autoId:carId,
+            
+        }
+    })
+    if(existingTestDrive){
+        return res.status(409).json({message: "Erre az autóra már van lefoglalt időpontja."})
+    }
+    if(!date){
+        return res.status(401).json({message: "Kérjük, válasszon ki egy dátumot."})
+    }
      const data = await p.tesztVezetesek.create({
         data:{
              userId:userId,
@@ -155,7 +185,7 @@ router.post("/test/:userId/:autoId", async (req,res) => {
              datum: new Date(date).toISOString()
         }
       })
-      res.json(data).status(201);} catch(err){console.error(err)}
+      res.status(201).json(data);} catch(err){console.error(err)}
 })
 
 
@@ -167,7 +197,11 @@ router.get("/geTest/:id",async (req,res) => {
                 userId:userId
             },
             include:{
-                Autok:true
+                Autok:{
+                    include:{
+                        Images:true
+                    }
+                }
             }
         })
         res.json(data).status(200)

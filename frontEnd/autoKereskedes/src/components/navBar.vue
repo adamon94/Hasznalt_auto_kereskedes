@@ -54,8 +54,8 @@ const logOut = ()=>{
   </button>
   <ul class="dropdown-menu">
     <li><router-link to="/kedvencek" class="dropdown-item">Kedvenceim</router-link></li>
-    <li><button class="dropdown-item" href="#">Keresett autóim</button></li>
-    <li><a class="dropdown-item" href="#">Teszt vezetéseim</a></li>
+    <li><router-link to="/kivansaglista" class="dropdown-item">Keresett autóim</router-link></li>
+    <li><router-link to="/teszt-vezetesek" class="dropdown-item">Teszt vezetéseim</router-link></li>
   </ul>
 </div>  
 </li>

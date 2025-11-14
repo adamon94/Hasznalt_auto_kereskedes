@@ -3,6 +3,7 @@ import { useController } from "./stores/UIcontrol";
 import { RouterView } from "vue-router";
 import LogModal from "./components/logModal.vue";
 import { onMounted } from "vue";
+import Head from './components/Head.vue';
 
 const store = useController();
 
@@ -23,6 +24,7 @@ onMounted(()=>{
 
 <template>
     <LogModal/>
+    <Head/>
     <router-view></router-view>
 </template>
 

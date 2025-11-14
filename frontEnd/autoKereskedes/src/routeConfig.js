@@ -25,11 +25,15 @@ const router = createRouter({
       path: "/kedvencek",
       component: import("./pages/favorites.vue"),
     },
-    /*
+    
     {
-      path: "/details/:id",
-      component: import("../pages/Details.vue"),
-    },*/
+      path: "/kivansaglista",
+      component: import("./pages/wishes.vue"),
+    },
+    {
+      path: "/teszt-vezetesek",
+      component: import("./pages/testDrives.vue"),
+    },
   ],
 });
 

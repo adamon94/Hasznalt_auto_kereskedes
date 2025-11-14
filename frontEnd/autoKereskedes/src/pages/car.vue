@@ -6,6 +6,7 @@ import CarData from '../components/carData.vue';
 import CarDataHeader from '../components/carDataHeader.vue';
 import CarDataFooter from '../components/carDataFooter.vue';
 import { useController } from '../stores/UIcontrol.js';
+import ReverseTestDriveModal from '../components/reverseTestDriveModal.vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -16,28 +17,29 @@ const car = ref(null);
 const allCars = ref([]);
 const currentCarIndex = ref(0);
 const carId = route.params.id || 1;
+const currentCarId = ref(carId);
 
 
 const addFav = async () => {
     try {
-      const response = await fetch(`http://localhost:3300/cars/addfav/${store.id}/${carId}`, {
+      const response = await fetch(`http://localhost:3300/cars/addfav/${store.id}/${currentCarId.value}`, {
         method: 'POST',
       });
       if (response.ok) {
         const data = await response.json();
         console.log('Added to favorites:', data);
-        favCheck(carId);
+        favCheck(currentCarId.value);
       } else {
         console.error('Error adding to favorites:', response.statusText);
       }
-    } catch (error) {
-      console.error('Error adding to favorites:', error);
+    } catch {
+      alert('Valószínűleg hálózati hiba történt, próbálja meg később.');
     }
 };
 
 const removeFav = async () => {
     try {
-      const response = await fetch(`http://localhost:3300/cars/removeFav/${store.id}/${carId}`, {
+      const response = await fetch(`http://localhost:3300/cars/removeFav/${store.id}/${currentCarId.value}`, {
         method: 'DELETE',
       });
       if (response.ok) {
@@ -59,8 +61,6 @@ const favCheck = (car) => {
       .then(async (res) => {
         const data = await res.json();
         store.isFav = data.isFav;
-        console.log('Fetched favorite status:', data.isFav);
-        console.log('Favorite status updated:', store.isFav);
       })
       .catch(error => {
         console.error('Error fetching favorite status:', error);
@@ -75,16 +75,20 @@ watch(() => route.params.id, (newId) => {
     }
   }
 });
-        
-    
+
+watch(() => route.params.id, (newId) => {
+  if (newId) {
+    currentCarId.value = newId;
+    }
+  }
+);
+
 
 onMounted(() => {
  
 if (store.isLogged){
     favCheck(carId);
 }
-
-
   fetch("http://localhost:3300/cars/getCars")
     .then(async (res) => {
       const data = await res.json();
@@ -100,13 +104,11 @@ if (store.isLogged){
 });
 
 const addToFavorites = () => {
-  // TODO: Implement add to favorites functionality
   addFav();
   console.log('Added to favorites:', car.value?.model);
 };
 
 const removeFromFavorites = () => {
-  // TODO: Implement remove from favorites functionality
   removeFav();
   console.log('Removed from favorites:', car.value?.model);
 };
@@ -114,6 +116,9 @@ const removeFromFavorites = () => {
 const bookTestDrive = () => {
   // TODO: Implement test drive booking
   console.log('Booking test drive for:', car.value?.model);
+  if(store.isLogged){
+    store.testDriveModal = true
+  }
 };
 
 const goToPreviousCar = () => {
@@ -137,8 +142,15 @@ const goToNextCar = () => {
   const nextCar = allCars.value[nextIndex];
   
   if (nextCar) {
+//window.scrollTo({ top: 0, behavior: 'smooth' });  
+const element = document.getElementById('scroll-to-header');
+  if (element) {
+    element.scrollIntoView({ 
+      behavior: 'smooth',
+      block: 'start'
+    })
+  }
     router.push(`/cars/${nextCar.id}`);
-    
     currentCarIndex.value = nextIndex;
     car.value = nextCar;
   }
@@ -146,12 +158,11 @@ const goToNextCar = () => {
 </script>
 
 <template>
-  <Head />
-  
+  <ReverseTestDriveModal :carId="currentCarId"/>
   <div class="car-details-container">
     <div class="car-details-wrapper" v-if="car">
       <!-- Car Images Section -->
-      <CarDataHeader :car="car" />
+      <CarDataHeader id="scroll-to-header" :car="car" />
 
       <!-- Car Data Component with Tabs -->
       <CarData :car="car" />
@@ -187,7 +198,7 @@ const goToNextCar = () => {
 }
 
 .car-details-wrapper {
-  max-width: 900px;
+  max-width: 1100px;
   width: 100%;
   background-color: #F0FAF6;
   border-radius: 2rem;

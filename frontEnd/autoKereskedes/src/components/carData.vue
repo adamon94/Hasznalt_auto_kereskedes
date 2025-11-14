@@ -138,10 +138,7 @@ const setActiveTab = (tabId) => {
               <li>
                 <strong><i class="ri-corner-up-right-fill"></i>Műszaki vizsga:</strong>
                 {{ car.utolsoMuszakiVizsga || "N/A" }}
-              </li>
-
-              
-            
+              </li>                      
             </ul>
           </div>
 
@@ -241,6 +238,7 @@ const setActiveTab = (tabId) => {
 .info-grid {
   display: grid;
   grid-template-columns: 50% 50%;
+ 
   /*gap: 1.5rem;*/
 }
 
@@ -283,7 +281,7 @@ background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/s
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
-  width: 50%;
+  width: 75%;
   list-style: none;
   padding: 0;
   margin: 0;

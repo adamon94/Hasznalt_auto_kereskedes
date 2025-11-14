@@ -10,6 +10,12 @@ const store = useController()
 </script>
 <template>
  
-<Head></Head>
+<div class="nyitoOldal">
+
+<!--   Majd valaki megcsinalja a főoldal   reszt, 
+jó lenne ha más is csinálna már valamit rajtam kívül  -->
+
+</div>
+
 
 </template>

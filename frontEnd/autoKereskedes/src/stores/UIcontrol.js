@@ -7,7 +7,8 @@ export const useController = defineStore('control', {
     logModal:false,
     isLogged:false,
     id: null,
-    isFav:null
+    isFav:null,
+    testDriveModal:false
   }),
   actions:{
     logIn(){
