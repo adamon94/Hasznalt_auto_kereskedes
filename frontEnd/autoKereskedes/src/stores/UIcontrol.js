@@ -8,7 +8,9 @@ export const useController = defineStore('control', {
     isLogged:false,
     id: null,
     isFav:null,
-    testDriveModal:false
+    testDriveModal:false,
+    accessLevel:null,
+    setManageContent:"updateCar",
   }),
   actions:{
     logIn(){

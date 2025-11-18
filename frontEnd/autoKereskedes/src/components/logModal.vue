@@ -41,6 +41,7 @@ const logIn = async () => {
         msg.value = "Sikeres bejelentkezés!";
         localStorage.setItem("isLogged", true);
         localStorage.setItem("token", JSON.stringify(data.id));
+        localStorage.setItem("accessLevel", data.accessLevel);
         store.logIn();
         setTimeout(() => {
           store.closeLog();

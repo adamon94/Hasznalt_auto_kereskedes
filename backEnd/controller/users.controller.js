@@ -132,7 +132,8 @@ router.post("/login", async (req,res)=> {
         if (user.password === hashedInputPassword) {
             console.log("Login successful for user:", user.name); // Debug log
             res.status(200).json({
-                id: user.id, 
+                id: user.id,
+                accessLevel: user.accessLevel,
                 isSuccess: true
             });
         } else {

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: localhost:3306
--- Létrehozás ideje: 2025. Okt 14. 15:28
+-- Létrehozás ideje: 2025. Nov 18. 20:24
 -- Kiszolgáló verziója: 10.4.32-MariaDB
 -- PHP verzió: 8.1.25
 
@@ -83,13 +83,12 @@ CREATE TABLE `kedvencek` (
 CREATE TABLE `kivansagllista` (
   `id` int(11) NOT NULL,
   `userId` int(11) NOT NULL,
-  `kivantMarka` varchar(191) DEFAULT NULL,
   `kivantSebValto` varchar(191) DEFAULT NULL,
   `kivantMegtettKm` int(11) DEFAULT NULL,
   `kiantFogyasztas` int(11) DEFAULT NULL,
   `kivantHengerUrTartalom` int(11) DEFAULT NULL,
   `kivantTipus` varchar(191) DEFAULT NULL,
-  `kivantModel` varchar(191) NOT NULL
+  `kivantModel` varchar(191) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -117,7 +116,7 @@ CREATE TABLE `users` (
   `accessLevel` int(11) NOT NULL,
   `email` varchar(191) NOT NULL,
   `telSzam` varchar(191) DEFAULT NULL,
-  `password` varchar(191) NOT NULL DEFAULT 'change_me_123'
+  `password` varchar(191) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -167,7 +166,6 @@ ALTER TABLE `kedvencek`
 --
 ALTER TABLE `kivansagllista`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `kivansagLlista_kivantModel_userId_key` (`kivantModel`,`userId`),
   ADD KEY `kivansagLlista_userId_fkey` (`userId`);
 
 --

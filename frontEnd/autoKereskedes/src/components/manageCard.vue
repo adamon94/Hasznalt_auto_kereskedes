@@ -1,35 +1,40 @@
 <script setup>
-import { defineProps } from 'vue';
+import { defineProps, defineEmits } from 'vue';
 
 const props = defineProps({
-  car: {
+car: {
     type: Object,
     required: true
   },
   likes: {
     type: Function,
     required: false
-  }
+  },
+  /*selectedCarId: {
+    type: Number,
+    required: false
+  }*/
 });
 
-const setContents = () => {
-  props.onEdit();
+const emit = defineEmits(['sendCarId']);
+
+const emitUpdateCar = () => {
+    emit('sendCarId', props.car.id);
 };
 
-/*
-Nested data structure example: Autok.models, Autok.Images[0].path
-*/
+
+
 </script>
 
 
 <template>
     <div class="card">
  <div class="tilt">
-  <div class="img"><img :src="'http://localhost:3300/images/' + car.Autok.Images[0]?.path" alt="Premium Laptop"></div>
+  <div class="img"><img :src="'http://localhost:3300/images/' + car.Images[0]?.path" alt="Premium Laptop"></div>
  </div>
  <div class="info">
-  <div class="cat">{{ car.Autok.tipus }}</div>
-  <h2 class="title">{{ car.Autok.model }}</h2>
+  <div class="cat">{{ car.tipus }}</div>
+  <h2 class="title">{{ car.model }}</h2>
   <div class="feats">
    <span class="feat">4K Display</span>
    <span class="feat">16-Hour Battery</span>
@@ -40,8 +45,8 @@ Nested data structure example: Autok.models, Autok.Images[0].path
     
     <span class="new">$1,999</span>
    </div>
-   <button @click="setContents()" class="btn">
-    <span>Az adatlapra</span>
+   <button class="btn" @click="emitUpdateCar">
+    <span>Jármű kezelése</span>
     <i class="ri-arrow-right-line"></i>
    </button>
   </div>
@@ -61,7 +66,7 @@ Nested data structure example: Autok.models, Autok.Images[0].path
 .card
 {
     width:200px;
-    /*height: 320px;*/
+    height: 400px;
     background:#fff;
     border-radius:15px;
     box-shadow:0 5px 20px rgba(0,0,0,.1);
@@ -69,7 +74,7 @@ Nested data structure example: Autok.models, Autok.Images[0].path
     overflow:hidden;
     position:relative;
     cursor:pointer;
-    background-color: #B6BBDE;
+    background-color:#DBD7D7;
 }
 .card:hover{
     transform:translateY(-5px);
@@ -151,13 +156,13 @@ Nested data structure example: Autok.models, Autok.Images[0].path
     border-radius:10px;
     padding:8px 5px;
     font-size:13px;
-    font-weight:600;
+    font-weight:470;
     cursor:pointer;
     display:flex;
     align-items:center;
     gap:6px;
     transition:.3s;
-    box-shadow:0 3px 10px rgba(0,0,0,.1)
+    box-shadow:0 3px 10px rgba(0,0,0,.1);
 }
 .btn:hover{
     background:linear-gradient(45deg,#27272A,#3F3F46);

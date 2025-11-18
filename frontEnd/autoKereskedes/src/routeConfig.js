@@ -34,6 +34,10 @@ const router = createRouter({
       path: "/teszt-vezetesek",
       component: import("./pages/testDrives.vue"),
     },
+    {
+      path: "/admin",
+      component: import("./pages/administration.vue"),
+    },
   ],
 });
 

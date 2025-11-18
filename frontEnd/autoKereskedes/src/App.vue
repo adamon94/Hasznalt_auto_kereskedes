@@ -12,9 +12,11 @@ onMounted(()=>{
   document.title = "Auto Kereskedes"
   const isLogged = localStorage.getItem("isLogged")
   const userId = localStorage.getItem("token")
+  const accessLevel = localStorage.getItem("accessLevel")
   if(isLogged){
     store.logIn()
     store.id = Number(JSON.parse(userId))
+    store.accessLevel = accessLevel
     console.log(store.id)
   }
 
