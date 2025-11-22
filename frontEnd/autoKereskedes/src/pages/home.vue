@@ -143,9 +143,6 @@ var swiper = new Swiper(".review-slider", {
  
 <div class="nyitoOldal">
 
-<!--   Majd valaki megcsinalja a főoldal   reszt, 
-jó lenne ha más is csinálna már valamit rajtam kívül  -->
-
 <header class="header">
 
     <section class="flex">
@@ -196,7 +193,7 @@ jó lenne ha más is csinálna már valamit rajtam kívül  -->
 
     <h3 data-speed="-2" class="home-parallax">find your car</h3>
 
-    <img data-speed="5" class="home-parallax" src="image/home-img.png" alt="">
+    <img data-speed="5" class="home-parallax" src="../assets/732.jpg" alt="">
 
     <a data-speed="7" href="#" class="btn home-parallax">explore cars</a>
 
@@ -251,7 +248,7 @@ jó lenne ha más is csinálna már valamit rajtam kívül  -->
         <div class="swiper-wrapper">
 
             <div class="swiper-slide box">
-                <img src="image/vehicle-1.png" alt="">
+                <img src="../assets/2000_Suzuki_Swift_1.3_GLX_5-door_(9754701452).jpg" alt="">
                 <div class="content">
                     <h3>new model</h3>
                     <div class="price"> <span>price : </span> $62,000/- </div>
@@ -267,7 +264,7 @@ jó lenne ha más is csinálna már valamit rajtam kívül  -->
             </div>
 
             <div class="swiper-slide box">
-                <img src="image/vehicle-2.png" alt="">
+                <img src="../assets/353072_source-2048x1152.jpg" alt="">
                 <div class="content">
                     <h3>new model</h3>
                     <div class="price"> <span>price : </span> $62,000/- </div>
@@ -283,7 +280,7 @@ jó lenne ha más is csinálna már valamit rajtam kívül  -->
             </div>
 
             <div class="swiper-slide box">
-                <img src="image/vehicle-3.png" alt="">
+                <img src="../assets/blog_2025_Vitara_1.png" alt="">
                 <div class="content">
                     <h3>new model</h3>
                     <div class="price"> <span>price : </span> $62,000/- </div>
@@ -299,7 +296,7 @@ jó lenne ha más is csinálna már valamit rajtam kívül  -->
             </div>
 
             <div class="swiper-slide box">
-                <img src="image/vehicle-4.png" alt="">
+                <img src="../assets/bmw-3-series-front-720x405px.jpg" alt="">
                 <div class="content">
                     <h3>new model</h3>
                     <div class="price"> <span>price : </span> $62,000/- </div>
@@ -315,7 +312,7 @@ jó lenne ha más is csinálna már valamit rajtam kívül  -->
             </div>
 
             <div class="swiper-slide box">
-                <img src="image/vehicle-5.png" alt="">
+                <img src="../assets/c3_3.jpg" alt="">
                 <div class="content">
                     <h3>new model</h3>
                     <div class="price"> <span>price : </span> $62,000/- </div>
@@ -331,7 +328,7 @@ jó lenne ha más is csinálna már valamit rajtam kívül  -->
             </div>
 
             <div class="swiper-slide box">
-                <img src="image/vehicle-6.png" alt="">
+                <img src="../assets/IMG20240515140923.jpg" alt="">
                 <div class="content">
                     <h3>new model</h3>
                     <div class="price"> <span>price : </span> $62,000/- </div>
@@ -415,7 +412,7 @@ jó lenne ha más is csinálna már valamit rajtam kívül  -->
        <div class="swiper-wrapper">
 
             <div class="swiper-slide box">
-                <img src="image/car-1.png" alt="">
+                <img src="../assets/2000_Suzuki_Swift_1.3_GLX_5-door_(9754701452).jpg" alt="">
                 <div class="content">
                     <h3>new model</h3>
                     <div class="stars">
@@ -431,7 +428,7 @@ jó lenne ha más is csinálna már valamit rajtam kívül  -->
             </div>
 
             <div class="swiper-slide box">
-                <img src="image/car-2.png" alt="">
+                <img src="../assets/353072_source-2048x1152.jpg" alt="">
                 <div class="content">
                     <h3>new model</h3>
                     <div class="stars">
@@ -447,7 +444,7 @@ jó lenne ha más is csinálna már valamit rajtam kívül  -->
             </div>
 
             <div class="swiper-slide box">
-                <img src="image/car-3.png" alt="">
+                <img src="../assets/blog_2025_Vitara_1.png" alt="">
                 <div class="content">
                     <h3>new model</h3>
                     <div class="stars">
@@ -463,7 +460,7 @@ jó lenne ha más is csinálna már valamit rajtam kívül  -->
             </div>
 
             <div class="swiper-slide box">
-                <img src="image/car-4.png" alt="">
+                <img src="../assets/bmw-3-series-front-720x405px.jpg" alt="">
                 <div class="content">
                     <h3>new model</h3>
                     <div class="stars">
@@ -489,7 +486,7 @@ jó lenne ha más is csinálna már valamit rajtam kívül  -->
         <div class="swiper-wrapper">
  
              <div class="swiper-slide box">
-                 <img src="image/car-5.png" alt="">
+                 <img src="../assets/c3_3.jpg" alt="">
                  <div class="content">
                      <h3>new model</h3>
                      <div class="stars">
@@ -505,7 +502,7 @@ jó lenne ha más is csinálna már valamit rajtam kívül  -->
              </div>
  
              <div class="swiper-slide box">
-                 <img src="image/car-6.png" alt="">
+                 <img src="../assets/IMG20240515140923.jpg" alt="">
                  <div class="content">
                      <h3>new model</h3>
                      <div class="stars">
@@ -521,7 +518,7 @@ jó lenne ha más is csinálna már valamit rajtam kívül  -->
              </div>
  
              <div class="swiper-slide box">
-                 <img src="image/car-7.png" alt="">
+                 <img src="../assets/2000_Suzuki_Swift_1.3_GLX_5-door_(9754701452).jpg" alt="">
                  <div class="content">
                      <h3>new model</h3>
                      <div class="stars">
@@ -537,7 +534,7 @@ jó lenne ha más is csinálna már valamit rajtam kívül  -->
              </div>
  
              <div class="swiper-slide box">
-                 <img src="image/car-8.png" alt="">
+                 <img src="../assets/353072_source-2048x1152.jpg" alt="">
                  <div class="content">
                      <h3>new model</h3>
                      <div class="stars">
