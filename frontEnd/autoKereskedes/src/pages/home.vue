@@ -582,7 +582,7 @@ var swiper = new Swiper(".review-slider", {
         <div class="swiper-wrapper">
 
             <div class="swiper-slide box">
-                <img src="image/pic-1.png" alt="">
+                <!-- <img src="image/pic-1.png" alt=""> -->
                 <div class="content">
                     <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsam incidunt quod praesentium iusto id autem possimus assumenda at ut saepe.</p>
                     <h3>john deo</h3>
@@ -597,7 +597,7 @@ var swiper = new Swiper(".review-slider", {
             </div>
 
             <div class="swiper-slide box">
-                <img src="image/pic-2.png" alt="">
+                <!-- <img src="image/pic-2.png" alt=""> -->
                 <div class="content">
                     <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsam incidunt quod praesentium iusto id autem possimus assumenda at ut saepe.</p>
                     <h3>john deo</h3>
@@ -612,7 +612,7 @@ var swiper = new Swiper(".review-slider", {
             </div>
 
             <div class="swiper-slide box">
-                <img src="image/pic-3.png" alt="">
+                <!-- <img src="image/pic-3.png" alt=""> -->
                 <div class="content">
                     <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsam incidunt quod praesentium iusto id autem possimus assumenda at ut saepe.</p>
                     <h3>john deo</h3>
@@ -627,7 +627,7 @@ var swiper = new Swiper(".review-slider", {
             </div>
 
             <div class="swiper-slide box">
-                <img src="image/pic-4.png" alt="">
+                <!-- <img src="image/pic-4.png" alt=""> -->
                 <div class="content">
                     <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsam incidunt quod praesentium iusto id autem possimus assumenda at ut saepe.</p>
                     <h3>john deo</h3>
@@ -642,7 +642,7 @@ var swiper = new Swiper(".review-slider", {
             </div>
 
             <div class="swiper-slide box">
-                <img src="image/pic-5.png" alt="">
+                <!-- <img src="image/pic-5.png" alt=""> -->
                 <div class="content">
                     <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsam incidunt quod praesentium iusto id autem possimus assumenda at ut saepe.</p>
                     <h3>john deo</h3>
@@ -657,7 +657,7 @@ var swiper = new Swiper(".review-slider", {
             </div>
 
             <div class="swiper-slide box">
-                <img src="image/pic-6.png" alt="">
+                <!-- <img src="image/pic-6.png" alt=""> -->
                 <div class="content">
                     <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsam incidunt quod praesentium iusto id autem possimus assumenda at ut saepe.</p>
                     <h3>john deo</h3>
@@ -751,7 +751,7 @@ var swiper = new Swiper(".review-slider", {
 
 </template>
 
-<style>
+<style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;400;500;600&display=swap');
 
 :root{

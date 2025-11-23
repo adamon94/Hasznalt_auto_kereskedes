@@ -39,46 +39,71 @@ const autoId = Number(req.params.id)
 
 
 /*  Kedvenc autó felvétele  */
-router.post("/addFav/:userId/:autotId",async(req,res)=>{
-    const userId = Number(req.params.userId)
-    const autoId = Number(req.params.autotId)
-try{
-
+router.post("/addFav/:userId/:autotId", async (req, res) => {
+  const userId = Number(req.params.userId);
+  const autoId = Number(req.params.autotId);
+  try {
     const matchLink = await p.kedvencek.findUnique({
-        where:{
-            autoId_userId:{
-                autoId:autoId,
-                userId:userId
-            }
-        }
-    })
-    if(matchLink){
-        return res.status(409).json({message: "Már szerepel a kedvencek között"})
+      where: {
+        autoId_userId: {
+          autoId: autoId,
+          userId: userId,
+        },
+      },
+    });
+    if (matchLink) {
+      return res.status(409).json({ message: "Már szerepel a kedvencek között" });
     }
 
-   const data = await p.kedvencek.upsert({
-      where:{
-        autoId_userId:{
-            autoId:autoId,
-            userId:userId
-        }
-      },
-        update:{
-            
+    const data = await p.kedvencek.upsert({
+      where: {
+        autoId_userId: {
+          autoId: autoId,
+          userId: userId,
         },
-        create:{
-            userId:userId,
-            autoId:autoId
-        }
-        
-    })
-   res.json(data).status(201)
-} catch (err){
-       console.error(err)
-       res.status(500).json({message: "Szerver hiba történt"})
-   }
+      },
+      update: {},
+      create: {
+        userId: userId,
+        autoId: autoId,
+      },
+    });
+    res.status(201).json(data);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Szerver hiba történt" });
+  }
+});
 
-})
+/*  Kínálat ellenőrzése a kívánságok alapján  */
+router.get("/checkMatches/:userId", async (req, res) => {
+  const userId = Number(req.params.userId);
+  try {
+    const wishes = await p.kivansag.findMany({
+      where: { userId: userId },
+    });
+
+    if (!wishes.length) {
+      return res.json({ hasMatches: false, matches: [] });
+    }
+
+    const cars = await p.autok.findMany();
+
+    const matches = cars.filter((car) =>
+      wishes.some(
+        (wish) =>
+          (wish.brand && car.brand.toLowerCase().includes(wish.brand.toLowerCase())) ||
+          (wish.model && car.model.toLowerCase().includes(wish.model.toLowerCase())) ||
+          (wish.year && car.year === wish.year)
+      )
+    );
+
+    res.json({ hasMatches: matches.length > 0, matches });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Szerver hiba történt" });
+  }
+});
 
 /*  1 felhasználó és egy kedvenc autója közti kapcsolat lekérdezése  */
 router.get("/userfav/:userId/:autotId",async(req,res)=>{

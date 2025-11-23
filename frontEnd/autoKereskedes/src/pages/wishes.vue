@@ -4,8 +4,33 @@ import WishForm from '../components/wishComps/wishForm.vue';
 import WishList from '../components/wishComps/wishList.vue';
 import FavCard from '../components/favCard.vue';
 
-const matches = ref([]);
+// Felhasználó kívánságlistája
+const wishes = ref([]);
 
+// Példa kínálati lista
+const carsOffer = ref([
+  { id: 1, brand: 'Toyota', model: 'Corolla', year: 2020 },
+  { id: 2, brand: 'BMW', model: 'X5', year: 2018 },
+  { id: 3, brand: 'Audi', model: 'A4', year: 2021 },
+  { id: 4, brand: 'Toyota', model: 'Yaris', year: 2019 },
+]);
+
+// Találataid
+const matches = computed(() => {
+  if (!wishes.value.length) return [];
+  return carsOffer.value.filter(car =>
+    wishes.value.some(wish =>
+      (wish.brand && car.brand.toLowerCase().includes(wish.brand.toLowerCase())) ||
+      (wish.model && car.model.toLowerCase().includes(wish.model.toLowerCase())) ||
+      (wish.year && car.year === wish.year)
+    )
+  );
+});
+
+// Új kívánt elem hozzáadása
+const addWish = (wish) => {
+  wishes.value.push(wish);
+};
 </script>
 
 <template>
@@ -15,17 +40,17 @@ const matches = ref([]);
     </div>
     <div class="wishesContent">
        <section class="addWish">
-           <WishForm/>
+           <WishForm @add-wish="addWish"/>
         </section>
        <section class="wishesList">
-           <WishList/>
+           <WishList :wishes="wishes"/>
        </section>
     </div>
 </div>
 <footer class="matches">
 <div class="matchesList" v-if="matches.length">
     <h2>Találatok a kívánságaid alapján:</h2>
-<FavCard v-for="match in matches" :key="match.id" :car="match" />
+    <FavCard v-for="match in matches" :key="match.id" :car="match" />
 </div>
 <div v-else class="noMatches">
     <h2>Nincsenek találatok a kívánságaid alapján.</h2>
