@@ -5,7 +5,7 @@ import { onMounted } from "vue";
 
 const store = useController()
 
-let menu = document.querySelector('#menu-btn');
+/*let menu = document.querySelector('#menu-btn');
 let navbar = document.querySelector('.navbar');
 
 menu.onclick = () =>{
@@ -137,37 +137,13 @@ var swiper = new Swiper(".review-slider", {
     },
   },
 });
-
+*/
 </script>
 <template>
  
 <div class="nyitoOldal">
 
-<header class="header">
 
-    <section class="flex">
-
-        <div id="menu-btn" class="fas fa-bars"></div>
-
-        <a href="#" class="logo"> <span>max</span>wheels </a>
-
-        <nav class="navbar">
-            <a href="#home">home</a>
-            <a href="#vehicles">vehicles</a>
-            <a href="#services">services</a>
-            <a href="#featured">featured</a>
-            <a href="#reviews">reviews</a>
-            <a href="#contact">contact</a>
-        </nav>
-
-        <div id="login-btn">
-            <button class="btn">login</button>
-            <i class="far fa-user"></i>
-        </div>
-
-    </section>
-
-</header> 
     
 <div class="login-form-container">
 

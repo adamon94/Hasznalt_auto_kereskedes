@@ -3,6 +3,7 @@ import { Button } from 'bootstrap';
 import { onMounted, ref } from 'vue';
 import { RouterLink } from 'vue-router';
 import manageCard from './manageCard.vue';
+import testCard from './testCard.vue';
 
 const currentTab = ref('addCar'); // Default active tab
 
@@ -55,6 +56,21 @@ const countLikes = (carId) => {
         }
     });
     return count;
+};
+
+// State for all test drives
+const allTestDrives = ref([]);
+
+// Fetch all test drives
+const fetchAllTestDrives = async () => {
+    try {
+        const response = await fetch('http://localhost:3300/administration/getAllTestDrives');
+        const data = await response.json();
+        allTestDrives.value = data;
+        console.log('Fetched test drives:', allTestDrives.value);
+    } catch (error) {
+        console.error('Error fetching test drives:', error);
+    }
 };
 
 // Form data
@@ -347,6 +363,7 @@ const resetForm = () => {
 onMounted(() => {
     fetchAllCars();
     getAllFavs();
+    fetchAllTestDrives();
 });
 
 /*car object build:
@@ -698,7 +715,33 @@ length
                     <p>Tesztvezetési foglalások kezelése</p>
                 </header>
                 <div class="card-container">
-                    <!-- Your test drives content here -->
+                    <!-- Loading State -->
+                    <div v-if="allTestDrives.length === 0" class="loading-state">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Betöltés...</span>
+                        </div>
+                        <p>Tesztvezetések betöltése...</p>
+                    </div>
+
+                    <!-- Test Drives Grid -->
+                    <div v-else class="cars-grid">
+                        <div v-for="testDrive in allTestDrives" :key="testDrive.id" class="test-drive-card-wrapper">
+                            <testCard
+                                :car="testDrive"
+                                :likes="countLikes(testDrive.autoId)"
+                            />
+                            <div class="test-drive-info">
+                                <div class="badge bg-primary">
+                                    <i class="ri-calendar-line me-1"></i>
+                                    {{ new Date(testDrive.datum).toLocaleDateString('hu-HU') }}
+                                </div>
+                                <div class="badge bg-success">
+                                    <i class="ri-user-line me-1"></i>
+                                    {{ testDrive.Users.name }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div v-if="currentTab === 'updateCar'">
@@ -748,14 +791,12 @@ length
                             <div class="col-md-6 mb-3">
                                 <div class="form-group">
                                     <label for="update_tipus" class="form-label">Típus</label>
-                                    <select class="form-select form-control" id="update_tipus" v-model="selectedCar.tipus" required>
+                                    <select class="form-select form-control" id="update_tipus"  v-model="selectedCar.tipus" required>
                                         <option value="">Válasszon típust</option>
-                                        <option value="Sedan">Sedan</option>
-                                        <option value="SUV">SUV</option>
-                                        <option value="Hatchback">Hatchback</option>
-                                        <option value="Kombi">Kombi</option>
-                                        <option value="Coupe">Coupe</option>
-                                        <option value="Kabrió">Kabrió</option>
+                                        <option value="Sedan">Városi autó</option>
+                                        <option value="SUV">Luxus autó</option>
+                                        <option value="Hatchback">Sport autó</option>
+                                        <option value="Kombi">Terepjáró</option>
                                     </select>
                                 </div>
                             </div>
@@ -1308,7 +1349,49 @@ header p {
     padding: 20px 0;
 }
 
+/* Test Drive Card Wrapper */
+.test-drive-card-wrapper {
+    position: relative;
+}
+
+.test-drive-info {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px;
+    margin-top: 12px;
+    justify-content: center;
+}
+
+.test-drive-info .badge {
+    display: flex;
+    align-items: center;
+    font-size: 0.85rem;
+    padding: 6px 5px;
+    border-radius: 8px;
+    font-weight: 500;
+    margin-right: 20px;
+}
+
+.test-drive-info .badge i {
+    font-size: 1rem;
+}
+
 /* Loading State */
+.loading-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.loading-state p {
+    margin-top: 16px;
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
 .loading-message {
     display: flex;
     flex-direction: column;
