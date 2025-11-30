@@ -3,6 +3,7 @@ import { PrismaClient } from '../generated/prisma/index.js'
 import express from "express";
 import multer from "multer";
 import path from "path";
+import fs from "fs";
 
 const p = new PrismaClient()
 const router = express.Router();
@@ -84,6 +85,35 @@ router.post("/addImages/:carId", upload.array("files",10), async (req, res) => {
    } catch (error) {
       console.error('Error uploading images:', error);
       res.status(500).json({uzenet: "Hiba történt a képek feltöltése során"});
+   }
+});
+
+// Kép törlése
+router.delete("/delImage/:imgId", async (req, res) => {
+   const imgId = Number(req.params.imgId);
+   try {
+
+
+      const image = await p.images.findFirst({
+         where: { image_id: imgId }
+      });
+      const filePath = path.join(process.cwd(), 'images', image.path);
+      
+      // Delete the physical file if it exists
+      if (fs.existsSync(filePath)) {
+         fs.unlinkSync(filePath);
+         console.log('File deleted:', image.path);
+      } else {
+         console.warn('File not found on disk:', image.path);
+      }
+      await p.images.delete({
+         where: { image_id: imgId }
+      });
+      res.status(200).json({ uzenet: "Kép sikeresen törölve!" });
+
+   } catch (error) {
+      console.error('Error deleting image:', error);
+      res.status(500).json({ uzenet: "Hiba történt a kép törlése során" });
    }
 });
 

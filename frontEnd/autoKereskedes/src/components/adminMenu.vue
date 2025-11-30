@@ -187,15 +187,16 @@ const deleteCarImage = async (imageId) => {
     if (!confirm('Biztosan törölni szeretné ezt a képet?')) {
         return;
     }
+    console.log('Deleting image for image_ID:', imageId);
     
     try {
-        const response = await fetch(`http://localhost:3300/administration/deleteImage/${imageId}`, {
+        const response = await fetch(`http://localhost:3300/administration/delImage/${imageId}`, {
             method: 'DELETE'
         });
         
         if (response.ok) {
             // Remove image from selectedCar.Images array
-            const imageIndex = selectedCar.value.Images.findIndex(img => img.id === imageId);
+            const imageIndex = selectedCar.value.Images.findIndex(img => img.image_id === imageId);
             if (imageIndex > -1) {
                 selectedCar.value.Images.splice(imageIndex, 1);
             }
@@ -208,6 +209,8 @@ const deleteCarImage = async (imageId) => {
         alert('Szerver hiba történt a kép törlése során.');
     }
 };
+
+
 const uploadImage = async (id) => {
     if (selectedImages.value.length === 0) {
         alert('Nincs kiválasztott kép a feltöltéshez!');
@@ -991,7 +994,7 @@ length
                                             <button 
                                                 type="button" 
                                                 class="remove-btn" 
-                                                @click="deleteCarImage(image.id)"
+                                                @click="deleteCarImage(image.image_id)"
                                                 title="Kép törlése"
                                             >
                                                 <i class="fas fa-trash"></i>
