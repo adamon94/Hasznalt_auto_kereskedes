@@ -30,7 +30,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({storage});
 
-router.post("/addCar", upload.array("files", 10), async (req, res) => {
+router.post("/addCar", async (req, res) => {
      const {gyartasEve,model,marka,tipus,ar,tomeg,meghajtas,hengerUrTartalom,sebessegValtoRendszer,
       ferohely, uzemAnyagTipus, fogyasztas,megtettKm,tulajdonosokSzama,
       serulesek,utolsoMuszakiVizsga,felujitasok} = req.body;
@@ -59,8 +59,8 @@ router.post("/addCar", upload.array("files", 10), async (req, res) => {
                }
                 
             });
-          
-            res.status(201).json({uzenet: "Sikeres feltöltés!"});
+          const id = data.id;
+            res.status(201).json(data.id);
 
          }
          catch(err){

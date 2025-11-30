@@ -208,16 +208,9 @@ const deleteCarImage = async (imageId) => {
         alert('Szerver hiba történt a kép törlése során.');
     }
 };
-
-// Upload new images to existing car
-const uploadNewImages = async () => {
-    if (updateSelectedImages.value.length === 0) {
+const uploadImage = async (id) => {
+    if (selectedImages.value.length === 0) {
         alert('Nincs kiválasztott kép a feltöltéshez!');
-        return;
-    }
-    
-    if (!selectedCar.value || !selectedCar.value.id) {
-        alert('Nincs kiválasztott autó!');
         return;
     }
     
@@ -225,14 +218,55 @@ const uploadNewImages = async () => {
         const formData = new FormData();
         
         // Add all selected images to FormData
-        updateSelectedImages.value.forEach((file) => {
-            formData.append('images', file);
+        selectedImages.value.forEach((file) => {
+            formData.append('files', file);
         });
         
-        // Add car ID
-        formData.append('carId', selectedCar.value.id);
+        const response = await fetch(`http://localhost:3300/administration/addImages/${id}`, {
+            method: 'POST',
+            body: formData
+        });
         
-        const response = await fetch('http://localhost:3300/administration/uploadCarImages', {
+        if (response.ok) {
+            const result = await response.json();
+            alert(`Sikeresen feltöltve ${selectedImages.value.length} kép!`);
+            
+            // Clear previews and selected images
+            selectedImages.value = [];
+            imagePreviews.value = [];
+        } else {
+            const error = await response.json();
+            alert(`Hiba történt a képek feltöltése során: ${error.message || 'Ismeretlen hiba'}`);
+        }
+    } catch (error) {
+        console.error('Error uploading images:', error);
+        alert('Szerver hiba történt a képek feltöltése során.');
+    }
+};
+// Upload new images to existing car
+const uploadNewImages = async () => {
+    if (updateSelectedImages.value.length === 0) {
+        alert('Nincs kiválasztott kép a feltöltéshez!');
+        return;
+    }
+    
+    /*if (!selectedCar.value || !selectedCar.value.id) {
+        alert('Nincs kiválasztott autó!');
+        return;
+    }*/
+    
+    try {
+        const formData = new FormData();
+        
+        // Add all selected images to FormData
+        updateSelectedImages.value.forEach((file) => {
+            formData.append('files', file);
+        });
+        
+        /* Add car ID
+        formData.append('carId', selectedCar.value.id);*/
+        console.log('Uploading images for car ID:', selectedCar.value.id);
+        const response = await fetch(`http://localhost:3300/administration/addImages/${selectedCar.value.id}`, {
             method: 'POST',
             body: formData
         });
@@ -321,7 +355,9 @@ const submitCarForm = async () => {
 
         if (response.ok) {
             const data = await response.json();
-            successMessage.value = `Autó sikeresen hozzáadva! ID: ${data.message}`;
+            successMessage.value = `Autó sikeresen hozzáadva! ID: ${data}`;
+            console.log(data);
+            uploadImage(data);
             errorMessage.value = '';
             // Reset form
             resetForm();
