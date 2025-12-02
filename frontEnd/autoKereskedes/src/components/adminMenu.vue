@@ -4,6 +4,8 @@ import { onMounted, ref } from 'vue';
 import { RouterLink } from 'vue-router';
 import manageCard from './manageCard.vue';
 import testCard from './testCard.vue';
+import adminTestCard from './adminTestCard.vue';
+import AdminDialog from './adminDialog.vue';
 
 const currentTab = ref('addCar'); // Default active tab
 
@@ -11,6 +13,13 @@ const currentTab = ref('addCar'); // Default active tab
 const setActiveTab = (tabName) => {
     currentTab.value = tabName;
     console.log('Current tab:', tabName);
+};
+const isDialogOpen = ref(false);
+
+const closeDialog = () => {
+    isDialogOpen.value = false;
+    successMessage.value = '';
+    errorMessage.value = '';
 };
 
 // State for all cars
@@ -301,10 +310,8 @@ const uploadNewImages = async () => {
     }
 };
 
-const successMessage = ref('');
-const errorMessage = ref('');
-const updateSuccessMessage = ref('');
-const updateErrorMessage = ref('');
+const message = ref('');
+
 
 // Submit update car form function
 const submitUpdateCarForm = async () => {
@@ -318,31 +325,24 @@ const submitUpdateCarForm = async () => {
         });
 
         if (response.ok) {
-            updateSuccessMessage.value = `Autó sikeresen frissítve! ID: ${selectedCar.value.id}`;
-            updateErrorMessage.value = '';
-            // Refresh car list
+            message.value = `Autó sikeresen frissítve! ID: ${selectedCar.value.model}`;
+            isDialogOpen.value = true;
             await fetchAllCars();
-            // Return to manage cars tab after 2 seconds
-            setTimeout(() => {
-                currentTab.value = 'manageCars';
-                updateSuccessMessage.value = '';
-            }, 2000);
         } else {
-            updateErrorMessage.value = 'Hiba történt az autó frissítése során.';
-            updateSuccessMessage.value = '';
+            message.value = 'Hiba történt az autó frissítése során.';
+            isDialogOpen.value = true;
         }
     } catch (error) {
         console.error('Error:', error);
-        updateErrorMessage.value = 'Szerver hiba történt.';
-        updateSuccessMessage.value = '';
+        message.value = 'Szerver hiba történt.';
+        isDialogOpen.value = true;
     }
 };
 
 // Cancel update and return to manage cars
 const cancelUpdate = () => {
     currentTab.value = 'manageCars';
-    updateSuccessMessage.value = '';
-    updateErrorMessage.value = '';
+    message.value = '';
 };
 
 // Submit form function
@@ -358,20 +358,74 @@ const submitCarForm = async () => {
 
         if (response.ok) {
             const data = await response.json();
-            successMessage.value = `Autó sikeresen hozzáadva! ID: ${data}`;
+             uploadImage(data);
+            message.value = `Autó sikeresen hozzáadva! ID: ${data}`;
+            isDialogOpen.value = true;
+            await fetchAllCars();
             console.log(data);
-            uploadImage(data);
-            errorMessage.value = '';
             // Reset form
             resetForm();
         } else {
-            errorMessage.value = 'Hiba történt az autó hozzáadása során.';
-            successMessage.value = '';
+            message.value = 'Hiba történt az autó hozzáadása során.';
+            isDialogOpen.value = true;
         }
     } catch (error) {
         console.error('Error:', error);
-        errorMessage.value = 'Szerver hiba történt.';
-        successMessage.value = '';
+        message.value = 'Szerver hiba történt.';
+        isDialogOpen.value = true;
+    }
+};
+
+const deleteCar = async (carId) => {
+    if (!confirm('Biztosan törölni szeretné ezt az autót?')) {
+        return;
+    }
+    console.log('Deleting car with ID:', carId);
+    
+    try {
+        const response = await fetch(`http://localhost:3300/administration/deleteCar/${carId}`, {
+            method: 'DELETE'
+        });
+        
+        if (response.ok) {
+            message.value = 'Autó sikeresen törölve a kínálatból.';
+            setActiveTab('manageCars');
+           isDialogOpen.value = true;
+            // Refresh car list
+            await fetchAllCars();
+        } else {
+            alert('Hiba történt az autó törlése során.');
+        }
+    } catch (error) {
+        console.error('Error deleting car:', error);
+        alert('Szerver hiba történt az autó törlése során.');
+    }
+};
+
+const deleteTestDrive = async (testDriveId) => {
+    if (!confirm('Biztosan törölni szeretné ezt a tesztvezetést?')) {
+        return;
+    }
+    console.log('Deleting test drive with ID:', testDriveId);
+    
+    try {
+        const response = await fetch(`http://localhost:3300/cars/deleteTest/${testDriveId}`, {
+            method: 'DELETE'
+        });
+        
+        if (response.ok) {
+            message.value = 'Tesztvezetés sikeresen törölve.';
+            isDialogOpen.value = true;
+            // Refresh test drives list
+            await fetchAllTestDrives();
+        } else {
+            message.value = 'Hiba történt a tesztvezetés törlése során.';
+            isDialogOpen.value = true;
+        }
+    } catch (error) {
+        console.error('Error deleting test drive:', error);
+        message.value = 'Szerver hiba történt a tesztvezetés törlése során.';
+        isDialogOpen.value = true;
     }
 };
 
@@ -428,6 +482,10 @@ length
 </script>
 
 <template>
+
+<AdminDialog :isOpen="isDialogOpen" :message="message" :onClose="closeDialog" />
+
+
     <div class="adminMenu">
 
    
@@ -478,7 +536,7 @@ length
                     <p>Új autó hozzáadása a kínálathoz</p>
                 </header>
                 <div class="card-container">
-                    <!-- Success/Error Messages -->
+                    <!-- Success/Error Messages
                     <div v-if="successMessage" class="alert alert-success alert-dismissible fade show" role="alert">
                         {{ successMessage }}
                         <button type="button" class="btn-close" @click="successMessage = ''" aria-label="Close"></button>
@@ -486,9 +544,8 @@ length
                     <div v-if="errorMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
                         {{ errorMessage }}
                         <button type="button" class="btn-close" @click="errorMessage = ''" aria-label="Close"></button>
-                    </div>
+                    </div> -->
 
-                    <!-- Car Addition Form -->
                     <form @submit.prevent="submitCarForm">
                         <div class="row">
                             <!-- Gyártási év -->
@@ -765,9 +822,11 @@ length
                     <!-- Test Drives Grid -->
                     <div v-else class="cars-grid">
                         <div v-for="testDrive in allTestDrives" :key="testDrive.id" class="test-drive-card-wrapper">
-                            <testCard
+                            <adminTestCard
                                 :car="testDrive"
                                 :likes="countLikes(testDrive.autoId)"
+                                :testDriveId="testDrive.id"
+                                :removeTestDrive="deleteTestDrive"
                             />
                             <div class="test-drive-info">
                                 <div class="badge bg-primary">
@@ -789,15 +848,7 @@ length
                     <p>Autó adatainak módosítása</p>
                 </header>
                 <div class="card-container">
-                    <!-- Success/Error Messages -->
-                    <div v-if="updateSuccessMessage" class="alert alert-success alert-dismissible fade show" role="alert">
-                        {{ updateSuccessMessage }}
-                        <button type="button" class="btn-close" @click="updateSuccessMessage = ''" aria-label="Close"></button>
-                    </div>
-                    <div v-if="updateErrorMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
-                        {{ updateErrorMessage }}
-                        <button type="button" class="btn-close" @click="updateErrorMessage = ''" aria-label="Close"></button>
-                    </div>
+                   
 
                     <!-- Update Car Form -->
                     <form v-if="selectedCar" @submit.prevent="submitUpdateCarForm">
@@ -966,11 +1017,14 @@ length
 
                         <!-- Submit and Cancel Buttons -->
                         <div class="d-flex gap-2 mt-3 mb-4">
-                            <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-save me-2"></i>Módosítások mentése
+                            <button type="submit" class="btn btn-success mngBtn">
+                                Módosítások mentése
                             </button>
-                            <button type="button" class="btn btn-secondary" @click="cancelUpdate">
-                                <i class="fas fa-times me-2"></i>Mégse
+                            <button type="button" @click="deleteCar(selectedCar.id)" class="btn btn-danger mngBtn">
+                               Levétel a kínálatból
+                            </button>
+                            <button type="button" class="btn btn-secondary mngBtn" @click="cancelUpdate">
+                                Vissza a kínálat kezeléséhez
                             </button>
                         </div>
 
@@ -1341,6 +1395,10 @@ header p {
     opacity: 0.8;
 }
 
+.mngBtn{
+    padding: 10px 20px;
+}
+
 
 @media (max-width: 1024px) {
     .sidebar {
@@ -1397,7 +1455,8 @@ header p {
     display: flex;
     flex-wrap: wrap;
     gap: 2px;
-    margin-top: 12px;
+    /*margin-top: 12px;*/
+    margin: 8px 35px 0 0;
     justify-content: center;
 }
 

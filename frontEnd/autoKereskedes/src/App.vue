@@ -9,17 +9,22 @@ const store = useController();
 
 
 onMounted(()=>{
-  document.title = "Auto Kereskedes"
+  
   const isLogged = localStorage.getItem("isLogged")
-  const userId = localStorage.getItem("token")
-  const accessLevel = localStorage.getItem("accessLevel")
+  //const userId = localStorage.getItem("token")
+  const token = localStorage.getItem("token")
+  //const accessLevel = localStorage.getItem("accessLevel")
   if(isLogged){
     store.logIn()
-    store.id = Number(JSON.parse(userId))
-    store.accessLevel = accessLevel
-    console.log(store.id)
+  const tokenData = JSON.parse(token)
+    
+    // ✅ Then access the properties
+    store.id = Number(tokenData.id)
+    store.accessLevel = Number(tokenData.accessLevel)
+    
   }
-
+console.log(store.id)
+console.log(store.accessLevel)
 })
 
 </script>

@@ -1,47 +1,54 @@
 <script setup>
-import { defineProps, defineEmits } from 'vue';
+import { defineProps } from 'vue';
 
 const props = defineProps({
-car: {
+  car: {
     type: Object,
     required: true
+  },
+  testDriveId: {
+    type: Number,
+    required: false
   },
   likes: {
     type: Function,
     required: false
   },
+  removeTestDrive: {
+    type: Function,
+    required: false
+  }
 });
-const emit = defineEmits(['sendCarId']);
-const emitUpdateCar = () => {
-    emit('sendCarId', props.car.id);
-};
 
+const delTestDrive = () => {
+    props.removeTestDrive(props.testDriveId);
+}
 
-
-
+/*
+Nested data structure example: Autok.models, Autok.Images[0].path
+*/
 </script>
 
 
 <template>
     <div class="card">
  <div class="tilt">
-  <div class="img"><img :src="'http://localhost:3300/images/' + car.Images[0]?.path" alt="Premium Laptop"></div>
+  <div class="img"><img :src="'http://localhost:3300/images/' + car.Autok.Images[0]?.path" alt="Premium Laptop"></div>
  </div>
  <div class="info">
-  <div class="cat">{{ car.tipus }}</div>
-  <h2 class="title">{{ car.model }}</h2>
+  <div class="cat">{{ car.Autok.tipus }}</div>
+  <h2 class="title">{{ car.Autok.model }}</h2>
   <div class="feats">
-   <span class="feat">Fő: {{ car.ferohely }}</span>
-   <span class="feat">Üzemanyag: {{ car.uzemAnyagTipus }}</span>
-   <span class="feat">Váltó: {{ car.sebessegValtoRendszer }}</span>
+   <span class="feat">Fő: {{ car.Autok.ferohely }}</span>
+   <span class="feat">Üzemanyag: {{ car.Autok.uzemAnyagTipus }}</span>
+   <span class="feat">Váltó: {{ car.Autok.sebessegValtoRendszer }}</span>
   </div>
   <div class="bottom">
    <div class="price">
-
-    <span class="new">{{ car.ar }} Ft</span>
+    <span class="new">{{ car.Autok.ar }} Ft</span>
    </div>
-   <button class="btn" @click="emitUpdateCar">
-    <span>Jármű kezelése</span>
+   <button @click="delTestDrive" class="btn">
+    <span>Lebonyolítva</span>
     <i class="ri-arrow-right-line"></i>
    </button>
   </div>
@@ -60,7 +67,7 @@ const emitUpdateCar = () => {
 
 .card
 {
-    width:240px;
+    width:200px;
     height: 400px;
     background:#fff;
     border-radius:15px;
@@ -69,7 +76,7 @@ const emitUpdateCar = () => {
     overflow:hidden;
     position:relative;
     cursor:pointer;
-    background-color:#DBD7D7;
+    background-color: #B6BBDE;
 }
 .card:hover{
     transform:translateY(-5px);
@@ -140,8 +147,8 @@ const emitUpdateCar = () => {
     margin-bottom:2px
 }
 .new{
-     font-size:13px;
-    font-weight:600;
+    font-size:13px;
+    font-weight:550;
     color:#18181B
 }
 .btn{
@@ -151,13 +158,13 @@ const emitUpdateCar = () => {
     border-radius:10px;
     padding:8px 5px;
     font-size:13px;
-    font-weight:470;
+    font-weight:600;
     cursor:pointer;
     display:flex;
     align-items:center;
     gap:6px;
     transition:.3s;
-    box-shadow:0 3px 10px rgba(0,0,0,.1);
+    box-shadow:0 3px 10px rgba(0,0,0,.1)
 }
 .btn:hover{
     background:linear-gradient(45deg,#27272A,#3F3F46);

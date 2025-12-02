@@ -40,9 +40,7 @@ export const useController = defineStore('control', {
     },
     closeLog(){
       this.logModal = false
-    },
-
-   
+    }, 
   
   },
   

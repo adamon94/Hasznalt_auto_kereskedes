@@ -9,7 +9,7 @@ const props = defineProps({
   likes: {
     type: Function,
     required: false
-  }
+  },
 });
 
 const setContents = () => {
@@ -31,14 +31,14 @@ Nested data structure example: Autok.models, Autok.Images[0].path
   <div class="cat">{{ car.Autok.tipus }}</div>
   <h2 class="title">{{ car.Autok.model }}</h2>
   <div class="feats">
-   <span class="feat">4K Display</span>
-   <span class="feat">16-Hour Battery</span>
-   <span class="feat">Thunderbolt 4</span>
+   <span class="feat">Fő: {{ car.Autok.ferohely }}</span>
+   <span class="feat">Üzemanyag: {{ car.Autok.uzemAnyagTipus }}</span>
+   <span class="feat">Váltó: {{ car.Autok.sebessegValtoRendszer }}</span>
   </div>
   <div class="bottom">
    <div class="price">
-    
-    <span class="new">$1,999</span>
+
+    <span class="new">{{ car.Autok.ar }} Ft</span>
    </div>
    <button @click="setContents()" class="btn">
     <span>Az adatlapra</span>
@@ -61,7 +61,7 @@ Nested data structure example: Autok.models, Autok.Images[0].path
 .card
 {
     width:200px;
-    /*height: 320px;*/
+    height: 400px;
     background:#fff;
     border-radius:15px;
     box-shadow:0 5px 20px rgba(0,0,0,.1);

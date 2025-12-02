@@ -117,7 +117,76 @@ router.delete("/delImage/:imgId", async (req, res) => {
    }
 });
 
-router.get("/kedvencek", async (req,res) => {
+//autó frissítése
+router.put("/updateCar/:carId", async (req, res) => {
+   const carId = Number(req.params.carId);
+   const { gyartasEve, model, marka, tipus, ar, tomeg, meghajtas, hengerUrTartalom, sebessegValtoRendszer,
+      ferohely, uzemAnyagTipus, fogyasztas, megtettKm, tulajdonosokSzama,
+      serulesek, utolsoMuszakiVizsga, felujitasok } = req.body;
+
+   try {
+      const data = await p.autok.update({
+         where: { id: carId },
+         data: {
+            gyartasEve: Number(gyartasEve),
+            model,
+            marka,
+            tipus,
+            ar: Number(ar),
+            tomeg: Number(tomeg),
+            meghajtas,
+            hengerUrTartalom: Number(hengerUrTartalom),
+            sebessegValtoRendszer,
+            ferohely: Number(ferohely),
+            uzemAnyagTipus,
+            fogyasztas: Number(fogyasztas),
+            megtettKm: Number(megtettKm),
+            tulajdonosokSzama: Number(tulajdonosokSzama),
+            serulesek,
+            utolsoMuszakiVizsga: new Date(utolsoMuszakiVizsga),
+            felujitasok,
+         }
+      });
+      res.status(200).json(data);
+   } catch (err) {
+      console.log(err);
+      res.status(400).json({ uzenet: "Hiba történt!" })
+   }
+});
+
+//autó törlése
+router.delete("/deleteCar/:carId", async (req, res) => {
+   const carId = Number(req.params.carId);
+   try {
+
+       const images = await p.images.findMany({
+            where: { carId: carId }
+         });
+         for (const image of images) {
+            const filePath = path.join(process.cwd(), 'images', image.path);
+            if (fs.existsSync(filePath)) {
+               fs.unlinkSync(filePath);
+               await p.images.delete({
+                  where: { image_id: image.image_id }
+               });
+               console.log('File deleted:', image.path);
+            } else {
+               console.warn('File not found on disk:', image.path);
+            }
+         }
+
+      const data = await p.autok.delete({
+         where: { id: carId }
+      });
+      
+      res.status(200).json(data);
+   } catch (err) {
+      console.log(err);
+      res.status(400).json({ uzenet: "Hiba történt!" })
+   }
+});
+
+router.get("/kedvencek", async (req, res) => {
    const data = await p.kedvencek.findMany({
       include:{
          Autok:true

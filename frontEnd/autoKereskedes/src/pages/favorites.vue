@@ -31,6 +31,26 @@ const countLikes = (carId) => {
     return count;
 };
 
+/*const removeFromFavorites = async (favId) => {
+    try {
+        const res = await fetch(`http://localhost:3300/cars/removeFav/${favId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        if (res.status === 200) {
+            console.log('Sikeres törlés a kedvencek közül');
+           // getFavs();
+            
+        } else {
+            console.error('Hiba történt a törlés során');
+        }
+    } catch (err) {
+        console.error(err);
+    }
+};*/
+
 onMounted(()=>{
    getMyFavs();
    getAllFavs();
@@ -45,7 +65,12 @@ const store = useController();
     <div class="favContainer">
         <h1 class="pageTitle mt-4">Általam kedvelt autók</h1>
         <section class="favSection">
-            <FavCard v-for="f in myFavs" :key="f.id" :car="f" :likes="countLikes(f.autoId)" />
+            <FavCard v-for="f in myFavs" :key="f.id" 
+            :car="f" 
+            :likes="countLikes(f.autoId)"
+            :favId="f.id"
+            :refresh-favs="getMyFavs"
+            />
         </section>
     </div>
 </div>

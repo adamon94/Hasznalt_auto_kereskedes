@@ -142,7 +142,7 @@ router.get("/allFavs",async(req,res)=>{
     }
 })
 
-router.delete("/removeFav/:userId/:autotId",async(req,res)=>{
+/*router.delete("/removeFav/:userId/:autotId",async(req,res)=>{
     const userId = Number(req.params.userId)
     const autoId = Number(req.params.autotId)
 
@@ -160,7 +160,23 @@ router.delete("/removeFav/:userId/:autotId",async(req,res)=>{
         console.error(err)
         res.status(400).json({message: "hiba"})
     }
-})
+})*/
+
+//kedvenc autó törlés
+router.delete("/removeFav/:id", async (req, res) => {
+   const favId = Number(req.params.id);
+   try {
+       const data = await p.kedvencek.delete({
+           where: {
+               id: favId
+           }
+       })
+       res.json(data).status(200)
+   } catch (err) {
+       console.error(err)
+       res.status(400).json({ message: "hiba" })
+   }
+});
 
 /*1 felhasználó összes kedvence lekérdezése*/
 router.get("/userFavorites/:id",async(req,res)=>{
@@ -231,6 +247,25 @@ router.get("/geTest/:id",async (req,res) => {
         })
         res.json(data).status(200)
 })
+
+// tesztvezetés törlése
+
+
+router.delete("/deleteTest/:testId", async (req, res) => {
+   const testId = Number(req.params.testId);
+
+   try {
+       const data = await p.tesztVezetesek.delete({
+           where: {
+               id: testId
+           }
+       })
+       res.json(data).status(200)
+   } catch (err) {
+       console.error(err)
+       res.status(400).json({ message: "hiba" })
+   }
+});
 
 /*Kívánt autó felvétele*/
 

@@ -1,6 +1,7 @@
 <script setup>
 import { defineProps } from 'vue';
-
+import { useRouter } from 'vue-router';
+const router = useRouter();
 const props = defineProps({
   car: {
     type: Object,
@@ -9,8 +10,44 @@ const props = defineProps({
   likes: {
     type: Function,
     required: false
+  },
+  favId: {
+    type: Number,
+    required: false
+  },
+
+  refreshFavs: {
+    type: Function,
+    required: false
   }
 });
+
+const getMyFavs = () => {
+    if (props.refreshFavs) {
+        props.refreshFavs();
+    }
+};
+
+const removeFromFavorites = async (favId) => {
+    try {
+        const res = await fetch(`http://localhost:3300/cars/removeFav/${favId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        if (res.status === 200) {
+            console.log('Sikeres törlés a kedvencek közül');
+            getMyFavs();
+            
+        } else {
+            console.error('Hiba történt a törlés során');
+        }
+    } catch (err) {
+        console.error(err);
+    }
+};
+
 
 /*
 Nested data structure example: Autok.models, Autok.Images[0].path
@@ -28,16 +65,15 @@ Nested data structure example: Autok.models, Autok.Images[0].path
   <div class="cat">{{ car.Autok.tipus }}</div>
   <h2 class="title">{{ car.Autok.model }}</h2>
   <div class="feats">
-   <span class="feat">4K Display</span>
-   <span class="feat">16-Hour Battery</span>
-   <span class="feat">Thunderbolt 4</span>
+   <span class="feat">Fő: {{ car.Autok.ferohely }}</span>
+   <span class="feat">Üzemanyag: {{ car.Autok.uzemAnyagTipus }}</span>
+   <span class="feat">Váltó: {{ car.Autok.sebessegValtoRendszer }}</span>
   </div>
   <div class="bottom">
    <div class="price">
-    
-    <span class="new">$1,999</span>
+    <span class="new">{{ car.Autok.ar }} Ft</span>
    </div>
-   <button class="btn">
+   <button @click="router.push({ name: 'carDetails', params: { id: car.Autok.id } })" class="btn">
     <span>Az adatlapra</span>
     <i class="ri-arrow-right-line"></i>
    </button>
@@ -48,7 +84,7 @@ Nested data structure example: Autok.models, Autok.Images[0].path
     <i class="ri-hearts-fill"></i>
     <span class="rcount">{{ likes }} Kedvelés</span>
    </div>
-   <button>Törlöm</button>
+   <button class="btn" @click="removeFromFavorites(props.favId)">Törlöm</button>
   </div>
  </div>
 </div>
@@ -58,7 +94,7 @@ Nested data structure example: Autok.models, Autok.Images[0].path
 
 .card
 {
-    width:200px;
+    width:220px;
     /*height: 320px;*/
     background:#fff;
     border-radius:15px;
@@ -85,9 +121,9 @@ Nested data structure example: Autok.models, Autok.Images[0].path
     border-radius:10px;
     box-shadow:0 3px 10px rgba(0,0,0,.2);
     z-index:10}
-.tilt{
-   /* overflow:hidden*/
-}
+ /* .tilt{
+  overflow:hidden
+}*/
 /*.img{
     height:200px;
     overflow:hidden
