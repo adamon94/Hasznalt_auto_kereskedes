@@ -7,6 +7,7 @@ import CarDataHeader from '../components/carDataHeader.vue';
 import CarDataFooter from '../components/carDataFooter.vue';
 import { useController } from '../stores/UIcontrol.js';
 import ReverseTestDriveModal from '../components/reverseTestDriveModal.vue';
+import adminDialog from '../components/adminDialog.vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -104,7 +105,15 @@ if (store.isLogged){
 });
 
 const addToFavorites = () => {
-  addFav();
+  if(store.isLogged){
+     addFav();
+  }
+  else{
+    dialogMessage.value = 'A kedvencekhez való hozzáadás előtt kérjük, jelentkezzen be vagy regisztráljon!';
+    dialogOpen.value = true;
+    return;
+  }
+ 
   console.log('Added to favorites:', car.value?.model);
 };
 
@@ -118,6 +127,10 @@ const bookTestDrive = () => {
   console.log('Booking test drive for:', car.value?.model);
   if(store.isLogged){
     store.testDriveModal = true
+  }
+  else{
+    dialogMessage.value = 'A tesztvezetés foglaláshoz kérjük, jelentkezzen be vagy regisztráljon!';
+    dialogOpen.value = true;
   }
 };
 
@@ -155,9 +168,19 @@ const element = document.getElementById('scroll-to-header');
     car.value = nextCar;
   }
 };
+
+const dialogOpen = ref(false);
+const dialogMessage = ref('');
+const closeDialog = () => {
+  dialogOpen.value = false;
+};
 </script>
 
 <template>
+  <adminDialog :isOpen="dialogOpen"
+                :message="dialogMessage"
+                :onClose="closeDialog" />
+
   <ReverseTestDriveModal :carId="currentCarId"/>
   <div class="car-details-container">
     <div class="car-details-wrapper" v-if="car">

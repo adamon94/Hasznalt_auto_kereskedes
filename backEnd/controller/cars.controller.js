@@ -142,7 +142,7 @@ router.get("/allFavs",async(req,res)=>{
     }
 })
 
-/*router.delete("/removeFav/:userId/:autotId",async(req,res)=>{
+router.delete("/removeFav/:userId/:autotId",async(req,res)=>{
     const userId = Number(req.params.userId)
     const autoId = Number(req.params.autotId)
 
@@ -160,7 +160,7 @@ router.get("/allFavs",async(req,res)=>{
         console.error(err)
         res.status(400).json({message: "hiba"})
     }
-})*/
+})
 
 //kedvenc autó törlés
 router.delete("/removeFav/:id", async (req, res) => {
