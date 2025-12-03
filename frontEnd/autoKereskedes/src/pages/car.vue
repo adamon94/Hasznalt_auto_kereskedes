@@ -200,6 +200,10 @@ const closeDialog = () => {
         :onGoToPrevious="goToPreviousCar"
         :onGoToNext="goToNextCar"
       />
+
+      <!-- Képek megjelenítése -->
+      
+
     </div>
 
     <!-- Loading State -->
@@ -207,6 +211,16 @@ const closeDialog = () => {
       <i class="ri-loader-4-line loading-icon"></i>
       <p>Adatok betöltése...</p>
     </div>
+  </div>
+
+  <div class="imgSection" v-if="car">
+      <div class="car-images">
+        <h2>Képek a járműről:</h2>
+        <div class="image-container">
+          <img v-for="image in car.Images" :key="image.id" :src="'http://localhost:3300/images/' + image.path" :alt="car.model" />
+        </div>
+      </div>
+
   </div>
 </template>
 
@@ -218,8 +232,38 @@ const closeDialog = () => {
   display: flex;
   justify-content: center;
   align-items: flex-start;
+  padding-bottom: 3rem;
 }
-
+.imgSection{
+  background-color: #DDEDE9;
+  padding-top: 1rem;
+  padding-bottom: 3rem;
+}
+.car-images {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+.image-container {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  width: 80%;
+  margin-left: 3.2rem;
+}
+.car-images h2 {
+  font-size: 2rem;
+  color: #575C5B;
+  margin-bottom: 3rem;
+}
+.car-images img {
+  height: 200px;
+  width: 300px;
+  border-radius: 1rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
 .car-details-wrapper {
   max-width: 1100px;
   width: 100%;

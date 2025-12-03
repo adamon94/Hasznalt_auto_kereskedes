@@ -89,7 +89,7 @@ const addTestDrive = async()=>{
         bottom: 0;
         right: 0;
        width: 40%;
-       height: 55%;
+       height: 60%;
        background-color: #B0AAB5;
        border-radius: 5px;
        border: solid 2px black;
@@ -100,7 +100,7 @@ const addTestDrive = async()=>{
         align-items: center;
         justify-content: center;
         height: 100%;
-        gap: 1rem;
+        gap: 0.6rem;
         position: relative; /* Added for exit button positioning */
     }
 

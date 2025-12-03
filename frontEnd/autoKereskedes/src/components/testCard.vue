@@ -1,5 +1,5 @@
 <script setup>
-import { defineProps } from 'vue';
+import { defineProps, ref } from 'vue';
 
 const props = defineProps({
   car: {
@@ -10,15 +10,10 @@ const props = defineProps({
     type: Function,
     required: false
   },
+
 });
 
-const setContents = () => {
-  props.onEdit();
-};
 
-/*
-Nested data structure example: Autok.models, Autok.Images[0].path
-*/
 </script>
 
 
@@ -40,7 +35,7 @@ Nested data structure example: Autok.models, Autok.Images[0].path
 
     <span class="new">{{ car.Autok.ar }} Ft</span>
    </div>
-   <button @click="setContents()" class="btn">
+   <button class="btn">
     <span>Az adatlapra</span>
     <i class="ri-arrow-right-line"></i>
    </button>

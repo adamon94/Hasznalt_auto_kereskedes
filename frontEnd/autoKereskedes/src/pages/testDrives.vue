@@ -36,6 +36,27 @@ const getMyTestDrives = async () => {
     }catch(err){console.error(err)}
 }
 
+const removeTestDrive = async(id) => {
+    try {
+        const res = await fetch(`http://localhost:3300/cars/deleteTest/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        if (res.status === 200) {
+            console.log('Sikeres törlés a teszt vezetésből');
+            getMyTestDrives();
+            // Optionally, you can emit an event to notify the parent component to refresh the list
+        } else {
+            console.error('Hiba történt a törlés során');
+        }
+    } catch (err) {
+        console.error(err);
+    }
+};
+
+
 onMounted(()=>{
     getMyTestDrives();
     }
@@ -50,15 +71,18 @@ onMounted(()=>{
 </div>
 
 <div v-if="myTestDrives.length === 0">
-    <p>Nincsenek teszt vezetéseid.</p>
+    <p class="noTestDrives">Nincsenek teszt vezetéseid.</p>
 </div>
 <div v-else>
     <ul class="testContainer">
         <li class="testItem"
          v-for="testDrive in myTestDrives" :key="testDrive.id">
-            <TestCard class="testCard" :car="testDrive" :likes="countLikes(testDrive.Autok.id)" />
+            <TestCard class="testCard" 
+            :car="testDrive" 
+            :likes="countLikes(testDrive.Autok.id)"
+            :refresh-drives="getMyTestDrives" />
            <div class="testDate"><span><i class="ri-calendar-check-fill"></i></span> {{ testDrive.datum.substring(0, 10) || 'N/A' }}</div>
-           <button class="btn btn-danger"><span><i class="ri-calendar-close-fill"></i></span>Lemondás</button>
+           <button @click="removeTestDrive(testDrive.id)" class="btn btn-danger"><span><i class="ri-calendar-close-fill"></i></span>Lemondás</button>
         </li>
     </ul>
 </div>
@@ -80,6 +104,13 @@ onMounted(()=>{
     border-bottom: solid 4px #C8BCCF;
     width: 40%;
     padding: 30px 20px 15px 20px;
+}
+.noTestDrives{
+    text-align: center;
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #555555;
+    margin-right: 85px;
 }
 .testContainer{
     display: flex;

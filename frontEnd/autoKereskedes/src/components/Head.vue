@@ -6,7 +6,9 @@ import NavBar from './navBar.vue';
 <template>
 
 <header class="head">
-
+<router-link to="/" >
+<img class="logo" src="../assets/logo.png" alt="">
+</router-link>
 <div class="mould"></div>
 
 <NavBar></NavBar>
@@ -26,6 +28,15 @@ import NavBar from './navBar.vue';
     height: 130px;
     /*background-color:D0D8D9 ;*/
     background-color: #D0D8D9;
+}
+
+.logo{
+    height: 110px;
+    width: 270px;
+    position: absolute;
+    top: 8px;
+    left: 18px;
+    z-index: 10;
 }
 
 .mould{
