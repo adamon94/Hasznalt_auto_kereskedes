@@ -141,6 +141,13 @@ const goToPreviousCar = () => {
   const prevCar = allCars.value[prevIndex];
   
   if (prevCar) {
+    const element = document.getElementById('scroll-to-header');
+  if (element) {
+    element.scrollIntoView({ 
+      behavior: 'smooth',
+      block: 'start'
+    })
+  }
     router.push(`/cars/${prevCar.id}`);
     // Update current data
     currentCarIndex.value = prevIndex;

@@ -118,13 +118,15 @@ const handleImageUpload = (event) => {
     files.forEach(file => {
         // Validate file type
         if (!file.type.startsWith('image/')) {
-            alert(`${file.name} nem kép fájl!`);
+           message.value = `${file.name} nem kép fájl!`;
+           isDialogOpen.value = true;
             return;
         }
         
         // Validate file size (5MB max)
         if (file.size > 5 * 1024 * 1024) {
-            alert(`${file.name} túl nagy! Maximum 5MB engedélyezett.`);
+            message.value = `${file.name} túl nagy! Maximum 5MB engedélyezett.`;
+            isDialogOpen.value = true;
             return;
         }
         
@@ -209,20 +211,23 @@ const deleteCarImage = async (imageId) => {
             if (imageIndex > -1) {
                 selectedCar.value.Images.splice(imageIndex, 1);
             }
-            alert('Kép sikeresen törölve!');
+            message.value = 'Kép sikeresen törölve!';
+            isDialogOpen.value = true;
         } else {
-            alert('Hiba történt a kép törlése során.');
+            message.value = 'Hiba történt a kép törlése során.';
+            isDialogOpen.value = true;
         }
     } catch (error) {
         console.error('Error deleting image:', error);
-        alert('Szerver hiba történt a kép törlése során.');
+        message.value = 'Szerver hiba történt a kép törlése során.';
+        isDialogOpen.value = true;
     }
 };
 
 
 const uploadImage = async (id) => {
     if (selectedImages.value.length === 0) {
-        alert('Nincs kiválasztott kép a feltöltéshez!');
+        message.value = 'Nincs kiválasztott kép a feltöltéshez!';
         return;
     }
     
@@ -240,25 +245,25 @@ const uploadImage = async (id) => {
         });
         
         if (response.ok) {
-            const result = await response.json();
-            alert(`Sikeresen feltöltve ${selectedImages.value.length} kép!`);
-            
-            // Clear previews and selected images
+            //const result = await response.json();
             selectedImages.value = [];
             imagePreviews.value = [];
         } else {
             const error = await response.json();
-            alert(`Hiba történt a képek feltöltése során: ${error.message || 'Ismeretlen hiba'}`);
+            message.value = `Hiba történt a képek feltöltése során: ${error.message || 'Ismeretlen hiba'}`;
+            isDialogOpen.value = true;
         }
     } catch (error) {
         console.error('Error uploading images:', error);
-        alert('Szerver hiba történt a képek feltöltése során.');
+        message.value = 'Szerver hiba történt a képek feltöltése során.';
+        isDialogOpen.value = true;
     }
 };
 // Upload new images to existing car
 const uploadNewImages = async () => {
     if (updateSelectedImages.value.length === 0) {
-        alert('Nincs kiválasztott kép a feltöltéshez!');
+        message.value = 'Nincs kiválasztott kép a feltöltéshez!';
+        isDialogOpen.value = true;
         return;
     }
     
@@ -285,8 +290,9 @@ const uploadNewImages = async () => {
         
         if (response.ok) {
             const result = await response.json();
-            alert(`Sikeresen feltöltve ${updateSelectedImages.value.length} kép!`);
-            
+            message.value = `Sikeresen feltöltve ${updateSelectedImages.value.length} kép!`;
+            isDialogOpen.value = true;
+
             // Clear previews and selected images
             updateSelectedImages.value = [];
             updateImagePreviews.value = [];
@@ -302,11 +308,13 @@ const uploadNewImages = async () => {
             await fetchAllCars();
         } else {
             const error = await response.json();
-            alert(`Hiba történt a képek feltöltése során: ${error.message || 'Ismeretlen hiba'}`);
+            message.value = `Hiba történt a képek feltöltése során: ${error.message || 'Ismeretlen hiba'}`;
+            isDialogOpen.value = true;
         }
     } catch (error) {
         console.error('Error uploading images:', error);
-        alert('Szerver hiba történt a képek feltöltése során.');
+        message.value = 'Szerver hiba történt a képek feltöltése során.';
+        isDialogOpen.value = true;
     }
 };
 
@@ -325,7 +333,7 @@ const submitUpdateCarForm = async () => {
         });
 
         if (response.ok) {
-            message.value = `Autó sikeresen frissítve! ID: ${selectedCar.value.model}`;
+            message.value = `Autó sikeresen frissítve! Jármű: ${selectedCar.value.model}`;
             isDialogOpen.value = true;
             await fetchAllCars();
         } else {
@@ -348,6 +356,11 @@ const cancelUpdate = () => {
 // Submit form function
 const submitCarForm = async () => {
     try {
+        if(selectedImages.value.length === 0){
+            message.value = 'Kérem válasszon ki legalább egy képet az autóhoz!';
+            isDialogOpen.value = true;
+            return;
+        }
         const response = await fetch('http://localhost:3300/administration/addCar', {
             method: 'POST',
             headers: {
@@ -394,11 +407,13 @@ const deleteCar = async (carId) => {
             // Refresh car list
             await fetchAllCars();
         } else {
-            alert('Hiba történt az autó törlése során.');
+            message.value = 'Hiba történt az autó törlése során.';
+            isDialogOpen.value = true;
         }
     } catch (error) {
         console.error('Error deleting car:', error);
-        alert('Szerver hiba történt az autó törlése során.');
+        message.value = 'Szerver hiba történt az autó törlése során.';
+        isDialogOpen.value = true;
     }
 };
 
@@ -578,12 +593,11 @@ length
                                     <label for="tipus" class="form-label">Típus</label>
                                     <select class="form-select form-control" id="tipus" v-model="carForm.tipus" required>
                                         <option value="">Válasszon típust</option>
-                                        <option value="Sedan">Sedan</option>
-                                        <option value="SUV">SUV</option>
-                                        <option value="Hatchback">Hatchback</option>
-                                        <option value="Kombi">Kombi</option>
-                                        <option value="Coupe">Coupe</option>
-                                        <option value="Kabrió">Kabrió</option>
+                                        <option value="Sedan">Városi autó</option>
+                                        <option value="SUV">Luxus autó</option>
+                                        <option value="Hatchback">Sport autó</option>
+                                        <option value="Kombi">Terepjáró</option>
+                                    
                                     </select>
                                 </div>
                             </div>
@@ -599,8 +613,8 @@ length
                             <!-- Tömeg -->
                             <div class="col-md-6 mb-3">
                                 <div class="form-group">
-                                    <label for="tomeg" class="form-label">Tömeg (kg)</label>
-                                    <input type="number" class="form-control" id="tomeg" v-model.number="carForm.tomeg" required>
+                                    <label for="tomeg" class="form-label">Tömeg (t)</label>
+                                    <input type="decimal" class="form-control" id="tomeg" v-model.number="carForm.tomeg" required>
                                 </div>
                             </div>
 
@@ -641,7 +655,7 @@ length
                             <!-- Férőhely -->
                             <div class="col-md-6 mb-3">
                                 <div class="form-group">
-                                    <label for="ferohely" class="form-label">Férőhely</label>
+                                    <label for="ferohely" class="form-label">Férőhely (fő)</label>
                                     <input type="number" class="form-control" id="ferohely" v-model.number="carForm.ferohely" required>
                                 </div>
                             </div>
@@ -902,7 +916,7 @@ length
                             <!-- Tömeg -->
                             <div class="col-md-6 mb-3">
                                 <div class="form-group">
-                                    <label for="update_tomeg" class="form-label">Tömeg (kg)</label>
+                                    <label for="update_tomeg" class="form-label">Tömeg (t)</label>
                                     <input type="decimal" class="form-control" id="update_tomeg" v-model.number="selectedCar.tomeg" required>
                                 </div>
                             </div>
@@ -944,7 +958,7 @@ length
                             <!-- Férőhely -->
                             <div class="col-md-6 mb-3">
                                 <div class="form-group">
-                                    <label for="update_ferohely" class="form-label">Férőhely</label>
+                                    <label for="update_ferohely" class="form-label">Férőhely (fő)</label>
                                     <input type="number" class="form-control" id="update_ferohely" v-model.number="selectedCar.ferohely" required>
                                 </div>
                             </div>
