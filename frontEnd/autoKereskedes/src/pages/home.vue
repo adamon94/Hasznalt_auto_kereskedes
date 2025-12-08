@@ -145,7 +145,7 @@ var swiper = new Swiper(".review-slider", {
 
 <section class="home" id="home">
 
-    <h3 data-speed="-2" class="home-parallax">find your car</h3>
+    <h3 data-speed="-2" class="home-parallax">Találja meg álmai autóját!</h3>
 
     <img data-speed="5" class="home-parallax" src="../assets/732.jpg" alt="">
 
@@ -169,7 +169,7 @@ var swiper = new Swiper(".review-slider", {
             <i class="fas fa-car"></i>
             <div class="content">
                 <h3>4770+</h3>
-                <p>cars sold</p>
+                <p>eladott autó</p>
             </div>
         </div>
     
@@ -177,7 +177,7 @@ var swiper = new Swiper(".review-slider", {
             <i class="fas fa-users"></i>
             <div class="content">
                 <h3>320+</h3>
-                <p>happy clients</p>
+                <p>elégedett ügyfél</p>
             </div>
         </div>
     
@@ -185,7 +185,7 @@ var swiper = new Swiper(".review-slider", {
             <i class="fas fa-car"></i>
             <div class="content">
                 <h3>1500+</h3>
-                <p>news cars</p>
+                <p>autós hír</p>
             </div>
         </div>
     
@@ -205,12 +205,12 @@ var swiper = new Swiper(".review-slider", {
                 <img src="../assets/2000_Suzuki_Swift_1.3_GLX_5-door_(9754701452).jpg" alt="">
                 <div class="content">
                     <h3>new model</h3>
-                    <div class="price"> <span>price : </span> $62,000/- </div>
+                    <div class="price"> <span>ára : </span> 12.000.000 HUF/- </div>
                     <p>
                         new
                         <span class="fas fa-circle"></span> 2021
-                        <span class="fas fa-circle"></span> automatic
-                        <span class="fas fa-circle"></span> petrol
+                        <span class="fas fa-circle"></span> automata
+                        <span class="fas fa-circle"></span> benzin
                         <span class="fas fa-circle"></span> 183mph
                     </p>
                     <a href="#" class="btn">check out</a>
