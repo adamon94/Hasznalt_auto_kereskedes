@@ -143,13 +143,65 @@ var swiper = new Swiper(".review-slider", {
  
 <div class="nyitoOldal">
 
+<<<<<<< Updated upstream
 <section class="home" id="home">
 
     <h3 data-speed="-2" class="home-parallax">Találja meg álmai autóját!</h3>
+=======
+<header class="header">
+
+    <section class="flex">
+
+        <div id="menu-btn" class="fas fa-bars"></div>
+
+        <a href="#" class="logo"> <span>max</span>wheels </a>
+
+        <nav class="navbar">
+            <a href="#home">home</a>
+            <a href="#vehicles">járművek</a>
+            <a href="#services">szolgáltatások</a>
+            <a href="#featured">magunkról</a>
+            <a href="#reviews">értékelés</a>
+            <a href="#contact">kapcsolat</a>
+        </nav>
+
+        <div id="login-btn">
+            <button class="btn">login</button>
+            <i class="far fa-user"></i>
+        </div>
+
+    </section>
+
+</header> 
+    
+<div class="login-form-container">
+
+    <span id="close-login-form" class="fas fa-times"></span>
+
+    <form action="">
+        <h3>belépés</h3>
+        <input type="email" placeholder="email" class="box">
+        <input type="password" placeholder="password" class="box">
+        <p> elfelejtett jelszó? <a href="#">katt ide</a> </p>
+        <input type="submit" value="login" class="btn">
+        <p>vagy beléphetsz így is:</p>
+        <div class="buttons">
+            <a href="#" class="btn"> google </a>
+            <a href="#" class="btn"> facebook </a>
+        </div>
+        <p> nincs még fiókod? <a href="#">készítsd el</a> </p>
+    </form>
+
+</div>
+
+<section class="home" id="home">
+
+    <h3 data-speed="-2" class="home-parallax">nézz szét az autóink között</h3>
+>>>>>>> Stashed changes
 
     <img data-speed="5" class="home-parallax" src="../assets/732.jpg" alt="">
 
-    <a data-speed="7" href="#" class="btn home-parallax">explore cars</a>
+    <a data-speed="7" href="#" class="btn home-parallax">fedezd fel járműveinket</a>
 
 </section>
 
@@ -185,7 +237,11 @@ var swiper = new Swiper(".review-slider", {
             <i class="fas fa-car"></i>
             <div class="content">
                 <h3>1500+</h3>
+<<<<<<< Updated upstream
                 <p>autós hír</p>
+=======
+                <p>újdonság</p>
+>>>>>>> Stashed changes
             </div>
         </div>
     
@@ -195,7 +251,7 @@ var swiper = new Swiper(".review-slider", {
 
 <section class="vehicles" id="vehicles">
 
-    <h1 class="heading"> popular <span>vehicles</span> </h1>
+    <h1 class="heading"> népszerű <span>járművek</span> </h1>
 
     <div class="swiper vehicles-slider">
 
@@ -307,50 +363,50 @@ var swiper = new Swiper(".review-slider", {
 
 <section class="services" id="services">
 
-    <h1 class="heading"> our <span>services</span> </h1>
+    <h1 class="heading"> népszerű <span>szolgáltatásaink</span> </h1>
 
     <div class="box-container">
 
         <div class="box">
             <i class="fas fa-car"></i>
-            <h3>car selling</h3>
+            <h3>autó eladás</h3>
             <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Corporis, nisi.</p>
-            <a href="#" class="btn"> read more</a>
+            <a href="#" class="btn"> több</a>
         </div>
 
         <div class="box">
             <i class="fas fa-tools"></i>
-            <h3>parts repair</h3>
+            <h3>alkatrész javítás és csere</h3>
             <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Corporis, nisi.</p>
-            <a href="#" class="btn"> read more</a>
+            <a href="#" class="btn"> több</a>
         </div>
 
         <div class="box">
             <i class="fas fa-car-crash"></i>
-            <h3>car insurance</h3>
+            <h3>biztosítás</h3>
             <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Corporis, nisi.</p>
-            <a href="#" class="btn"> read more</a>
+            <a href="#" class="btn"> több</a>
         </div>
 
         <div class="box">
             <i class="fas fa-car-battery"></i>
-            <h3>battery replacement</h3>
+            <h3>akkumlátor csere</h3>
             <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Corporis, nisi.</p>
-            <a href="#" class="btn"> read more</a>
+            <a href="#" class="btn"> több</a>
         </div>
 
         <div class="box">
             <i class="fas fa-gas-pump"></i>
-            <h3>oil change</h3>
+            <h3>olaj csere</h3>
             <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Corporis, nisi.</p>
-            <a href="#" class="btn"> read more</a>
+            <a href="#" class="btn"> több</a>
         </div>
 
         <div class="box">
             <i class="fas fa-headset"></i>
-            <h3>24/7 support</h3>
+            <h3>24/7 támogatás</h3>
             <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Corporis, nisi.</p>
-            <a href="#" class="btn"> read more</a>
+            <a href="#" class="btn"> több</a>
         </div>
 
     </div>
@@ -377,7 +433,7 @@ var swiper = new Swiper(".review-slider", {
                         <i class="fas fa-star-half-alt"></i>
                     </div>
                     <div class="price">$55,000/-</div>
-                    <a href="#" class="btn">check out</a>
+                    <a href="#" class="btn">érdekel</a>
                 </div>
             </div>
 
@@ -393,14 +449,14 @@ var swiper = new Swiper(".review-slider", {
                         <i class="fas fa-star-half-alt"></i>
                     </div>
                     <div class="price">$55,000/-</div>
-                    <a href="#" class="btn">check out</a>
+                    <a href="#" class="btn">érdekel</a>
                 </div>
             </div>
 
             <div class="swiper-slide box">
                 <img src="../assets/blog_2025_Vitara_1.png" alt="">
                 <div class="content">
-                    <h3>new model</h3>
+                    <h3>újdonságaink</h3>
                     <div class="stars">
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
@@ -409,7 +465,7 @@ var swiper = new Swiper(".review-slider", {
                         <i class="fas fa-star-half-alt"></i>
                     </div>
                     <div class="price">$55,000/-</div>
-                    <a href="#" class="btn">check out</a>
+                    <a href="#" class="btn">érdekel</a>
                 </div>
             </div>
 
@@ -425,7 +481,7 @@ var swiper = new Swiper(".review-slider", {
                         <i class="fas fa-star-half-alt"></i>
                     </div>
                     <div class="price">$55,000/-</div>
-                    <a href="#" class="btn">check out</a>
+                    <a href="#" class="btn">érdekel</a>
                 </div>
             </div>
 
