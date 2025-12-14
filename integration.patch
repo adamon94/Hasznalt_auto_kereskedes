@@ -1,0 +1,556 @@
+*** Begin Patch
+*** Add File: backEnd/.env.example
++PORT=4000
++DATABASE_FILE=./db/database.sqlite
++JWT_SECRET=replace_with_a_strong_secret
++ADMIN_EMAIL=admin@example.com
++ADMIN_PASSWORD_HASH=$2b$10$examplebcrypthashreplace
++SMTP_HOST=smtp.example.com
++SMTP_PORT=587
++SMTP_USER=your_smtp_user
++SMTP_PASS=your_smtp_password
++
+*** End Patch
+*** Begin Patch
+*** Add File: backEnd/db/init.js
++const fs = require('fs');
++const path = require('path');
++const Database = require('better-sqlite3');
++
++const dbFile = process.env.DATABASE_FILE || path.join(__dirname, '../db/database.sqlite');
++const dbDir = path.dirname(dbFile);
++if (!fs.existsSync(dbDir)) fs.mkdirSync(dbDir, { recursive: true });
++
++const db = new Database(dbFile);
++
++/*
++  Tables:
++  - cars: car inventory
++  - users: admin accounts (store bcrypt hash)
++  - contacts: contact form submissions (optional)
++*/
++
++db.exec(`
++CREATE TABLE IF NOT EXISTS cars (
++  id INTEGER PRIMARY KEY AUTOINCREMENT,
++  title TEXT NOT NULL,
++  make TEXT,
++  model TEXT,
++  year INTEGER,
++  price REAL,
++  kilometers INTEGER,
++  fuel_type TEXT,
++  transmission TEXT,
++  description TEXT,
++  main_image TEXT,
++  images TEXT,
++  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
++);
++
++CREATE TABLE IF NOT EXISTS users (
++  id INTEGER PRIMARY KEY AUTOINCREMENT,
++  email TEXT UNIQUE NOT NULL,
++  password_hash TEXT NOT NULL,
++  role TEXT DEFAULT 'admin',
++  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
++);
++
++CREATE TABLE IF NOT EXISTS contacts (
++  id INTEGER PRIMARY KEY AUTOINCREMENT,
++  name TEXT,
++  email TEXT,
++  phone TEXT,
++  message TEXT,
++  car_id INTEGER,
++  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
++);
++`);
++
++module.exports = db;
++
+*** End Patch
+*** Begin Patch
+*** Add File: backEnd/server.js
++const express = require('express');
++const cors = require('cors');
++const path = require('path');
++const multer = require('multer');
++const dotenv = require('dotenv');
++const bcrypt = require('bcrypt');
++const jwt = require('jsonwebtoken');
++const fs = require('fs');
++
++dotenv.config();
++
++const db = require('./db/init');
++
++const app = express();
++app.use(cors());
++app.use(express.json());
++
++// Serve uploaded images
++const uploadsDir = path.join(__dirname, 'uploads');
++if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir, { recursive: true });
++app.use('/uploads', express.static(uploadsDir));
++
++// Multer setup
++const storage = multer.diskStorage({
++  destination: (req, file, cb) => cb(null, uploadsDir),
++  filename: (req, file, cb) => {
++    const unique = Date.now() + '-' + Math.round(Math.random()*1e9);
++    const ext = path.extname(file.originalname);
++    cb(null, `${unique}${ext}`);
++  }
++});
++const upload = multer({ storage, limits: { fileSize: 5 * 1024 * 1024 } }); // 5MB limit
++
++// Helpers
++const runQueryAll = (sql, params=[]) => db.prepare(sql).all(params);
++const runQuery = (sql, params=[]) => db.prepare(sql).run(params);
++
++// Routes
++
++// GET /api/cars - list with optional filters: q, make, minPrice, maxPrice, yearFrom, yearTo, page, perPage
++app.get('/api/cars', (req, res) => {
++  try {
++    const { q, make, minPrice, maxPrice, yearFrom, yearTo, page=1, perPage=12 } = req.query;
++    let where = [];
++    let params = [];
++
++    if (q) {
++      where.push('(title LIKE ? OR description LIKE ?)');
++      params.push(`%${q}%`, `%${q}%`);
++    }
++    if (make) { where.push('make = ?'); params.push(make); }
++    if (minPrice) { where.push('price >= ?'); params.push(minPrice); }
++    if (maxPrice) { where.push('price <= ?'); params.push(maxPrice); }
++    if (yearFrom) { where.push('year >= ?'); params.push(yearFrom); }
++    if (yearTo) { where.push('year <= ?'); params.push(yearTo); }
++
++    const whereSql = where.length ? ('WHERE ' + where.join(' AND ')) : '';
++    const offset = (page - 1) * perPage;
++    const sql = `SELECT id, title, make, model, year, price, kilometers, main_image FROM cars ${whereSql} ORDER BY created_at DESC LIMIT ? OFFSET ?`;
++    const rows = runQueryAll(sql, [...params, parseInt(perPage,10), parseInt(offset,10)]);
++    res.json({ success: true, data: rows });
++  } catch (err) {
++    console.error(err);
++    res.status(500).json({ success:false, message: 'Server error' });
++  }
++});
++
++// GET /api/cars/:id - detail
++app.get('/api/cars/:id', (req, res) => {
++  try {
++    const id = req.params.id;
++    const car = db.prepare('SELECT * FROM cars WHERE id = ?').get(id);
++    if (!car) return res.status(404).json({ success:false, message:'Not found' });
++    car.images = car.images ? JSON.parse(car.images) : [];
++    res.json({ success:true, data: car });
++  } catch(err) {
++    console.error(err);
++    res.status(500).json({ success:false, message:'Server error' });
++  }
++});
++
++// Admin middleware
++const authenticate = (req, res, next) => {
++  const auth = req.headers.authorization;
++  if (!auth) return res.status(401).json({ success:false, message:'Missing token' });
++  const token = auth.split(' ')[1];
++  try {
++    const payload = jwt.verify(token, process.env.JWT_SECRET);
++    req.user = payload;
++    next();
++  } catch(e) {
++    return res.status(401).json({ success:false, message:'Invalid token' });
++  }
++};
++
++// POST /api/cars - create car (admin)
++app.post('/api/cars', authenticate, upload.array('images', 10), (req, res) => {
++  try {
++    const { title, make, model, year, price, kilometers, fuel_type, transmission, description } = req.body;
++    if (!title || !price) return res.status(400).json({ success:false, message:'Missing required fields' });
++
++    const files = req.files || [];
++    const images = files.map(f => f.filename);
++    const main_image = images[0] || null;
++
++    const stmt = db.prepare(`INSERT INTO cars (title, make, model, year, price, kilometers, fuel_type, transmission, description, main_image, images) 
++      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`);
++    const result = stmt.run(title, make, model, year || null, price || null, kilometers || null, fuel_type || null, transmission || null, description || null, main_image, JSON.stringify(images));
++    const inserted = db.prepare('SELECT * FROM cars WHERE id = ?').get(result.lastInsertRowid);
++    res.json({ success:true, data: inserted });
++  } catch(err) {
++    console.error(err);
++    res.status(500).json({ success:false, message:'Server error' });
++  }
++});
++
++// PUT /api/cars/:id - update (admin)
++app.put('/api/cars/:id', authenticate, upload.array('images', 10), (req, res) => {
++  try {
++    const id = req.params.id;
++    const { title, make, model, year, price, kilometers, fuel_type, transmission, description } = req.body;
++    const existing = db.prepare('SELECT * FROM cars WHERE id = ?').get(id);
++    if (!existing) return res.status(404).json({ success:false, message:'Not found' });
++
++    const files = req.files || [];
++    const newImages = files.map(f => f.filename);
++    let imagesArr = existing.images ? JSON.parse(existing.images) : [];
++    imagesArr = imagesArr.concat(newImages);
++    const main_image = existing.main_image || newImages[0] || null;
++
++    const stmt = db.prepare(`UPDATE cars SET title=?, make=?, model=?, year=?, price=?, kilometers=?, fuel_type=?, transmission=?, description=?, main_image=?, images=? WHERE id=?`);
++    stmt.run(title||existing.title, make||existing.make, model||existing.model, year||existing.year, price||existing.price, kilometers||existing.kilometers, fuel_type||existing.fuel_type, transmission||existing.transmission, description||existing.description, main_image, JSON.stringify(imagesArr), id);
++    const updated = db.prepare('SELECT * FROM cars WHERE id = ?').get(id);
++    updated.images = updated.images ? JSON.parse(updated.images) : [];
++    res.json({ success:true, data: updated });
++  } catch(err) {
++    console.error(err);
++    res.status(500).json({ success:false, message:'Server error' });
++  }
++});
++
++// DELETE /api/cars/:id (admin)
++app.delete('/api/cars/:id', authenticate, (req, res) => {
++  try {
++    const id = req.params.id;
++    const existing = db.prepare('SELECT * FROM cars WHERE id = ?').get(id);
++    if (!existing) return res.status(404).json({ success:false, message:'Not found' });
++    db.prepare('DELETE FROM cars WHERE id = ?').run(id);
++    res.json({ success:true, message:'Deleted' });
++  } catch(err) {
++    console.error(err);
++    res.status(500).json({ success:false, message:'Server error' });
++  }
++});
++
++// Simple contact endpoint (stores and optionally sends email)
++app.post('/api/contact', (req, res) => {
++  try {
++    const { name, email, phone, message, car_id } = req.body;
++    if (!email || !message) return res.status(400).json({ success:false, message:'Missing fields' });
++    const stmt = db.prepare('INSERT INTO contacts (name, email, phone, message, car_id) VALUES (?, ?, ?, ?, ?)');
++    stmt.run(name || null, email, phone || null, message, car_id || null);
++
++    // Optionally: send email via nodemailer (not included here by default)
++    return res.json({ success:true, message:'Köszönjük, üzenetét megkaptuk.' });
++  } catch(err) {
++    console.error(err);
++    res.status(500).json({ success:false, message:'Server error' });
++  }
++});
++
++// Auth: POST /api/auth/login
++app.post('/api/auth/login', async (req, res) => {
++  try {
++    const { email, password } = req.body;
++    if (!email || !password) return res.status(400).json({ success:false, message:'Missing' });
++    const user = db.prepare('SELECT * FROM users WHERE email = ?').get(email);
++    if (!user) return res.status(401).json({ success:false, message:'Invalid credentials' });
++    const match = await bcrypt.compare(password, user.password_hash);
++    if (!match) return res.status(401).json({ success:false, message:'Invalid credentials' });
++    const token = jwt.sign({ id: user.id, email: user.email, role: user.role }, process.env.JWT_SECRET, { expiresIn: '8h' });
++    res.json({ success:true, token });
++  } catch(err) {
++    console.error(err);
++    res.status(500).json({ success:false, message:'Server error' });
++  }
++});
++
++// Fallback
++app.use((req, res)=> res.status(404).json({ success:false, message:'Route not found' }));
++
++const port = process.env.PORT || 4000;
++app.listen(port, () => console.log(`API listening on ${port}`));
++
+*** End Patch
+*** Begin Patch
+*** Add File: frontEnd/autoKereskedes/src/main.js
++import { createApp } from 'vue';
++import App from './App.vue';
++import router from './router';
++
++import './assets/styles.css';
++
++createApp(App).use(router).mount('#app');
++
+*** End Patch
+*** Begin Patch
+*** Add File: frontEnd/autoKereskedes/src/router/index.js
++import { createRouter, createWebHistory } from 'vue-router';
++import Home from '../views/Home.vue';
++import CarDetail from '../views/CarDetail.vue';
++import Admin from '../views/Admin.vue';
++import About from '../views/About.vue';
++import Contact from '../views/Contact.vue';
++
++const routes = [
++  { path: '/', component: Home },
++  { path: '/car/:id', component: CarDetail, props: true },
++  { path: '/admin', component: Admin },
++  { path: '/about', component: About },
++  { path: '/contact', component: Contact }
++];
++
++const router = createRouter({
++  history: createWebHistory(),
++  routes
++});
++
++export default router;
++
+*** End Patch
+*** Begin Patch
+*** Add File: frontEnd/autoKereskedes/src/views/Home.vue
++<template>
++  <div class="container">
++    <SearchFilters @search="onSearch" />
++    <div class="grid">
++      <CarCard v-for="car in cars" :key="car.id" :car="car" />
++    </div>
++    <button v-if="cars.length" @click="loadMore">Tovább</button>
++  </div>
++</template>
++
++<script>
++import { ref, onMounted } from 'vue';
++import SearchFilters from '../components/SearchFilters.vue';
++import CarCard from '../components/CarCard.vue';
++import axios from 'axios';
++
++export default {
++  components: { SearchFilters, CarCard },
++  setup() {
++    const cars = ref([]);
++    const page = ref(1);
++    const perPage = 12;
++    const query = ref({});
++
++    const fetch = async () => {
++      const params = { page: page.value, perPage, ...query.value };
++      const res = await axios.get(`${import.meta.env.VITE_API_BASE || 'http://localhost:4000'}/api/cars`, { params });
++      cars.value = page.value === 1 ? res.data.data : cars.value.concat(res.data.data);
++    };
++
++    onMounted(fetch);
++    const loadMore = () => { page.value++; fetch(); };
++    const onSearch = (q) => { query.value = q; page.value = 1; fetch(); };
++
++    return { cars, loadMore, onSearch };
++  }
++};
++</script>
++
+*** End Patch
+*** Begin Patch
+*** Add File: frontEnd/autoKereskedes/src/components/SearchFilters.vue
++<template>
++  <div class="filters">
++    <input v-model="q" placeholder="Keresés..." @keyup.enter="emitSearch" />
++    <input v-model="make" placeholder="Márka" />
++    <input v-model.number="minPrice" placeholder="Min ár" type="number" />
++    <input v-model.number="maxPrice" placeholder="Max ár" type="number" />
++    <button @click="emitSearch">Szűrés</button>
++  </div>
++</template>
++
++<script>
++export default {
++  data() {
++    return { q: '', make: '', minPrice: null, maxPrice: null };
++  },
++  methods: {
++    emitSearch() {
++      this.$emit('search', { q: this.q, make: this.make, minPrice: this.minPrice, maxPrice: this.maxPrice });
++    }
++  }
++};
++</script>
++
+*** End Patch
+*** Begin Patch
+*** Add File: frontEnd/autoKereskedes/src/components/CarCard.vue
++<template>
++  <div class="car-card">
++    <img :src="imageUrl" alt="" />
++    <h3>{{ car.title }}</h3>
++    <p>{{ car.year }} • {{ car.kilometers }} km</p>
++    <p class="price">{{ formatPrice(car.price) }}</p>
++    <router-link :to="`/car/${car.id}`">Részletek</router-link>
++  </div>
++</template>
++
++<script>
++export default {
++  props: ['car'],
++  computed: {
++    imageUrl() {
++      return this.car.main_image ? `${import.meta.env.VITE_API_BASE || 'http://localhost:4000'}/uploads/${this.car.main_image}` : '/placeholder.png';
++    }
++  },
++  methods: {
++    formatPrice(p) { return p ? new Intl.NumberFormat('hu-HU', { style:'currency', currency:'HUF' }).format(p) : 'Ár egyeztetés szerint'; }
++  }
++};
++</script>
++
+*** End Patch
+*** Begin Patch
+*** Add File: frontEnd/autoKereskedes/src/views/CarDetail.vue
++<template>
++  <div class="container">
++    <div v-if="car">
++      <h1>{{ car.title }}</h1>
++      <div class="gallery">
++        <img v-for="img in car.images" :key="img" :src="`${apiBase}/uploads/${img}`" loading="lazy" />
++      </div>
++      <div class="meta">
++        <p>{{ car.make }} {{ car.model }} — {{ car.year }}</p>
++        <p class="price">{{ formatPrice(car.price) }}</p>
++        <p v-html="car.description"></p>
++      </div>
++      <ContactForm :carId="car.id" />
++    </div>
++  </div>
++</template>
++
++<script>
++import axios from 'axios';
++import { ref, onMounted } from 'vue';
++import ContactForm from '../components/ContactForm.vue';
++export default {
++  components: { ContactForm },
++  props: ['id'],
++  setup(props) {
++    const car = ref(null);
++    const apiBase = import.meta.env.VITE_API_BASE || 'http://localhost:4000';
++    onMounted(async () => {
++      const res = await axios.get(`${apiBase}/api/cars/${props.id || props.$route.params.id}`);
++      car.value = res.data.data;
++    });
++    const formatPrice = (p) => p ? new Intl.NumberFormat('hu-HU', { style:'currency', currency:'HUF' }).format(p) : 'Ár egyeztetés szerint';
++    return { car, apiBase, formatPrice };
++  }
++};
++</script>
++
+*** End Patch
+*** Begin Patch
+*** Add File: frontEnd/autoKereskedes/src/components/ContactForm.vue
++<template>
++  <form @submit.prevent="send">
++    <input v-model="name" placeholder="Név" />
++    <input v-model="email" placeholder="E-mail" />
++    <input v-model="phone" placeholder="Telefonszám" />
++    <textarea v-model="message" placeholder="Üzenet"></textarea>
++    <button type="submit">Küldés</button>
++    <p v-if="status">{{ status }}</p>
++  </form>
++</template>
++
++<script>
++import axios from 'axios';
++export default {
++  props: ['carId'],
++  data() { return { name:'', email:'', phone:'', message:'', status:'' }; },
++  methods: {
++    async send() {
++      try {
++        const payload = { name:this.name, email:this.email, phone:this.phone, message:this.message, car_id:this.carId || null };
++        const res = await axios.post(`${import.meta.env.VITE_API_BASE || 'http://localhost:4000'}/api/contact`, payload);
++        this.status = res.data.message || 'Elküldve';
++        this.name = this.email = this.phone = this.message = '';
++      } catch(e) {
++        console.error(e);
++        this.status = 'Hiba történt, próbálja újra később.';
++      }
++    }
++  }
++};
++</script>
++
+*** End Patch
+*** Begin Patch
+*** Add File: frontEnd/autoKereskedes/src/views/Admin.vue
++<template>
++  <div>
++    <h2>Admin - Autó hozzáadása</h2>
++    <form @submit.prevent="createCar" enctype="multipart/form-data">
++      <input v-model="title" placeholder="Cím" required />
++      <input v-model="make" placeholder="Márka" />
++      <input v-model="model" placeholder="Modell" />
++      <input v-model.number="year" placeholder="Év" type="number" />
++      <input v-model.number="price" placeholder="Ár" type="number" />
++      <input type="file" multiple @change="onFiles" />
++      <button type="submit">Mentés</button>
++    </form>
++    <p v-if="msg">{{ msg }}</p>
++  </div>
++</template>
++
++<script>
++import axios from 'axios';
++export default {
++  data() { return { title:'', make:'', model:'', year:null, price:null, files:[], msg:'' } },
++  methods: {
++    onFiles(e) { this.files = Array.from(e.target.files); },
++    async createCar() {
++      try {
++        const form = new FormData();
++        form.append('title', this.title);
++        form.append('make', this.make);
++        form.append('model', this.model);
++        form.append('year', this.year);
++        form.append('price', this.price);
++        this.files.forEach(f => form.append('images', f));
++        const token = localStorage.getItem('token');
++        const res = await axios.post(`${import.meta.env.VITE_API_BASE || 'http://localhost:4000'}/api/cars`, form, { headers: { 'Authorization': `Bearer ${token}` } });
++        this.msg = 'Sikeres mentés';
++      } catch(e) {
++        console.error(e);
++        this.msg = 'Hiba';
++      }
++    }
++  }
++};
++</script>
++
+*** End Patch
+*** Begin Patch
+*** Add File: Docs/IntegrationGuide.md
++# Integrációs útmutató - Második Kör Autókereskedés
++
++Tartalom:
++- Telepítés backend
++- Telepítés frontend
++- Környezeti változók (.env)
++- Futtatás és alap-tesztek
++- További javasolt fejlesztések (ReCaptcha, képtárolás S3, nodemailer)
++
++Részletek:
++1. Backend
++ - Telepítsd a függőségeket a backEnd mappában:
++   npm install express better-sqlite3 multer cors dotenv bcrypt jsonwebtoken
++ - Hozd létre a backEnd/.env fájlt a .env.example alapján és állítsd be a JWT_SECRET-et és ADMIN_PASSWORD_HASH-t.
++ - Indítsd a szervert:
++   node backEnd/server.js
++ - Ellenőrizd:
++   GET http://localhost:4000/api/cars
++
++2. Frontend (Vite + Vue 3 feltételezve)
++ - A frontend gyökérben telepítsd a függőségeket (frontEnd/autoKereskedes):
++   npm install
++ - Állítsd be a VITE_API_BASE környezeti változót (pl. .env.local):
++   VITE_API_BASE=http://localhost:4000
++ - Indítsd:
++   npm run dev --prefix frontEnd/autoKereskedes
++
++3. Teszt
++ - Hozz létre néhány teszt autót admin API-val (POST /api/cars), majd ellenőrizd a Home listát és a car detail oldalt.
++
++4. Javasolt fejlesztések
++ - Kép MIME típus ellenőrzés, ReCaptcha a contact formhoz, e-mail küldés nodemailer-rel, képek S3-ra migrálása production környezetben.
++
+*** End Patch
