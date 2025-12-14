@@ -45,13 +45,13 @@ const removeFav = async () => {
       });
       if (response.ok) {
         const data = await response.json();
-        console.log('Removed from favorites:', data);
+        console.log('Kedvencek közül eltávolítva:', data);
         favCheck(carId);
       } else {
-        console.error('Error removing from favorites:', response.statusText);
+        console.error('Hiba a kedvencek közül való eltávolításkor:', response.statusText);
       }
     } catch (error) {
-      console.error('Error removing from favorites:', error);
+      console.error('Hiba a kedvencek közül való eltávolításkor:', error);
     }
 };
 
@@ -64,7 +64,7 @@ const favCheck = (car) => {
         store.isFav = data.isFav;
       })
       .catch(error => {
-        console.error('Error fetching favorite status:', error);
+        console.error('Hiba a kedvenc állapotának lekérésekor:', error);
       });
   }
 ;
@@ -100,7 +100,7 @@ if (store.isLogged){
       if (currentCarIndex.value === -1) currentCarIndex.value = 0;
     })
     .catch(error => {
-      console.error('Error fetching all cars:', error);
+      console.error('Hiba az összes autó lekérésekor:', error);
     });
 });
 
@@ -114,17 +114,17 @@ const addToFavorites = () => {
     return;
   }
  
-  console.log('Added to favorites:', car.value?.model);
+  console.log('Hozzáadva kedvencekhez:', car.value?.model);
 };
 
 const removeFromFavorites = () => {
   removeFav();
-  console.log('Removed from favorites:', car.value?.model);
+  console.log('Kedvencek közül eltávolítva:', car.value?.model);
 };
 
 const bookTestDrive = () => {
   // TODO: Implement test drive booking
-  console.log('Booking test drive for:', car.value?.model);
+  console.log('Tesztvezetés foglalása:', car.value?.model);
   if(store.isLogged){
     store.testDriveModal = true
   }

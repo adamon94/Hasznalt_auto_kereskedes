@@ -147,6 +147,7 @@ var swiper = new Swiper(".review-slider", {
 <section class="home" id="home">
 
     <h3 data-speed="-2" class="home-parallax">Találja meg álmai autóját!</h3>
+</section>
 =======
 <header class="header">
 
@@ -213,7 +214,7 @@ var swiper = new Swiper(".review-slider", {
             <i class="fas fa-home"></i>
             <div class="content">
                 <h3>150+</h3>
-                <p>branches</p>
+                <p>ágazatok</p>
             </div>
         </div>
     
@@ -571,8 +572,8 @@ var swiper = new Swiper(".review-slider", {
 
     <section class="newsletter">
     
-        <h3>subscribe for latest updates</h3>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatum, suscipit.</p>
+        <h3>iratkozzon fel a legfrissebb újdonságainkért</h3>
+        <p>Adja meg az alábbi adatokat a feliratkozás érdekében:</p>
     
        <form action="">
             <input type="email" placeholder="enter your email">
@@ -585,7 +586,7 @@ var swiper = new Swiper(".review-slider", {
 
 <section class="reviews" id="reviews">
 
-    <h1 class="heading"> client's <span>review</span> </h1>
+    <h1 class="heading"> ügyfeleink <span>véleménye</span> </h1>
 
     <div class="swiper review-slider">
 
@@ -594,8 +595,8 @@ var swiper = new Swiper(".review-slider", {
             <div class="swiper-slide box">
                 <!-- <img src="image/pic-1.png" alt=""> -->
                 <div class="content">
-                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsam incidunt quod praesentium iusto id autem possimus assumenda at ut saepe.</p>
-                    <h3>john deo</h3>
+                    <p>Mindig udvariasak!!! Professzionális szerviz!!! Ár-érték arány a legjobb amivel idáig találkoztam!!!</p>
+                    <h3>V. János</h3>
                     <div class="stars">
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
@@ -609,8 +610,8 @@ var swiper = new Swiper(".review-slider", {
             <div class="swiper-slide box">
                 <!-- <img src="image/pic-2.png" alt=""> -->
                 <div class="content">
-                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsam incidunt quod praesentium iusto id autem possimus assumenda at ut saepe.</p>
-                    <h3>john deo</h3>
+                    <p>Az eladó korrekt és szimpatikus értékesítő! Mindenkinek csak ajánlani tudom.</p>
+                    <h3>B. Péter</h3>
                     <div class="stars">
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
@@ -624,8 +625,8 @@ var swiper = new Swiper(".review-slider", {
             <div class="swiper-slide box">
                 <!-- <img src="image/pic-3.png" alt=""> -->
                 <div class="content">
-                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsam incidunt quod praesentium iusto id autem possimus assumenda at ut saepe.</p>
-                    <h3>john deo</h3>
+                    <p>Korrekt autókereskedés! Korrekt ügyintézés, a szervizelés magas szakértelmű, az adminisztrációs ügyintézéssel maximálisan elégedettek vagyunk. Külön köszönet llyés Máté úrnak az értékesítési vezetőjének.</p>
+                    <h3>V. Gabriella</h3>
                     <div class="stars">
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
@@ -639,8 +640,8 @@ var swiper = new Swiper(".review-slider", {
             <div class="swiper-slide box">
                 <!-- <img src="image/pic-4.png" alt=""> -->
                 <div class="content">
-                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsam incidunt quod praesentium iusto id autem possimus assumenda at ut saepe.</p>
-                    <h3>john deo</h3>
+                    <p>A vevő érdekeit képviselve gyorsan, rugalmasan, őszintén támogatják a vásárlót. Ajánlom őket mindenkinek!</p>
+                    <h3>Cs. Kata</h3>
                     <div class="stars">
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
@@ -654,8 +655,8 @@ var swiper = new Swiper(".review-slider", {
             <div class="swiper-slide box">
                 <!-- <img src="image/pic-5.png" alt=""> -->
                 <div class="content">
-                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsam incidunt quod praesentium iusto id autem possimus assumenda at ut saepe.</p>
-                    <h3>john deo</h3>
+                    <p>Előre Gorgyán Tündével telefonon egyeztetve múlt hét csütörtökön voltam az autómat eladásra bevizsgáltatni korrekten átnézték! Simon Marcel-t külön kiemelném korrekt hozzáállása miatt. Csak így tovább!</p>
+                    <h3>T. Tamás</h3>
                     <div class="stars">
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
@@ -669,8 +670,8 @@ var swiper = new Swiper(".review-slider", {
             <div class="swiper-slide box">
                 <!-- <img src="image/pic-6.png" alt=""> -->
                 <div class="content">
-                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsam incidunt quod praesentium iusto id autem possimus assumenda at ut saepe.</p>
-                    <h3>john deo</h3>
+                    <p>Szuper volt az ügyintézés. MInden rendben ment</p>
+                    <h3>K. Zsombor</h3>
                     <div class="stars">
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
@@ -691,14 +692,14 @@ var swiper = new Swiper(".review-slider", {
 
 <section class="contact" id="contact">
 
-    <h1 class="heading"><span>contact</span> us</h1>
+    <h1 class="heading"><span>Lépj kapcsolatba</span> velünk</h1>
 
     <div class="row">
 
         <iframe class="map" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d30153.788252261566!2d72.82321484621745!3d19.141690214227783!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7b63aceef0c69%3A0x2aa80cf2287dfa3b!2sJogeshwari%20West%2C%20Mumbai%2C%20Maharashtra%20400047!5e0!3m2!1sen!2sin!4v1632137920043!5m2!1sen!2sin" allowfullscreen="" loading="lazy"></iframe>
 
         <form action="">
-            <h3>get in touch</h3>
+            <h3>Lépj kapcsolatba</h3>
             <input type="text" placeholder="your name" class="box">
             <input type="email" placeholder="your email" class="box">
             <input type="tel" placeholder="subject" class="box">
@@ -715,7 +716,7 @@ var swiper = new Swiper(".review-slider", {
     <section class="box-container">
 
         <div class="box">
-            <h3>our branches</h3>
+            <h3>Ágazataink</h3>
             <a href="#"> <i class="fas fa-map-marker-alt"></i> india </a>
             <a href="#"> <i class="fas fa-map-marker-alt"></i> japan </a>
             <a href="#"> <i class="fas fa-map-marker-alt"></i> france </a>
@@ -724,17 +725,17 @@ var swiper = new Swiper(".review-slider", {
         </div>
 
         <div class="box">
-            <h3>quick links</h3>
+            <h3>Gyors elérés</h3>
             <a href="#"> <i class="fas fa-arrow-right"></i> home </a>
-            <a href="#"> <i class="fas fa-arrow-right"></i> vehicles </a>
-            <a href="#"> <i class="fas fa-arrow-right"></i> services </a>
-            <a href="#"> <i class="fas fa-arrow-right"></i> featured </a>
-            <a href="#"> <i class="fas fa-arrow-right"></i> reviews </a>
-            <a href="#"> <i class="fas fa-arrow-right"></i> contact </a>
+            <a href="#"> <i class="fas fa-arrow-right"></i> járművek </a>
+            <a href="#"> <i class="fas fa-arrow-right"></i> szolgáltatások </a>
+            <a href="#"> <i class="fas fa-arrow-right"></i> jellemzők </a>
+            <a href="#"> <i class="fas fa-arrow-right"></i> értékelések </a>
+            <a href="#"> <i class="fas fa-arrow-right"></i> kapcsolataink </a>
         </div>
 
         <div class="box">
-            <h3>contact info</h3>
+            <h3>Elérhetőségek</h3>
             <a href="#"> <i class="fas fa-phone"></i> +123-456-7890 </a>
             <a href="#"> <i class="fas fa-phone"></i> +111-222-3333 </a>
             <a href="#"> <i class="fas fa-envelope"></i> shaikhanas@gmail.com </a>
@@ -742,7 +743,7 @@ var swiper = new Swiper(".review-slider", {
         </div>
 
         <div class="box">
-            <h3>contact info</h3>
+            <h3>Elérhetőségek</h3>
             <a href="#"> <i class="fab fa-facebook-f"></i> facebook </a>
             <a href="#"> <i class="fab fa-twitter"></i> twitter </a>
             <a href="#"> <i class="fab fa-instagram"></i> instagram </a>
@@ -752,7 +753,7 @@ var swiper = new Swiper(".review-slider", {
 
     </section>
 
-    <div class="credit"> created by <span>mr. web designer</span> | all rights reserved </div>
+    <div class="credit"> Készítette <span>G. Bálint</span> | minden jog fenntartva </div>
 
 </footer>
 
