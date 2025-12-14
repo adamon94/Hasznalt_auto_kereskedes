@@ -200,6 +200,9 @@ var swiper = new Swiper(".review-slider", {
     <h3 data-speed="-2" class="home-parallax">nézz szét az autóink között</h3>
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
@@ -247,7 +250,11 @@ var swiper = new Swiper(".review-slider", {
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                 <p>autós hír</p>
+=======
+                <p>újdonság</p>
+>>>>>>> Stashed changes
 =======
                 <p>újdonság</p>
 >>>>>>> Stashed changes
