@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import WishForm from '../components/wishComps/wishForm.vue';
 import WishList from '../components/wishComps/wishList.vue';
 import FavCard from '../components/favCard.vue';

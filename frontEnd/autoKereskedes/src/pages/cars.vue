@@ -171,15 +171,6 @@ img {
   background-color: var(--white);
 }
 
-
-
-/*.deals__container .tab__content {
-  display: none;
-  gap: 1rem;
-  animation: fadeEffect 1s;
-}*/
-
-
 .deals__container .tab__content {
   display: grid;
 }
