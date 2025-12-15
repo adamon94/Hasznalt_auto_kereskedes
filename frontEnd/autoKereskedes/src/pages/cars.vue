@@ -4,6 +4,10 @@ import { onMounted, ref } from 'vue';
 
 const cars = ref([])
 
+const formatNumber = (number) => {
+  return new Intl.NumberFormat('hu-HU', { style: "currency", currency: "HUF" }).format(number);
+}
+
 onMounted(()=>{
     fetch("http://localhost:3300/cars/getCars").then(async (res) => {
     const data = await res.json();
@@ -54,7 +58,7 @@ onMounted(()=>{
             </div>
             <hr />
             <div class="deals__card__footer">
-              <h3>{{car.ar}} HUF</h3>
+              <h3>{{ car.ar }}</h3>
               <router-link :to="'/cars/' + car.id">
                 Tovább az adatlapra
                 <span><i class="ri-arrow-right-line"></i></span>

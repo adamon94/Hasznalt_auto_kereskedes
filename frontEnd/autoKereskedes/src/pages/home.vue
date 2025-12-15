@@ -5,175 +5,17 @@ import { onMounted } from "vue";
 
 const store = useController()
 
-/*let menu = document.querySelector('#menu-btn');
-let navbar = document.querySelector('.navbar');
-
-menu.onclick = () =>{
-  menu.classList.toggle('fa-times');
-  navbar.classList.toggle('active');
-}
-
-document.querySelector('#login-btn').onclick = () =>{
-  document.querySelector('.login-form-container').classList.toggle('active');
-}
-
-document.querySelector('#close-login-form').onclick = () =>{
-  document.querySelector('.login-form-container').classList.remove('active');
-}
-
-window.onscroll = () =>{
-
-  menu.classList.remove('fa-times');
-  navbar.classList.remove('active');
-
-  if(window.scrollY > 0){
-    document.querySelector('.header').classList.add('active');
-  }else{
-    document.querySelector('.header').classList.remove('active');
-  };
-
-};
-
-document.querySelector('.home').onmousemove = (e) =>{
-
-  document.querySelectorAll('.home-parallax').forEach(elm =>{
-
-    let speed = elm.getAttribute('data-speed');
-
-    let x = (window.innerWidth - e.pageX * speed) / 90;
-    let y = (window.innerHeight - e.pageY * speed) / 90;
-
-    elm.style.transform = `translateX(${y}px) translateY(${x}px)`;
-
-  });
-
-};
-
-
-document.querySelector('.home').onmouseleave = (e) =>{
-
-  document.querySelectorAll('.home-parallax').forEach(elm =>{
-
-    elm.style.transform = `translateX(0px) translateY(0px)`;
-
-  });
-
-};
-
-var swiper = new Swiper(".vehicles-slider", {
-  grabCursor: true,
-  centeredSlides: true,  
-  spaceBetween: 20,
-  loop:true,
-  autoplay: {
-    delay: 9500,
-    disableOnInteraction: false,
-  },
-  pagination: {
-    el: ".swiper-pagination",
-    clickable:true,
-  },
-  breakpoints: {
-    0: {
-      slidesPerView: 1,
-    },
-    768: {
-      slidesPerView: 2,
-    },
-    1024: {
-      slidesPerView: 3,
-    },
-  },
-});
-
-var swiper = new Swiper(".featured-slider", {
-  grabCursor: true,
-  centeredSlides: true,  
-  spaceBetween: 20,
-  loop:true,
-  autoplay: {
-    delay: 9500,
-    disableOnInteraction: false,
-  },
-  pagination: {
-    el: ".swiper-pagination",
-    clickable:true,
-  },
-  breakpoints: {
-    0: {
-      slidesPerView: 1,
-    },
-    768: {
-      slidesPerView: 2,
-    },
-    1024: {
-      slidesPerView: 3,
-    },
-  },
-});
-
-var swiper = new Swiper(".review-slider", {
-  grabCursor: true,
-  centeredSlides: true,  
-  spaceBetween: 20,
-  loop:true,
-  autoplay: {
-    delay: 9500,
-    disableOnInteraction: false,
-  },
-  pagination: {
-    el: ".swiper-pagination",
-    clickable:true,
-  },
-  breakpoints: {
-    0: {
-      slidesPerView: 1,
-    },
-    768: {
-      slidesPerView: 2,
-    },
-    1024: {
-      slidesPerView: 3,
-    },
-  },
-});
-*/
 </script>
 <template>
  
 <div class="nyitoOldal">
 
-<<<<<<< Updated upstream
 <section class="home" id="home">
 
     <h3 data-speed="-2" class="home-parallax">Találja meg álmai autóját!</h3>
 </section>
-=======
-<header class="header">
 
-    <section class="flex">
 
-        <div id="menu-btn" class="fas fa-bars"></div>
-
-        <a href="#" class="logo"> <span>max</span>wheels </a>
-
-        <nav class="navbar">
-            <a href="#home">home</a>
-            <a href="#vehicles">járművek</a>
-            <a href="#services">szolgáltatások</a>
-            <a href="#featured">magunkról</a>
-            <a href="#reviews">értékelés</a>
-            <a href="#contact">kapcsolat</a>
-        </nav>
-
-        <div id="login-btn">
-            <button class="btn">login</button>
-            <i class="far fa-user"></i>
-        </div>
-
-    </section>
-
-</header> 
     
 <div class="login-form-container">
 
@@ -198,25 +40,7 @@ var swiper = new Swiper(".review-slider", {
 <section class="home" id="home">
 
     <h3 data-speed="-2" class="home-parallax">nézz szét az autóink között</h3>
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
+
 
     <img data-speed="5" class="home-parallax" src="../assets/732.jpg" alt="">
 
@@ -256,35 +80,18 @@ var swiper = new Swiper(".review-slider", {
             <i class="fas fa-car"></i>
             <div class="content">
                 <h3>1500+</h3>
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
+
                 <p>autós hír</p>
-=======
+
                 <p>újdonság</p>
->>>>>>> Stashed changes
-=======
+
+
                 <p>újdonság</p>
->>>>>>> Stashed changes
-=======
                 <p>újdonság</p>
->>>>>>> Stashed changes
-=======
                 <p>újdonság</p>
->>>>>>> Stashed changes
-=======
                 <p>újdonság</p>
->>>>>>> Stashed changes
-=======
                 <p>újdonság</p>
->>>>>>> Stashed changes
-=======
                 <p>újdonság</p>
->>>>>>> Stashed changes
             </div>
         </div>
     
