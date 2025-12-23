@@ -42,6 +42,7 @@ h3{
     border-bottom: 3px solid #C8BCCF;
     padding: 10px;
     padding-bottom: 25px;
+    margin-top: 5px;
    
     
 }

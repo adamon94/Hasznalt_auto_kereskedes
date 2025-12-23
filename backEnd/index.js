@@ -4,6 +4,9 @@ import { router as carsRouter } from "./controller/cars.controller.js";
 import { router as adminRouter } from "./controller/admin.controller.js";
 import { router as userRouter } from "./controller/users.controller.js";
 import { PrismaClient } from './generated/prisma/index.js'
+import { configDotenv } from "dotenv";
+import "dotenv"
+configDotenv()
 
 const p = new PrismaClient
 
