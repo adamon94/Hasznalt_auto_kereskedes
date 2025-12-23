@@ -44,7 +44,7 @@ const setActiveTab = (tabId) => {
           <div class="infoContainer1">
             <ul class="info-list">
               <li>
-                <strong><i class="ri-corner-up-right-fill"></i>Model:</strong> <span> {{ car.model || "N/A" }} cm³</span>
+                <strong><i class="ri-corner-up-right-fill"></i>Model:</strong> <span> {{ car.model || "N/A" }}</span>
               </li>
               
               <li>

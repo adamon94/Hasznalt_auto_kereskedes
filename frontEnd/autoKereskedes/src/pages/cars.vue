@@ -1,12 +1,13 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 
-
 const cars = ref([])
 
 const formatNumber = (number) => {
   return new Intl.NumberFormat('hu-HU', { style: "currency", currency: "HUF" }).format(number);
 }
+
+const selectedBrand = ref(null)
 
 onMounted(()=>{
     fetch("http://localhost:3300/cars/getCars").then(async (res) => {
@@ -16,6 +17,12 @@ onMounted(()=>{
   });
 })
 
+import { computed } from 'vue' 
+
+const filteredCars = computed(() => {
+  if (!selectedBrand.value) return cars.value
+  return cars.value.filter(car => car.marka === selectedBrand.value)
+})
 </script>
 
 
@@ -29,17 +36,17 @@ onMounted(()=>{
           incredible rate!
         </p>
         <div class="deals__tabs">
-          <button class="btn" >Susuki</button>
-          <button class="btn" >Citroen</button>
-          <button class="btn" >BMW</button>
-          <button class="btn" >Toyota</button>
-          <button class="btn" >Opel</button>
-          <button class="btn" >Golf</button>
+          <button class="btn" @click="selectedBrand = 'Suzuki'">Suzuki</button>
+          <button class="btn" @click="selectedBrand = 'Citroen'">Citroen</button>
+          <button class="btn" @click="selectedBrand = 'BMW'">BMW</button>
+          <button class="btn" @click="selectedBrand = 'Toyota'">Toyota</button>
+          <button class="btn" @click="selectedBrand = 'Opel'">Opel</button>
+          <button class="btn" @click="selectedBrand = 'Golf'">Golf</button>
         </div>
         
 
       <div class="tab__content">
-          <div v-for="car in cars" :key="car.id" class="deals__card mb-4">
+          <div v-for="car in filteredCars" :key="car.id" class="deals__card mb-4">
             <img  :src="'http://localhost:3300/images/' + car.Images[0]?.path" alt="Deals" />
             <h4>{{ car.model }}</h4>
             <div class="deals__card__grid">
