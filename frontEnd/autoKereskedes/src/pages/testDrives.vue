@@ -47,7 +47,6 @@ const removeTestDrive = async(id) => {
         if (res.status === 200) {
             console.log('Sikeres törlés a teszt vezetésből');
             getMyTestDrives();
-            // Optionally, you can emit an event to notify the parent component to refresh the list
         } else {
             console.error('Hiba történt a törlés során');
         }

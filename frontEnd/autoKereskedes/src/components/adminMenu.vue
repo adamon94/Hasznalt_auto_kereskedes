@@ -259,7 +259,7 @@ const uploadImage = async (id) => {
         isDialogOpen.value = true;
     }
 };
-// Upload new images to existing car
+// Kép feltöltése melévő autóhoz
 const uploadNewImages = async () => {
     if (updateSelectedImages.value.length === 0) {
         message.value = 'Nincs kiválasztott kép a feltöltéshez!';
@@ -267,21 +267,14 @@ const uploadNewImages = async () => {
         return;
     }
     
-    /*if (!selectedCar.value || !selectedCar.value.id) {
-        alert('Nincs kiválasztott autó!');
-        return;
-    }*/
     
     try {
         const formData = new FormData();
         
-        // Add all selected images to FormData
         updateSelectedImages.value.forEach((file) => {
             formData.append('files', file);
         });
         
-        /* Add car ID
-        formData.append('carId', selectedCar.value.id);*/
         console.log('Uploading images for car ID:', selectedCar.value.id);
         const response = await fetch(`http://localhost:3300/administration/addImages/${selectedCar.value.id}`, {
             method: 'POST',
@@ -293,18 +286,16 @@ const uploadNewImages = async () => {
             message.value = `Sikeresen feltöltve ${updateSelectedImages.value.length} kép!`;
             isDialogOpen.value = true;
 
-            // Clear previews and selected images
+            // Előnézet alaphelyezése és kiválasztott képek törlése
             updateSelectedImages.value = [];
             updateImagePreviews.value = [];
             
-            // Refresh the selected car data to show new images
             const carResponse = await fetch(`http://localhost:3300/cars/getCar/${selectedCar.value.id}`);
             if (carResponse.ok) {
                 const updatedCar = await carResponse.json();
                 selectedCar.value = updatedCar;
             }
             
-            // Refresh all cars list
             await fetchAllCars();
         } else {
             const error = await response.json();
@@ -320,8 +311,6 @@ const uploadNewImages = async () => {
 
 const message = ref('');
 
-
-// Submit update car form function
 const submitUpdateCarForm = async () => {
     try {
         const response = await fetch(`http://localhost:3300/administration/updateCar/${selectedCar.value.id}`, {
@@ -347,13 +336,11 @@ const submitUpdateCarForm = async () => {
     }
 };
 
-// Cancel update and return to manage cars
 const cancelUpdate = () => {
     currentTab.value = 'manageCars';
     message.value = '';
 };
 
-// Submit form function
 const submitCarForm = async () => {
     try {
         if(selectedImages.value.length === 0){
@@ -376,7 +363,6 @@ const submitCarForm = async () => {
             isDialogOpen.value = true;
             await fetchAllCars();
             console.log(data);
-            // Reset form
             resetForm();
         } else {
             message.value = 'Hiba történt az autó hozzáadása során.';
@@ -404,7 +390,6 @@ const deleteCar = async (carId) => {
             message.value = 'Autó sikeresen törölve a kínálatból.';
             setActiveTab('manageCars');
            isDialogOpen.value = true;
-            // Refresh car list
             await fetchAllCars();
         } else {
             message.value = 'Hiba történt az autó törlése során.';
@@ -431,7 +416,6 @@ const deleteTestDrive = async (testDriveId) => {
         if (response.ok) {
             message.value = 'Tesztvezetés sikeresen törölve.';
             isDialogOpen.value = true;
-            // Refresh test drives list
             await fetchAllTestDrives();
         } else {
             message.value = 'Hiba történt a tesztvezetés törlése során.';
@@ -444,7 +428,6 @@ const deleteTestDrive = async (testDriveId) => {
     }
 };
 
-// Reset form function
 const resetForm = () => {
     carForm.value = {
         gyartasEve: '',
@@ -467,33 +450,13 @@ const resetForm = () => {
     };
 };
 
-// Fetch data on component mount
 onMounted(() => {
     fetchAllCars();
     getAllFavs();
     fetchAllTestDrives();
 });
 
-/*car object build:
-1
-: 
-{id: 3, gyartasEve: 2003, model: 'Susuki Swift MK3', marka: 'Susuki', tipus: 'Városi autó', …}
-2
-: 
-{id: 4, gyartasEve: 2010, model: 'BMW 2 Series', marka: 'BMW', tipus: 'Sport autó', …}
-3
-: 
-{id: 5, gyartasEve: 2005, model: 'BMW X3', marka: 'BMW', tipus: 'Luxus autó', …}
-4
-: 
-{id: 6, gyartasEve: 2008, model: 'Citroen C4 Picasso', marka: 'Citroen', tipus: 'Luxus autó', …}
-5
-: 
-{id: 7, gyartasEve: 2015, model: 'Citroen c3 Air Cross', marka: 'Citroen', tipus: 'Városi autó', …}
-length
-: 
-6
-*/
+
 </script>
 
 <template>
@@ -501,7 +464,7 @@ length
 <AdminDialog :isOpen="isDialogOpen" :message="message" :onClose="closeDialog" />
 
 
-    <div class="adminMenu">
+<div class="adminMenu">
 
    
 <div class="container">
@@ -544,23 +507,13 @@ length
          
         </aside>
         <main class="content">
-            <!-- Add Car Tab -->
+            <!-- Tab gomb rendszer -->
             <div v-if="currentTab === 'addCar'">
                 <header>
                     <h1>Autó felvétel</h1>
                     <p>Új autó hozzáadása a kínálathoz</p>
                 </header>
                 <div class="card-container">
-                    <!-- Success/Error Messages
-                    <div v-if="successMessage" class="alert alert-success alert-dismissible fade show" role="alert">
-                        {{ successMessage }}
-                        <button type="button" class="btn-close" @click="successMessage = ''" aria-label="Close"></button>
-                    </div>
-                    <div v-if="errorMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
-                        {{ errorMessage }}
-                        <button type="button" class="btn-close" @click="errorMessage = ''" aria-label="Close"></button>
-                    </div> -->
-
                     <form @submit.prevent="submitCarForm">
                         <div class="row">
                             <!-- Gyártási év -->
@@ -723,7 +676,7 @@ length
                                 </div>
                             </div>
 
-                            <!-- Car Images Upload -->
+                            <!-- Képek feltöltése -->
                             <div class="col-md-12 mb-3">
                                 <div class="form-group">
                                     <label for="carImages" class="form-label">
@@ -745,17 +698,16 @@ length
                                             <p class="text-muted small">Több kép is feltölthető egyszerre</p>
                                         </div>
                                     </div>
-                                    
-                                    <!-- Image Preview Area -->
+
+                                    <!-- előnézet -->
                                     <div class="image-preview-container mt-3">
                                         <div class="image-preview-grid">
-                                            <!-- Show placeholder if no images -->
                                             <div v-if="imagePreviews.length === 0" class="preview-placeholder">
                                                 <i class="fas fa-image"></i>
                                                 <span>Képek előnézete itt jelenik meg</span>
                                             </div>
-                                            
-                                            <!-- Show image previews -->
+
+                                            <!-- Képek előnézete -->
                                             <div 
                                                 v-for="(preview, index) in imagePreviews" 
                                                 :key="index" 
@@ -777,8 +729,6 @@ length
                             </div>
                         </div>
 
-
-                        <!-- Submit and Reset Buttons -->
                         <div class="d-flex gap-2 mt-3">
                             <button type="submit" class="btn btn-primary">
                                 <i class="fas fa-plus-circle me-2"></i>Autó hozzáadása
@@ -791,20 +741,17 @@ length
                 </div>
             </div>
 
-            <!-- Manage Cars Tab -->
             <div v-if="currentTab === 'manageCars'">
                 <header>
                     <h1>Kínálat kezelése</h1>
                     <p>Autók szerkesztése és törlése</p>
                 </header>
                 <div class="card-container">
-                    <!-- Loading State -->
                     <div v-if="allCars.length === 0" class="loading-message">
                         <i class="ri-loader-4-line loading-icon"></i>
                         <p>Autók betöltése...</p>
                     </div>
 
-                    <!-- Cars Grid -->
                     <div v-else class="cars-grid">
                         <manageCard
                             v-for="car in allCars" 
@@ -818,14 +765,12 @@ length
                 </div>
             </div>
 
-            <!-- Test Drives Tab -->
             <div v-if="currentTab === 'testDrives'">
                 <header>
                     <h1>Tesztvezetések</h1>
                     <p>Tesztvezetési foglalások kezelése</p>
                 </header>
                 <div class="card-container">
-                    <!-- Loading State -->
                     <div v-if="allTestDrives.length === 0" class="loading-state">
                         <div class="spinner-border text-primary" role="status">
                             <span class="visually-hidden">Betöltés...</span>
@@ -833,7 +778,6 @@ length
                         <p>Tesztvezetések betöltése...</p>
                     </div>
 
-                    <!-- Test Drives Grid -->
                     <div v-else class="cars-grid">
                         <div v-for="testDrive in allTestDrives" :key="testDrive.id" class="test-drive-card-wrapper">
                             <adminTestCard
@@ -864,10 +808,8 @@ length
                 <div class="card-container">
                    
 
-                    <!-- Update Car Form -->
                     <form v-if="selectedCar" @submit.prevent="submitUpdateCarForm">
                         <div class="row">
-                            <!-- Gyártási év -->
                             <div class="col-md-6 mb-3">
                                 <div class="form-group">
                                     <label for="update_gyartasEve" class="form-label">Gyártási év</label>
@@ -1029,7 +971,6 @@ length
                             </div>
                         </div>
 
-                        <!-- Submit and Cancel Buttons -->
                         <div class="d-flex gap-2 mt-3 mb-4">
                             <button type="submit" class="btn btn-success mngBtn">
                                 Módosítások mentése
@@ -1042,13 +983,11 @@ length
                             </button>
                         </div>
 
-                        <!-- Existing Car Images Management -->
                         <div class="image-management-section">
                             <h5 class="text-white mb-3">
                                 <i class="fas fa-images me-2"></i>Autó képek kezelése
                             </h5>
                             
-                            <!-- Existing Images -->
                             <div class="existing-images-section mb-3">
                                 <h6 class="text-white mb-2">Jelenlegi képek:</h6>
                                 <div class="image-preview-grid">
@@ -1071,7 +1010,6 @@ length
                                         </div>
                                     </template>
                                     
-                                    <!-- No images placeholder -->
                                     <div v-else class="preview-placeholder">
                                         <i class="fas fa-image"></i>
                                         <span>Nincs feltöltött kép</span>
@@ -1079,7 +1017,6 @@ length
                                 </div>
                             </div>
 
-                            <!-- Add New Images -->
                             <div class="add-images-section">
                                 <h6 class="text-white mb-2">Új képek hozzáadása:</h6>
                                 <div class="upload-area">
@@ -1098,7 +1035,6 @@ length
                                     </div>
                                 </div>
                                 
-                                <!-- New Images Preview -->
                                 <div v-if="updateImagePreviews.length > 0" 
                                     class="image-preview-container mt-3">
                                     <h6 class="text-white mb-2">Új képek előnézet:</h6>
@@ -1123,7 +1059,6 @@ length
                                         </div>
                                     </div>
                                     
-                                    <!-- Upload New Images Button -->
                                     <div class="upload-images-btn-container mt-3">
                                         <button 
                                             type="button" 
@@ -1143,7 +1078,6 @@ length
                         </div>
                     </form>
 
-                    <!-- No car selected message -->
                     <div v-else class="alert alert-warning">
                         <i class="fas fa-exclamation-triangle me-2"></i>
                         Nincs kiválasztott autó. Kérem válasszon egy autót a Kínálat kezelése menüpontból.

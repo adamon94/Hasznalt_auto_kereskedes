@@ -101,10 +101,9 @@ const addTestDrive = async()=>{
         justify-content: center;
         height: 100%;
         gap: 0.6rem;
-        position: relative; /* Added for exit button positioning */
+        position: relative;
     }
 
-    /* Exit button styles */
     .exit-button {
         position: absolute;
         top: 10px;

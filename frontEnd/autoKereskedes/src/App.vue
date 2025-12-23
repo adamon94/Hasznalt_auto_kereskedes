@@ -11,14 +11,11 @@ const store = useController();
 onMounted(()=>{
   
   const isLogged = localStorage.getItem("isLogged")
-  //const userId = localStorage.getItem("token")
   const token = localStorage.getItem("token")
-  //const accessLevel = localStorage.getItem("accessLevel")
   if(isLogged){
     store.logIn()
   const tokenData = JSON.parse(token)
     
-    // ✅ Then access the properties
     store.id = Number(tokenData.id)
     store.accessLevel = Number(tokenData.accessLevel)
     

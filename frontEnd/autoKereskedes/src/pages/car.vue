@@ -1,7 +1,6 @@
 <script setup>
 import { onMounted, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import Head from '../components/Head.vue';
 import CarData from '../components/carData.vue';
 import CarDataHeader from '../components/carDataHeader.vue';
 import CarDataFooter from '../components/carDataFooter.vue';
@@ -19,8 +18,12 @@ const allCars = ref([]);
 const currentCarIndex = ref(0);
 const carId = route.params.id || 1;
 const currentCarId = ref(carId);
+const isDialogOpen = ref(false);
+const dialogText = ref('');
 
-
+const closeDialog = () => {
+      isDialogOpen.value = false;
+    };
 const addFav = async () => {
     try {
       const response = await fetch(`http://localhost:3300/cars/addfav/${store.id}/${currentCarId.value}`, {
@@ -31,10 +34,13 @@ const addFav = async () => {
         console.log('Added to favorites:', data);
         favCheck(currentCarId.value);
       } else {
-        console.error('Error adding to favorites:', response.statusText);
+        //console.error('Error adding to favorites:', response.statusText);
+        dialogText.value = 'Hiba történt a kedvencekhez való hozzáadáskor. Kérjük, próbálja meg újra.';
+        isDialogOpen.value = true;
       }
     } catch {
-      alert('Valószínűleg hálózati hiba történt, próbálja meg később.');
+      dialogText.value = 'Hálózati hiba történt. Kérjük, próbálja meg később.';
+      isDialogOpen.value = true;
     }
 };
 
@@ -48,10 +54,12 @@ const removeFav = async () => {
         console.log('Kedvencek közül eltávolítva:', data);
         favCheck(carId);
       } else {
-        console.error('Hiba a kedvencek közül való eltávolításkor:', response.statusText);
+       dialogText.value = 'Hiba történt a kedvencek közül való eltávolításkor. Kérjük, próbálja meg újra.';
+       isDialogOpen.value = true;
       }
     } catch (error) {
-      console.error('Hiba a kedvencek közül való eltávolításkor:', error);
+      dialogText.value = 'Hálózati hiba történt. Kérjük, próbálja meg később.';
+      isDialogOpen.value = true;
     }
 };
 
@@ -69,6 +77,7 @@ const favCheck = (car) => {
   }
 ;
 
+// Ha egy  másikautó oldalára navigálnak, frissítse a kedvenc állapotot
 watch(() => route.params.id, (newId) => {
   if (newId) {
     if(store.isLogged){
@@ -77,6 +86,7 @@ watch(() => route.params.id, (newId) => {
   }
 });
 
+// Autó lapzásakor az ID változásának figyelése
 watch(() => route.params.id, (newId) => {
   if (newId) {
     currentCarId.value = newId;
@@ -94,7 +104,6 @@ if (store.isLogged){
     .then(async (res) => {
       const data = await res.json();
       allCars.value = data;
-      // Find current car index
       currentCarIndex.value = data.findIndex(c => c.id == carId);
       car.value = data[currentCarIndex.value];
       if (currentCarIndex.value === -1) currentCarIndex.value = 0;
@@ -109,8 +118,8 @@ const addToFavorites = () => {
      addFav();
   }
   else{
-    dialogMessage.value = 'A kedvencekhez való hozzáadás előtt kérjük, jelentkezzen be vagy regisztráljon!';
-    dialogOpen.value = true;
+    dialogText.value = 'A kedvencekhez való hozzáadás előtt kérjük, jelentkezzen be vagy regisztráljon!';
+    isDialogOpen.value = true;
     return;
   }
  
@@ -129,8 +138,8 @@ const bookTestDrive = () => {
     store.testDriveModal = true
   }
   else{
-    dialogMessage.value = 'A tesztvezetés foglaláshoz kérjük, jelentkezzen be vagy regisztráljon!';
-    dialogOpen.value = true;
+    dialogText.value = 'A tesztvezetés foglaláshoz kérjük, jelentkezzen be vagy regisztráljon!';
+    isDialogOpen.value = true;
   }
 };
 
@@ -176,28 +185,19 @@ const element = document.getElementById('scroll-to-header');
   }
 };
 
-const dialogOpen = ref(false);
-const dialogMessage = ref('');
-const closeDialog = () => {
-  dialogOpen.value = false;
-};
+   
 </script>
 
 <template>
-  <adminDialog :isOpen="dialogOpen"
-                :message="dialogMessage"
+  <adminDialog :isOpen="isDialogOpen"
+                :message="dialogText"
                 :onClose="closeDialog" />
 
   <ReverseTestDriveModal :carId="currentCarId"/>
   <div class="car-details-container">
     <div class="car-details-wrapper" v-if="car">
-      <!-- Car Images Section -->
       <CarDataHeader id="scroll-to-header" :car="car" />
-
-      <!-- Car Data Component with Tabs -->
       <CarData :car="car" />
-
-      <!-- Footer Section with Action Buttons -->
       <CarDataFooter 
         :car="car"
         :allCars="allCars"
@@ -207,13 +207,9 @@ const closeDialog = () => {
         :onGoToPrevious="goToPreviousCar"
         :onGoToNext="goToNextCar"
       />
-
-      <!-- Képek megjelenítése -->
-      
-
     </div>
 
-    <!-- Loading State -->
+    <!-- Betöltési állapot -->
     <div v-else class="loading-state">
       <i class="ri-loader-4-line loading-icon"></i>
       <p>Adatok betöltése...</p>
@@ -302,10 +298,6 @@ const closeDialog = () => {
   margin-bottom: 1rem;
 }
 
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
 
 .loading-state p {
   font-size: 1.2rem;

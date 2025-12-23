@@ -48,10 +48,6 @@ const removeFromFavorites = async (favId) => {
     }
 };
 
-
-/*
-Nested data structure example: Autok.models, Autok.Images[0].path
-*/
 </script>
 
 

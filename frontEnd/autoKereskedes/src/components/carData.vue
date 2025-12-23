@@ -23,7 +23,7 @@ const setActiveTab = (tabId) => {
 
 <template>
   <div class="car-data-container">
-    <!-- Tab Navigation -->
+    <!-- Tab rendszer -->
     <div class="tab-navigation">
       <button
         v-for="tab in tabs"
@@ -36,9 +36,8 @@ const setActiveTab = (tabId) => {
       </button>
     </div>
 
-    <!-- Tab Content -->
+    <!-- Tab tartalom -->
     <div class="tab-content-wrapper">
-      <!-- Basic Information Tab -->
       <div v-if="activeTab === 'basic'" class="tab-content">
         <h3 class="tab-title">Alapadatok</h3>
         <div class="info-grid">
@@ -75,7 +74,6 @@ const setActiveTab = (tabId) => {
         </div>
       </div>
 
-      <!-- Technical Description Tab -->
       <div v-if="activeTab === 'technical'" class="tab-content">
         <h3 class="tab-title">Műszaki adatok</h3>
         <div class="info-grid">
@@ -113,7 +111,6 @@ const setActiveTab = (tabId) => {
         </div>
       </div>
 
-      <!-- History Tab -->
       <div v-if="activeTab === 'history'" class="tab-content">
         <h3 class="tab-title">Előélet</h3>
         <div class="info-grid">

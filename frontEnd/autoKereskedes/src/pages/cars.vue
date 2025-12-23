@@ -58,7 +58,7 @@ onMounted(()=>{
             </div>
             <hr />
             <div class="deals__card__footer">
-              <h3>{{ car.ar }}</h3>
+              <h3>{{ car.ar }} HUF</h3>
               <router-link :to="'/cars/' + car.id">
                 Tovább az adatlapra
                 <span><i class="ri-arrow-right-line"></i></span>

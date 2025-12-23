@@ -55,7 +55,6 @@ const goToNextCar = () => {
 
 <template>
   <div class="footer-section">
-    <!-- Primary Action Buttons -->
     <div class="action-buttons">
       <button v-if="!store.isFav || store.isFav === null" class="action-btn favorite-btn" @click="addToFavorites">
         <i class="ri-heart-line"></i>
@@ -71,7 +70,6 @@ const goToNextCar = () => {
       </button>
     </div>
 
-    <!-- Navigation Buttons -->
     <div class="navigation-buttons">
       <button class="nav-btn prev-btn" @click="goToPreviousCar" :disabled="allCars.length === 0">
         <i class="ri-arrow-left-line"></i>
@@ -86,7 +84,6 @@ const goToNextCar = () => {
 </template>
 
 <style scoped>
-/* Footer Section Styles */
 .footer-section {
   background-color: #F0FAF6;
   padding: 2rem;

@@ -24,9 +24,6 @@ const delTestDrive = () => {
     props.removeTestDrive(props.testDriveId);
 }
 
-/*
-Nested data structure example: Autok.models, Autok.Images[0].path
-*/
 </script>
 
 

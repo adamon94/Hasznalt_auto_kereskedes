@@ -41,7 +41,6 @@ const logIn = async () => {
         msg.value = "Sikeres bejelentkezés!";
         localStorage.setItem("isLogged", true);
         localStorage.setItem("token", JSON.stringify({ id: data.id, accessLevel: data.accessLevel}));
-       // localStorage.setItem("accessLevel", data.accessLevel);
         store.logIn();
         setTimeout(() => {
           store.closeLog();
@@ -185,7 +184,6 @@ const closeModal = () => {
   backdrop-filter: blur(2px);
 }
 
-/* Modal Dialog */
 .modal-dialog {
   position: fixed;
   top: 50%;
@@ -208,7 +206,6 @@ const closeModal = () => {
   }
 }
 
-/* Modal Content */
 .modal-content {
   background: #fff;
   border-radius: 1rem;
@@ -217,7 +214,6 @@ const closeModal = () => {
   border: none;
 }
 
-/* Modal Header */
 .modal-header {
   background: linear-gradient(135deg, #A3C9C4 0%, #92b8b3 100%);
   color: #fff;
@@ -264,7 +260,6 @@ const closeModal = () => {
   font-size: 1.5rem;
 }
 
-/* Modal Body */
 .modal-body {
   padding: 2rem;
 }
@@ -273,7 +268,6 @@ const closeModal = () => {
   width: 100%;
 }
 
-/* Form Groups */
 .form-group {
   margin-bottom: 1.5rem;
 }
@@ -293,7 +287,6 @@ const closeModal = () => {
   font-size: 1.1rem;
 }
 
-/* Input Wrapper */
 .input-wrapper {
   position: relative;
 }
@@ -335,7 +328,6 @@ const closeModal = () => {
   pointer-events: none;
 }
 
-/* Login Button */
 .btn-login {
   background: linear-gradient(135deg, #A3C9C4 0%, #92b8b3 100%);
   color: #fff;
@@ -371,7 +363,6 @@ const closeModal = () => {
   transform: none;
 }
 
-/* Alert Messages */
 .alert {
   border-radius: 0.5rem;
   border: none;
@@ -399,7 +390,6 @@ const closeModal = () => {
   font-size: 1.2rem;
 }
 
-/* Error Section */
 .error-section {
   max-height: 150px;
   overflow-y: auto;
@@ -431,7 +421,6 @@ const closeModal = () => {
   font-size: 1rem;
 }
 
-/* Modal Footer */
 .modal-footer {
   background-color: #f8f9fa;
   padding: 1.5rem 2rem;
@@ -459,14 +448,12 @@ const closeModal = () => {
   text-decoration: underline;
 }
 
-/* Loading Spinner */
 .spinner-border-sm {
   width: 1rem;
   height: 1rem;
   border-width: 0.15em;
 }
 
-/* Responsive Design */
 @media (max-width: 576px) {
   .modal-dialog {
     width: 95%;

@@ -21,7 +21,6 @@ const props = defineProps({
       </div>
     </div>
     
-    <!-- Car Title -->
     <div class="car-title-section">
       <h1 class="car-title">{{ car.model }}</h1>
       <div class="car-price">{{ car.ar }} HUF</div>
@@ -92,7 +91,6 @@ const props = defineProps({
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
   .car-title {
     font-size: 2rem;

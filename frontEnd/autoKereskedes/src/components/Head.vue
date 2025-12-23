@@ -26,7 +26,6 @@ import NavBar from './navBar.vue';
     width: 100%;
     position: relative;
     height: 130px;
-    /*background-color:D0D8D9 ;*/
     background-color: #D0D8D9;
 }
 

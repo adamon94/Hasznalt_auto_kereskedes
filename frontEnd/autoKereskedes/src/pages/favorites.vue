@@ -31,25 +31,6 @@ const countLikes = (carId) => {
     return count;
 };
 
-/*const removeFromFavorites = async (favId) => {
-    try {
-        const res = await fetch(`http://localhost:3300/cars/removeFav/${favId}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-        if (res.status === 200) {
-            console.log('Sikeres törlés a kedvencek közül');
-           // getFavs();
-            
-        } else {
-            console.error('Hiba történt a törlés során');
-        }
-    } catch (err) {
-        console.error(err);
-    }
-};*/
 
 onMounted(()=>{
    getMyFavs();

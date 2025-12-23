@@ -11,7 +11,6 @@ const useStore = useController();
 
 const logOut = ()=>{
   useStore.logOut()
-  //router.push('/')
   location.reload();
 }
 

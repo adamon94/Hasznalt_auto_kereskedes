@@ -15,28 +15,6 @@ const store = useController()
     <h3 data-speed="-2" class="home-parallax">Találja meg álmai autóját!</h3>
 </section>
 
-
-    
-<div class="login-form-container">
-
-    <span id="close-login-form" class="fas fa-times"></span>
-
-    <form action="">
-        <h3>belépés</h3>
-        <input type="email" placeholder="email" class="box">
-        <input type="password" placeholder="password" class="box">
-        <p> elfelejtett jelszó? <a href="#">katt ide</a> </p>
-        <input type="submit" value="login" class="btn">
-        <p>vagy beléphetsz így is:</p>
-        <div class="buttons">
-            <a href="#" class="btn"> google </a>
-            <a href="#" class="btn"> facebook </a>
-        </div>
-        <p> nincs még fiókod? <a href="#">készítsd el</a> </p>
-    </form>
-
-</div>
-
 <section class="home" id="home">
 
     <h3 data-speed="-2" class="home-parallax">nézz szét az autóink között</h3>

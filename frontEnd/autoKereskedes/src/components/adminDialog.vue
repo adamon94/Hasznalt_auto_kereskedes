@@ -22,7 +22,6 @@ const closeDialog = () => {
 </script>
 
 <template>
-    <!-- Backdrop (átlátszó fekete háttér) -->
     <div v-if="props.isOpen" class="dialog-backdrop" @click="closeDialog">
       <div class="dialog-content" @click.stop>
         <h3>Értesítés!</h3>
@@ -33,8 +32,6 @@ const closeDialog = () => {
 </template>
 
 <style scoped>
-
-/* Backdrop - teljes képernyős átlátszó háttér */
 .dialog-backdrop {
   position: fixed;
   top: 0;

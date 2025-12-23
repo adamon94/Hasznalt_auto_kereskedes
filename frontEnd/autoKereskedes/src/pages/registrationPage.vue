@@ -53,7 +53,6 @@ const store = useController();
   
   <div class="registration-page">
     <div class="registration-container">
-      <!-- Left Side - Welcome Section -->
       <div class="welcome-section">
         <div class="welcome-content">
           <h1 class="welcome-title">
@@ -86,11 +85,9 @@ const store = useController();
         </div>
       </div>
 
-      <!-- Right Side - Registration Form -->
       <div class="form-section">
         <div class="form-wrapper">
           <form @submit.prevent="regBtn" class="registration-form">
-            <!-- Form Header -->
             <div class="form-header">
               <h2 class="form-title">
                 <i class="ri-user-add-line"></i>
@@ -99,7 +96,6 @@ const store = useController();
               <p class="form-subtitle">Hozza létre fiókját</p>
             </div>
 
-            <!-- Username Field -->
             <div class="form-group">
               <label class="form-label">
                 <i class="ri-user-line"></i>
@@ -117,7 +113,6 @@ const store = useController();
               </div>
             </div>
 
-            <!-- Email Field -->
             <div class="form-group">
               <label class="form-label">
                 <i class="ri-mail-line"></i>
@@ -135,7 +130,6 @@ const store = useController();
               </div>
             </div>
 
-            <!-- Password Field -->
             <div class="form-group">
               <label class="form-label">
                 <i class="ri-lock-line"></i>
@@ -153,7 +147,6 @@ const store = useController();
               </div>
             </div>
 
-            <!-- Confirm Password Field -->
             <div class="form-group">
               <label class="form-label">
                 <i class="ri-lock-2-line"></i>
@@ -171,13 +164,11 @@ const store = useController();
               </div>
             </div>
 
-            <!-- Submit Button -->
             <button type="submit" class="submit-btn">
               <i class="ri-user-add-line"></i>
               Regisztráció
             </button>
 
-            <!-- Error Messages Section -->
             <div class="error-section">
               <p v-if="msg" class="error-message">{{ msg }}</p>
                 <div v-if="successMsg" class="alert alert-success">
@@ -188,7 +179,6 @@ const store = useController();
               </ul>
             </div>
 
-            <!-- Login Link -->
             <div class="login-link">
               <p>Már van fiókja? 
                 <router-link to="/" class="link">Bejelentkezés</router-link>
@@ -223,7 +213,6 @@ const store = useController();
   min-height: 700px;
 }
 
-/* Welcome Section */
 .welcome-section {
   background: linear-gradient(135deg, #C8BCCF 0%, #A3C9C4 100%);
   padding: 3rem;
@@ -295,7 +284,6 @@ const store = useController();
   font-size: 1.2rem;
 }
 
-/* Form Section */
 .form-section {
   padding: 3rem;
   display: flex;
@@ -339,7 +327,6 @@ const store = useController();
   margin: 0;
 }
 
-/* Form Groups */
 .form-group {
   margin-bottom: 1.5rem;
 }
@@ -359,7 +346,6 @@ const store = useController();
   font-size: 1.1rem;
 }
 
-/* Input Wrapper */
 .input-wrapper {
   position: relative;
 }
@@ -396,7 +382,6 @@ const store = useController();
   pointer-events: none;
 }
 
-/* Submit Button */
 .submit-btn {
   width: 100%;
   background: linear-gradient(135deg, #A3C9C4 0%, #92b8b3 100%);
@@ -428,7 +413,6 @@ const store = useController();
   transform: translateY(0);
 }
 
-/* Error Messages */
 .error-section {
   margin-bottom: 1.5rem;
   max-height: 150px;
@@ -475,7 +459,6 @@ const store = useController();
   font-weight: bold;
 }
 
-/* Login Link */
 .login-link {
   text-align: center;
 }
@@ -497,7 +480,6 @@ const store = useController();
   text-decoration: underline;
 }
 
-/* Responsive Design */
 @media (max-width: 968px) {
   .registration-container {
     grid-template-columns: 1fr;
