@@ -2,6 +2,10 @@
 import { onMounted, ref } from 'vue';
 
 const cars = ref([])
+// const priceRange = ref([0, 10_000_000]) 
+// const yearRange = ref([1990, 2024]) 
+// const fuelType = ref(null) 
+// const gearbox = ref(null)
 
 const formatNumber = (number) => {
   return new Intl.NumberFormat('hu-HU', { style: "currency", currency: "HUF" }).format(number);
@@ -9,78 +13,103 @@ const formatNumber = (number) => {
 
 const selectedBrand = ref(null)
 
-onMounted(()=>{
-    fetch("http://localhost:3300/cars/getCars").then(async (res) => {
+onMounted(() => {
+  fetch("http://localhost:3300/cars/getCars").then(async (res) => {
     const data = await res.json();
     cars.value = data;
     console.log(cars.value)
   });
 })
 
-import { computed } from 'vue' 
+import { computed } from 'vue'
 
 const filteredCars = computed(() => {
   if (!selectedBrand.value) return cars.value
   return cars.value.filter(car => car.marka === selectedBrand.value)
 })
+// const filteredCars = computed(() => {
+//   return cars.value
+//     .filter(car => !selectedBrand.value || car.marka === selectedBrand.value)
+//     .filter(car => car.ar >= priceRange.value[0] && car.ar <= priceRange.value[1])
+//     .filter(car => car.evjarat >= yearRange.value[0] && car.evjarat <= yearRange.value[1])
+//     .filter(car => !fuelType.value || car.uzemAnyagTipus === fuelType.value)
+//     .filter(car => !gearbox.value || car.sebessegValtoRendszer === gearbox.value)
+// })
 </script>
 
 
+
 <template>
- <section>
-  <div class="section__container deals__container">
-  <h2 class="section__header">Most popular car rental deals</h2>
-        <p class="section__description">
-          Explore our top car rental deals, handpicked to give you the best
-          value and experience. Book now and drive your favorite ride at an
-          incredible rate!
-        </p>
-        <div class="deals__tabs">
-          <button class="btn" @click="selectedBrand = 'Suzuki'">Suzuki</button>
-          <button class="btn" @click="selectedBrand = 'Citroen'">Citroen</button>
-          <button class="btn" @click="selectedBrand = 'BMW'">BMW</button>
-          <button class="btn" @click="selectedBrand = 'Toyota'">Toyota</button>
-          <button class="btn" @click="selectedBrand = 'Opel'">Opel</button>
-          <button class="btn" @click="selectedBrand = 'Golf'">Golf</button>
-        </div>
-        
+  <section>
+    <div class="section__container deals__container">
+      <h2 class="section__header">Most popular car rental deals</h2>
+      <p class="section__description">
+        Explore our top car rental deals, handpicked to give you the best
+        value and experience. Book now and drive your favorite ride at an
+        incredible rate!
+      </p>
+      <div class="deals__tabs">
+        <button class="btn" @click="selectedBrand = 'Suzuki'">Suzuki</button>
+        <button class="btn" @click="selectedBrand = 'Citroen'">Citroen</button>
+        <button class="btn" @click="selectedBrand = 'BMW'">BMW</button>
+        <button class="btn" @click="selectedBrand = 'Toyota'">Toyota</button>
+        <button class="btn" @click="selectedBrand = 'Opel'">Opel</button>
+        <button class="btn" @click="selectedBrand = 'Golf'">Golf</button>
+      </div>
+
+      <!-- <div class="filter-panel">
+        <h3>Szűrés paraméterek alapján</h3> <label>Ár (HUF): {{ priceRange[0] }} - {{ priceRange[1]
+          }}</label> <input type="range" min="0" max="15000000" v-model="priceRange[0]"> <input type="range" min="0"
+          max="15000000" v-model="priceRange[1]"> <label>Évjárat: {{ yearRange[0] }} - {{
+            yearRange[1] }}</label> <input type="range" min="1990" max="2024" v-model="yearRange[0]"> <input type="range"
+          min="1990" max="2024" v-model="yearRange[1]"> <label>Üzemanyag</label> <select
+          v-model="fuelType">
+          <option value="">Mind</option>
+          <option value="Benzin">Benzin</option>
+          <option value="Dízel">Dízel</option>
+          <option value="Hybrid">Hybrid</option>
+          <option value="Elektromos">Elektromos</option>
+        </select> <label>Váltó</label> <select v-model="gearbox">
+          <option value="">Mind</option>
+          <option value="Manuális">Manuális</option>
+          <option value="Automata">Automata</option>
+        </select>
+      </div> -->
 
       <div class="tab__content">
-          <div v-for="car in filteredCars" :key="car.id" class="deals__card mb-4">
-            <img  :src="'http://localhost:3300/images/' + car.Images[0]?.path" alt="Deals" />
-            <h4>{{ car.model }}</h4>
-            <div class="deals__card__grid">
-              <div>
-                <span><i class="ri-group-line"></i></span> Férőhley: {{ car.ferohely }}
-              </div>
-              <div>
-                <span><i class="ri-steering-2-line"></i></span> Váltó rendszer: {{ car.sebessegValtoRendszer }}
-              </div>
-              <div>
-                <span><i class="ri-speed-up-line"></i></span> henger űrtartalom: {{ car.hengerUrTartalom}} cm³
-              </div>
-              <div>
-                <span><i class="ri-car-line"></i></span> Üzemanyag: {{car.uzemAnyagTipus}}
-              </div>
+        <div v-for="car in filteredCars" :key="car.id" class="deals__card mb-4">
+          <img :src="'http://localhost:3300/images/' + car.Images[0]?.path" alt="Deals" />
+          <h4>{{ car.model }}</h4>
+          <div class="deals__card__grid">
+            <div>
+              <span><i class="ri-group-line"></i></span> Férőhley: {{ car.ferohely }}
             </div>
-            <hr />
-            <div class="deals__card__footer">
-              <h3>{{ car.ar }} HUF</h3>
-              <router-link :to="'/cars/' + car.id">
-                Tovább az adatlapra
-                <span><i class="ri-arrow-right-line"></i></span>
-              </router-link>
+            <div>
+              <span><i class="ri-steering-2-line"></i></span> Váltó rendszer: {{ car.sebessegValtoRendszer }}
+            </div>
+            <div>
+              <span><i class="ri-speed-up-line"></i></span> henger űrtartalom: {{ car.hengerUrTartalom }} cm³
+            </div>
+            <div>
+              <span><i class="ri-car-line"></i></span> Üzemanyag: {{ car.uzemAnyagTipus }}
             </div>
           </div>
+          <hr />
+          <div class="deals__card__footer">
+            <h3>{{ car.ar }} HUF</h3>
+            <router-link :to="'/cars/' + car.id">
+              Tovább az adatlapra
+              <span><i class="ri-arrow-right-line"></i></span>
+            </router-link>
+          </div>
+        </div>
       </div>
     </div>
- </section>
+  </section>
 </template>
 
 <style scoped>
-
-
-section{
+section {
   margin: auto;
 
   padding: 100px;
@@ -90,9 +119,9 @@ section{
 
 
 .section__container {
-  max-width:70%;
+  max-width: 70%;
   margin: auto;
- 
+
 }
 
 .section__header {
@@ -241,8 +270,27 @@ img {
   color: var(--primary-color);
 }
 
+.filter-panel {
+  background: #F0FAF6;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  margin-bottom: 2rem;
+  display: grid;
+  gap: 1rem;
+}
 
+.filter-panel label {
+  font-weight: bold;
+  color: #333;
+}
 
+.filter-panel input[type="range"] {
+  width: 100%;
+}
 
-
+.filter-panel select {
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid #ccc;
+}
 </style>
