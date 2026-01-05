@@ -2,7 +2,13 @@
 import { useController } from "../stores/UIcontrol"
 import Head from '../components/Head.vue';
 import { onMounted } from "vue";
-import { useMotion } from '@vueuse/motion'
+import { useRouter } from 'vue-router';
+// import { useMotion } from '@vueuse/motion'
+
+
+const router = useRouter()
+const useStore = useController();
+
 
 const store = useController()
 

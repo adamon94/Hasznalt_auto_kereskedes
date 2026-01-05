@@ -49,7 +49,6 @@ const store = useController();
 </script>
 
 <template>
-  <Head />
   
   <div class="registration-page">
     <div class="registration-container">
