@@ -2,10 +2,10 @@
 import { onMounted, ref } from 'vue';
 
 const cars = ref([])
-// const priceRange = ref([0, 10_000_000]) 
-// const yearRange = ref([1990, 2024]) 
-// const fuelType = ref(null) 
-// const gearbox = ref(null)
+const priceRange = ref([0, 200_000_000]) 
+const yearRange = ref([1990, 2024]) 
+const fuelType = ref(null) 
+const gearbox = ref(null)
 
 const formatNumber = (number) => {
   return new Intl.NumberFormat('hu-HU', { style: "currency", currency: "HUF" }).format(number);
@@ -24,17 +24,18 @@ onMounted(() => {
 import { computed } from 'vue'
 
 const filteredCars = computed(() => {
-  if (!selectedBrand.value) return cars.value
-  return cars.value.filter(car => car.marka === selectedBrand.value)
+  return cars.value
+    .filter(car => !selectedBrand.value || car.marka === selectedBrand.value)
+    .filter(car => car.ar >= priceRange.value[0] && car.ar <= priceRange.value[1])
+    .filter(car => car.gyartasEve >= yearRange.value[0] && car.gyartasEve <= yearRange.value[1])
+    .filter(car => !fuelType.value || car.uzemAnyagTipus === fuelType.value)
+    .filter(car => !gearbox.value || car.sebessegValtoRendszer === gearbox.value)
 })
-// const filteredCars = computed(() => {
-//   return cars.value
-//     .filter(car => !selectedBrand.value || car.marka === selectedBrand.value)
-//     .filter(car => car.ar >= priceRange.value[0] && car.ar <= priceRange.value[1])
-//     .filter(car => car.evjarat >= yearRange.value[0] && car.evjarat <= yearRange.value[1])
-//     .filter(car => !fuelType.value || car.uzemAnyagTipus === fuelType.value)
-//     .filter(car => !gearbox.value || car.sebessegValtoRendszer === gearbox.value)
-// })
+
+console.log(filteredCars.value);
+console.log(yearRange.value[0]);
+console.log(yearRange.value[1]);
+
 </script>
 
 
@@ -57,7 +58,7 @@ const filteredCars = computed(() => {
         <button class="btn" @click="selectedBrand = 'Golf'">Golf</button>
       </div>
 
-      <!-- <div class="filter-panel">
+      <div class="filter-panel">
         <h3>Szűrés paraméterek alapján</h3> <label>Ár (HUF): {{ priceRange[0] }} - {{ priceRange[1]
           }}</label> <input type="range" min="0" max="15000000" v-model="priceRange[0]"> <input type="range" min="0"
           max="15000000" v-model="priceRange[1]"> <label>Évjárat: {{ yearRange[0] }} - {{
@@ -74,7 +75,7 @@ const filteredCars = computed(() => {
           <option value="Manuális">Manuális</option>
           <option value="Automata">Automata</option>
         </select>
-      </div> -->
+      </div>
 
       <div class="tab__content">
         <div v-for="car in filteredCars" :key="car.id" class="deals__card mb-4">

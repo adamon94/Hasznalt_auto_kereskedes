@@ -27,3 +27,5 @@ app.use("/cars", carsRouter);
 app.listen(3300, ()=>{
     console.log("Elindult!")
 })
+
+export default app;

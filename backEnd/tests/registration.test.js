@@ -1,4 +1,6 @@
 import fetch from 'node-fetch';
+import request from "supertest";
+import app from "../index.js";
 
 async function testRegistration() {
     try {

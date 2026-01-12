@@ -8,7 +8,7 @@
   "main": "index.js",
   "dotenv": "^17.2.3",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --detectOpenHandles"
   },
   "dependencies": {
     "@prisma/client": "^6.16.3",
@@ -17,9 +17,11 @@
     "express": "^5.1.0",
     "express-validator": "^7.2.1",
     "fs": "^0.0.1-security",
+    "jest": "^30.2.0",
     "multer": "^2.0.2",
     "node-fetch": "^3.3.2",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "supertest": "^7.2.2"
   },
   "devDependencies": {
     "prisma": "^6.16.3"

@@ -107,6 +107,7 @@ router.post("/registration",
 
 router.post("/login", async (req,res)=> {
     try {
+        
         const {inputEmail, inputPassword} = req.body;
 
         // First find the user by email only
