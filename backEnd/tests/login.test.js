@@ -3,8 +3,8 @@ import app from "../index.js";
 
 test("POST auth/login should be good", async () => {
   const response = await request(app).post("/users/login").send({
-    inputEmail: "asdasdasd",
-    inputPassword: "asdasdasd",
+    inputEmail: "invalid-email",
+    inputPassword: "123",
   });
  
 
