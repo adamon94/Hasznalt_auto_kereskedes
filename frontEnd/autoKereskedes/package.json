@@ -10,7 +10,10 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest",
+    "test:e2e": "cypress open",
+    "test:e2e:run": "cypress run"
   },
   "dependencies": {
     "pinia": "^3.0.3",
@@ -19,7 +22,11 @@
     "vuetify": "^3.10.3"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^5.2.3",
-    "vite": "^6.3.5"
+    "@vitejs/plugin-vue": "^5.2.4",
+    "@vitest/expect": "^4.0.17",
+    "@vue/test-utils": "^2.4.6",
+    "happy-dom": "^20.3.1",
+    "vite": "^6.3.5",
+    "vitest": "^4.0.17"
   }
 }

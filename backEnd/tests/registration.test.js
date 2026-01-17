@@ -5,7 +5,7 @@ test("POST users/registration should validate input data", async () => {
   const response = await request(app).post("/users/registration").send({
     name: "admin2",
     password: "12345678",
-    checkPassword: "12345678", // Ezt kellett módosítani confirmPassword helyett
+    checkPassword: "12345678", 
     email: "admin2@gmail.com",
     telSzam: "123456"
   });
