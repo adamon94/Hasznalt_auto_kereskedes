@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: localhost:3306
--- Létrehozás ideje: 2025. Nov 18. 20:24
+-- Létrehozás ideje: 2026. Jan 19. 18:23
 -- Kiszolgáló verziója: 10.4.32-MariaDB
 -- PHP verzió: 8.1.25
 
@@ -29,8 +29,8 @@ USE `hasznaltautokereskedes`;
 -- Tábla szerkezet ehhez a táblához `autok`
 --
 
-CREATE TABLE `autok` (
-  `id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `autok` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `gyartasEve` int(11) NOT NULL,
   `model` varchar(191) NOT NULL,
   `marka` varchar(191) NOT NULL,
@@ -47,7 +47,8 @@ CREATE TABLE `autok` (
   `utolsoMuszakiVizsga` datetime(3) NOT NULL,
   `uzemAnyagTipus` varchar(191) NOT NULL,
   `ferohely` int(11) NOT NULL,
-  `tipus` varchar(191) NOT NULL
+  `tipus` varchar(191) NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -56,10 +57,12 @@ CREATE TABLE `autok` (
 -- Tábla szerkezet ehhez a táblához `images`
 --
 
-CREATE TABLE `images` (
-  `image_id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `images` (
+  `image_id` int(11) NOT NULL AUTO_INCREMENT,
   `path` varchar(191) NOT NULL,
-  `carId` int(11) NOT NULL
+  `carId` int(11) NOT NULL,
+  PRIMARY KEY (`image_id`),
+  KEY `images_carId_fkey` (`carId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -68,10 +71,13 @@ CREATE TABLE `images` (
 -- Tábla szerkezet ehhez a táblához `kedvencek`
 --
 
-CREATE TABLE `kedvencek` (
-  `id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `kedvencek` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `autoId` int(11) NOT NULL,
-  `userId` int(11) NOT NULL
+  `userId` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `kedvencek_autoId_userId_key` (`autoId`,`userId`),
+  KEY `kedvencek_userId_fkey` (`userId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -80,15 +86,17 @@ CREATE TABLE `kedvencek` (
 -- Tábla szerkezet ehhez a táblához `kivansagllista`
 --
 
-CREATE TABLE `kivansagllista` (
-  `id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `kivansagllista` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `userId` int(11) NOT NULL,
   `kivantSebValto` varchar(191) DEFAULT NULL,
   `kivantMegtettKm` int(11) DEFAULT NULL,
   `kiantFogyasztas` int(11) DEFAULT NULL,
   `kivantHengerUrTartalom` int(11) DEFAULT NULL,
   `kivantTipus` varchar(191) DEFAULT NULL,
-  `kivantModel` varchar(191) DEFAULT NULL
+  `kivantModel` varchar(191) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `kivansagLlista_userId_fkey` (`userId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -97,11 +105,14 @@ CREATE TABLE `kivansagllista` (
 -- Tábla szerkezet ehhez a táblához `tesztvezetesek`
 --
 
-CREATE TABLE `tesztvezetesek` (
-  `id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `tesztvezetesek` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `datum` datetime(3) NOT NULL,
   `userId` int(11) NOT NULL,
-  `autoId` int(11) NOT NULL
+  `autoId` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `tesztVezetesek_autoId_fkey` (`autoId`),
+  KEY `tesztVezetesek_userId_fkey` (`userId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -110,125 +121,17 @@ CREATE TABLE `tesztvezetesek` (
 -- Tábla szerkezet ehhez a táblához `users`
 --
 
-CREATE TABLE `users` (
-  `id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(191) NOT NULL,
   `accessLevel` int(11) NOT NULL,
   `email` varchar(191) NOT NULL,
   `telSzam` varchar(191) DEFAULT NULL,
-  `password` varchar(191) NOT NULL
+  `password` varchar(191) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `users_name_key` (`name`),
+  UNIQUE KEY `users_email_key` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Tábla szerkezet ehhez a táblához `_prisma_migrations`
---
-
-CREATE TABLE `_prisma_migrations` (
-  `id` varchar(36) NOT NULL,
-  `checksum` varchar(64) NOT NULL,
-  `finished_at` datetime(3) DEFAULT NULL,
-  `migration_name` varchar(255) NOT NULL,
-  `logs` text DEFAULT NULL,
-  `rolled_back_at` datetime(3) DEFAULT NULL,
-  `started_at` datetime(3) NOT NULL DEFAULT current_timestamp(3),
-  `applied_steps_count` int(10) UNSIGNED NOT NULL DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Indexek a kiírt táblákhoz
---
-
---
--- A tábla indexei `autok`
---
-ALTER TABLE `autok`
-  ADD PRIMARY KEY (`id`);
-
---
--- A tábla indexei `images`
---
-ALTER TABLE `images`
-  ADD PRIMARY KEY (`image_id`),
-  ADD KEY `images_carId_fkey` (`carId`);
-
---
--- A tábla indexei `kedvencek`
---
-ALTER TABLE `kedvencek`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `kedvencek_autoId_userId_key` (`autoId`,`userId`),
-  ADD KEY `kedvencek_userId_fkey` (`userId`);
-
---
--- A tábla indexei `kivansagllista`
---
-ALTER TABLE `kivansagllista`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `kivansagLlista_userId_fkey` (`userId`);
-
---
--- A tábla indexei `tesztvezetesek`
---
-ALTER TABLE `tesztvezetesek`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `tesztVezetesek_autoId_fkey` (`autoId`),
-  ADD KEY `tesztVezetesek_userId_fkey` (`userId`);
-
---
--- A tábla indexei `users`
---
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `users_name_key` (`name`),
-  ADD UNIQUE KEY `users_email_key` (`email`);
-
---
--- A tábla indexei `_prisma_migrations`
---
-ALTER TABLE `_prisma_migrations`
-  ADD PRIMARY KEY (`id`);
-
---
--- A kiírt táblák AUTO_INCREMENT értéke
---
-
---
--- AUTO_INCREMENT a táblához `autok`
---
-ALTER TABLE `autok`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT a táblához `images`
---
-ALTER TABLE `images`
-  MODIFY `image_id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT a táblához `kedvencek`
---
-ALTER TABLE `kedvencek`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT a táblához `kivansagllista`
---
-ALTER TABLE `kivansagllista`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT a táblához `tesztvezetesek`
---
-ALTER TABLE `tesztvezetesek`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT a táblához `users`
---
-ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Megkötések a kiírt táblákhoz
