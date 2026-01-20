@@ -20,8 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Adatbázis: `hasznaltautokereskedes`
 --
-CREATE DATABASE IF NOT EXISTS `hasznaltautokereskedes` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `hasznaltautokereskedes`;
+CREATE DATABASE IF NOT EXISTS `hasznaltautokereskedes2` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `hasznaltautokereskedes2`;
 
 --
 -- A tábla adatainak kiíratása `autok`
