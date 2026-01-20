@@ -38,6 +38,11 @@ const router = createRouter({
       path: "/admin",
       component: import("./pages/administration.vue"),
     },
+    {
+      path: "/finance",
+      component: import("./pages/financingopt.vue"),
+    },
+
   ],
 });
 

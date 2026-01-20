@@ -37,7 +37,7 @@ const logOut = ()=>{
   <ul class="dropdown-menu">
     <li><router-link class="dropdown-item" href="#">Teszt vezetések</router-link></li>
     <li><a class="dropdown-item" href="#">Beszámítás</a></li>
-    <li><a class="dropdown-item" href="#">Kedvező finanszírozás</a></li>
+    <li><router-link to="/finance" class="dropdown-item">Kedvező finanszírozás</router-link></li>
   </ul>
 </div>  
 </li>
