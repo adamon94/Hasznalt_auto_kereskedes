@@ -98,24 +98,6 @@ INSERT INTO `images` (`image_id`, `path`, `carId`) VALUES
 -- A tábla adatainak kiíratása `kedvencek`
 --
 
-INSERT INTO `kedvencek` (`id`, `autoId`, `userId`) VALUES
-(105, 2, 14),
-(113, 3, 14),
-(110, 4, 14);
-
---
--- A tábla adatainak kiíratása `tesztvezetesek`
---
-
-INSERT INTO `tesztvezetesek` (`id`, `datum`, `userId`, `autoId`) VALUES
-(19, '2026-04-07 00:00:00.000', 14, 56),
-(20, '2026-05-03 00:00:00.000', 14, 2),
-(21, '2026-08-25 00:00:00.000', 14, 3);
-
---
--- A tábla adatainak kiíratása `users`
---
-
 INSERT INTO `users` (`id`, `name`, `accessLevel`, `email`, `telSzam`, `password`) VALUES
 (1, 'adam', 1, 'adam@adam.hu', '', '123456'),
 (2, 'kate', 0, 'sdfs@fdg.hz', '4352454', 'qwert'),
@@ -135,6 +117,26 @@ INSERT INTO `users` (`id`, `name`, `accessLevel`, `email`, `telSzam`, `password`
 (18, 'pőú', 0, 'hjkjh@xn--pl-bja.hu', NULL, 'fa585d89c851dd338a70dcf535aa2a92fee7836dd6aff1226583e88e0996293f16bc009c652826e0fc5c706695a03cddce372f139eff4d13959da6f1f5d3eabe'),
 (19, 'cvb', 0, 'peter@peter.hu', NULL, 'fa585d89c851dd338a70dcf535aa2a92fee7836dd6aff1226583e88e0996293f16bc009c652826e0fc5c706695a03cddce372f139eff4d13959da6f1f5d3eabe'),
 (20, 'GHJGHUKJ', 0, 'ghkjhujk@fg.com', NULL, '4b187be3c1ccb51706dd1609288305c265f7ff6bbbe00c3e6dd6e80288744da77258d029d31eccec6bd1b98ccbe48da513a205dda993aef134b962cf8569ddca');
+
+INSERT INTO `kedvencek` (`id`, `autoId`, `userId`) VALUES
+(105, 2, 14),
+(113, 3, 14),
+(110, 4, 14);
+
+--
+-- A tábla adatainak kiíratása `tesztvezetesek`
+--
+
+INSERT INTO `tesztvezetesek` (`id`, `datum`, `userId`, `autoId`) VALUES
+(19, '2026-04-07 00:00:00.000', 14, 56),
+(20, '2026-05-03 00:00:00.000', 14, 2),
+(21, '2026-08-25 00:00:00.000', 14, 3);
+
+--
+-- A tábla adatainak kiíratása `users`
+--
+
+
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
