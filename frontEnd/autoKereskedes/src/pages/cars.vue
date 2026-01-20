@@ -11,6 +11,10 @@ const formatNumber = (number) => {
   return new Intl.NumberFormat('hu-HU', { style: "currency", currency: "HUF" }).format(number);
 }
 
+const refreshPage = () => {
+  window.location.reload();
+}
+
 const selectedBrand = ref(null)
 
 onMounted(() => {
@@ -55,8 +59,12 @@ console.log(yearRange.value[1]);
         <button class="btn" @click="selectedBrand = 'BMW'">BMW</button>
         <button class="btn" @click="selectedBrand = 'Toyota'">Toyota</button>
         <button class="btn" @click="selectedBrand = 'Opel'">Opel</button>
-        <button class="btn" @click="selectedBrand = 'Golf'">Golf</button>
+        <button class="btn" @click="selectedBrand = 'Volkswagen'">Volkswagen</button>
       </div>
+
+      <button class="btn refresh-btn" @click="refreshPage">
+            <i class="ri-refresh-line"></i> Frissítés
+          </button>
 
       <div class="filter-panel">
         <h3>Szűrés paraméterek alapján</h3> <label>Ár (HUF): {{ priceRange[0] }} - {{ priceRange[1]
