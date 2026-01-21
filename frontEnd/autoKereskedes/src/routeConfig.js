@@ -42,7 +42,14 @@ const router = createRouter({
       path: "/finance",
       component: import("./pages/financingopt.vue"),
     },
-
+    {
+      path: "/us",
+      component: import("./pages/us.vue"),
+    },
+    {
+      path: "/contact",
+      component: import("./pages/connection.vue"),
+    },
   ],
 });
 

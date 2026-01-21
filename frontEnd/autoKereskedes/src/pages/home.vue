@@ -35,9 +35,9 @@ const store = useController()
         </section> <!-- SZOLGÁLTATÁS KÁRTYÁK -->
         <section class="cardsSection darkBackground">
             <div class="infoCard">
-                <h2>Szolgáltatásaink</h2>
-                <p>Tesztvezetések, beszámítás, finanszírozás és még sok más.</p> <button class="navBtn"
-                    @click="router.push('/about')">Tovább</button>
+                <h2>Rólunk</h2>
+                <p>Miért pont a Második Kör? Itt megtudod.</p> <button class="navBtn"
+                    @click="router.push('/us')">Tovább</button>
             </div>
             <div class="infoCard">
                 <h2>Fiók funkciók</h2>

@@ -25,23 +25,6 @@ const logOut = ()=>{
 
 <ul class="menu" :class="!useStore.isLogged ? 'menuGap ' : ''">
 
-<li>
-    <div class="dropdown">
-  <button :class="{'menuBtnOut': !useStore.isLogged}" class="btn btn-secondary dropdown-toggle"
-          type="button"
-          data-bs-toggle="dropdown"
-          aria-expanded="false"
-  >
-    Szolgáltatásaink
-  </button>
-  <ul class="dropdown-menu">
-    <li><router-link class="dropdown-item" href="#">Teszt vezetések</router-link></li>
-    <li><a class="dropdown-item" href="#">Beszámítás</a></li>
-    <li><router-link to="/finance" class="dropdown-item">Kedvező finanszírozás</router-link></li>
-  </ul>
-</div>  
-</li>
-
 <li v-if="useStore.isLogged">
   <div  class="dropdown">
   <button class="btn btn-secondary dropdown-toggle"
@@ -77,7 +60,11 @@ const logOut = ()=>{
 </li>
 
 <li>
-<button @click="router.push('/about')" :class="{'menuBtnOut': !useStore.isLogged}" class="navBtn">Rólunk</button>
+<button @click="router.push('/finance')" :class="{'menuBtnOut': !useStore.isLogged}" class="navBtn">Finanszírozás</button>
+</li>
+
+<li>
+<button @click="router.push('/us')" :class="{'menuBtnOut': !useStore.isLogged}" class="navBtn">Rólunk</button>
 </li>
 
 <li>
