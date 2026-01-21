@@ -20,16 +20,16 @@ SET time_zone = "+00:00";
 --
 -- Adatbázis: `hasznaltautokereskedes`
 --
-CREATE DATABASE IF NOT EXISTS `hasznaltautokereskedes2` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `hasznaltautokereskedes2`;
+CREATE DATABASE IF NOT EXISTS `hasznaltautokereskedes` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `hasznaltautokereskedes`;
 
 --
 -- A tábla adatainak kiíratása `autok`
 --
 
 INSERT INTO `autok` (`id`, `gyartasEve`, `model`, `marka`, `tomeg`, `megtettKm`, `ar`, `felujitasok`, `fogyasztas`, `hengerUrTartalom`, `meghajtas`, `sebessegValtoRendszer`, `serulesek`, `tulajdonosokSzama`, `utolsoMuszakiVizsga`, `uzemAnyagTipus`, `ferohely`, `tipus`) VALUES
-(2, 2015, 'Susuki Vitara GLX', 'Susuki', 1.5, 200000, 100000, 'Nem volt.', 30, 150, 'Hátsó kerék', 'Manuális', 'Műszerfalon enyhe karcolások.', 2, '2025-02-20 00:00:00.000', 'Benzin', 4, 'Kombi'),
-(3, 2003, 'Susuki Swift MK3', 'Susuki', 1.2, 250000, 100000, 'Motor csere, és alváz többszöri újra hegesztése', 20, 70, 'Hátsó', 'Manuális', 'Megviselt, elöregedett felületek', 5, '2021-01-10 00:00:00.000', 'Benzin', 4, 'Városi autó'),
+(2, 2015, 'Suzuki Vitara GLX', 'Suzuki', 1.5, 200000, 100000, 'Nem volt.', 30, 150, 'Hátsó kerék', 'Manuális', 'Műszerfalon enyhe karcolások.', 2, '2025-02-20 00:00:00.000', 'Benzin', 4, 'Kombi'),
+(3, 2003, 'Suzuki Swift MK3', 'Suzuki', 1.2, 250000, 100000, 'Motor csere, és alváz többszöri újra hegesztése', 20, 70, 'Hátsó', 'Manuális', 'Megviselt, elöregedett felületek', 5, '2021-01-10 00:00:00.000', 'Benzin', 4, 'Városi autó'),
 (4, 2010, 'BMW 2 Series', 'BMW', 2, 30000, 100000, 'Nem volt', 70, 300, 'Hátsó kerék', 'Automata', 'Hátsó lökhárító van lazulva', 5, '2022-03-23 00:00:00.000', 'Dízel', 5, 'Hatchback'),
 (5, 2005, 'BMW X3', 'BMW', 2.3, 400000, 200000, 'Motor csere és párszor ujrakarosszériázás', 90, 300, 'Első kerék', 'Manuális', 'Kifogástalan állapotban van', 3, '2024-07-10 00:00:00.000', 'Dízel', 5, 'Hatchback'),
 (6, 2008, 'Citroen C4 Picasso', 'Citroen', 2.5, 500000, 1000000, 'Nem volt', 40, 210, 'Hátsó', 'Manuális', 'Itt ott eyyhe karcolások, kormánykerékről le van kopv bőr', 4, '2022-02-23 00:00:00.000', 'Dízel', 6, 'Luxus autó'),
