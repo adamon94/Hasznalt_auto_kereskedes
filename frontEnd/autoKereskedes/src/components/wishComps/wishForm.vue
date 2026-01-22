@@ -5,7 +5,7 @@
         kívánság felvétel:
       </h3>
     <div class="card-body">
-      <form>
+      <form @submit.prevent="handleSubmit">
         <div class="mb-4">
           <label for="model" class="form-label fw-semibold">
             <i class="bi bi-car-front me-1"></i>Keresett model:
@@ -13,6 +13,7 @@
           <input 
             type="text" 
             id="model"
+            v-model="formData.model"
             class="form-control form-control-lg" 
             placeholder="Pl.: Audi, BMW, Mercedes..."
           >   
@@ -20,13 +21,14 @@
 
         <div class="mb-4">
           <label for="performance" class="form-label fw-semibold">
-           Keresett teljesítmény:
+           Keresett teljesítmény (cm³):
           </label>
           <div class="input-group input-group-lg">
             <span class="input-group-text">Több mint</span>
             <input 
               type="number" 
               id="performance"
+              v-model.number="formData.performance"
               class="form-control" 
               placeholder="1600"
             >
@@ -43,6 +45,7 @@
             <input 
               type="number" 
               id="consumption"
+              v-model.number="formData.consumption"
               class="form-control" 
               placeholder="8.5"
               step="0.1"
@@ -61,6 +64,7 @@
             <input 
               type="number" 
               id="price"
+              v-model.number="formData.price"
               class="form-control" 
               placeholder="5000000"
             >
@@ -72,12 +76,14 @@
           <label for="carType" class="form-label fw-semibold">
             <i class="bi bi-collection me-1"></i>Keresett típus:
           </label>
-          <select id="carType" class="form-select form-select-lg">
+          <select id="carType" v-model="formData.carType" class="form-select form-select-lg">
             <option value="">Válassz típust...</option>
-            <option value="Terepjáró">Terepjáró</option>
-            <option value="Városi autó">Városi autó</option>
-            <option value="Sportautó">Sportautó</option>
-            <option value="Luxusautó">Luxusautó</option>
+            <option value="SUV">SUV / Terepjáró</option>
+            <option value="Sedan">Sedan</option>
+            <option value="Kombi">Kombi</option>
+            <option value="Hatchback">Hatchback</option>
+            <option value="Coupe">Coupe</option>
+            <option value="Luxus autó">Luxus autó</option>
           </select>
         </div>
 
@@ -85,10 +91,11 @@
           <label for="transmission" class="form-label fw-semibold">
             <i class="bi bi-gear me-1"></i>Sebességváltó:
           </label>
-          <select id="transmission" class="form-select form-select-lg">
+          <select id="transmission" v-model="formData.transmission" class="form-select form-select-lg">
             <option value="">Válassz váltót...</option>
             <option value="Automata">Automata</option>
             <option value="Manuális">Manuális</option>
+            <option value="Félautomata">Félautomata</option>
           </select>
         </div>
 
@@ -97,7 +104,7 @@
           <label for="fuelType" class="form-label fw-semibold">
             <i class="bi bi-droplet me-1"></i>Üzemanyag:
           </label>
-          <select id="fuelType" class="form-select form-select-lg">
+          <select id="fuelType" v-model="formData.fuelType" class="form-select form-select-lg">
             <option value="">Válassz üzemanyagot...</option>
             <option value="Benzin">Benzin</option>
             <option value="Dízel">Dízel</option>
@@ -112,9 +119,37 @@
       </form>
     </div>
 </div>
-
 </template>
 
+<script setup>
+import { reactive } from 'vue';
+
+const emit = defineEmits(['add-wish']);
+
+const formData = reactive({
+  model: '',
+  performance: null,
+  consumption: null,
+  price: null,
+  carType: '',
+  transmission: '',
+  fuelType: ''
+});
+
+const handleSubmit = () => {
+  const hasData = Object.values(formData).some(value => {
+      return value !== '' && value !== null && value !== undefined;
+  });
+
+  if (!hasData) {
+      console.log("Üres űrlap, nem küldünk semmit.");
+      return; 
+  }
+
+  emit('add-wish', { ...formData });
+
+};
+</script>
 
 <style scoped>
 h3{
@@ -124,32 +159,23 @@ h3{
     padding: 10px;
     padding-bottom: 25px;
 }
-
-
 .form-label {
   color: #495057;
   font-size: 1.3rem;
   margin-bottom: 0.5rem;
 }
-
-
 .input-group-text {
   color: #6c757d;
   font-weight: 500;
 }
-
 .form-control {
-  
-background-color: #F8F5FA;
+  background-color: #F8F5FA;
 }
-
 .btn {
   border-radius: 8px;
   font-weight: 600;
   padding: 0.75rem 1.5rem;
 }
-
-
 .btn-primary {
   background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
   border: none;

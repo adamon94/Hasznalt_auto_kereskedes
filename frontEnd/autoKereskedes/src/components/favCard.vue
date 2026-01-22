@@ -1,26 +1,68 @@
-<script setup>
-import { defineProps } from 'vue';
-import { useRouter } from 'vue-router';
-const router = useRouter();
-const props = defineProps({
-  car: {
-    type: Object,
-    required: true
-  },
-  likes: {
-    type: Function,
-    required: false
-  },
-  favId: {
-    type: Number,
-    required: false
-  },
+<template>
+    <div class="card">
+ <div class="badge"><i class="ri-heart-pulse-fill"></i><i class="ri-heart-pulse-fill"></i><i class="ri-heart-pulse-fill"></i></div>
+ <div class="tilt">
+  <div class="img">
+      <img 
+        :src="getImageUrl(carData.Images[0]?.path)" 
+        alt="Auto kep"
+        onerror="this.onerror=null;this.src='https://via.placeholder.com/220x140?text=Nincs+kep';"
+      >
+  </div>
+ </div>
+ <div class="info">
+  <div class="cat">{{ carData.tipus || '-' }}</div>
+  <h2 class="title">{{ carData.model }}</h2>
+  <div class="feats">
+   <span class="feat">Fő: {{ carData.ferohely }}</span>
+   <span class="feat">Üzemanyag: {{ carData.uzemAnyagTipus }}</span>
+   <span class="feat">Váltó: {{ carData.sebessegValtoRendszer }}</span>
+  </div>
+  <div class="bottom">
+   <div class="price">
+    <span class="new">{{ carData.ar }} Ft</span>
+   </div>
+   <button @click="router.push({ name: 'carDetails', params: { id: carData.id } })" class="btn">
+    <span>Az adatlapra</span>
+    <i class="ri-arrow-right-line"></i>
+   </button>
+  </div>
+  <div class="meta">
+   <div class="rating">
+    <i class="ri-hearts-fill"></i>
+    <span class="rcount">{{ likes }} Kedvelés</span>
+   </div>
+   <button class="btn" @click="removeFromFavorites(props.favId)">Törlöm</button>
+  </div>
+ </div>
+</div>
+</template>
 
-  refreshFavs: {
-    type: Function,
-    required: false
-  }
+<script setup>
+import { computed, defineProps } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+const props = defineProps({
+  car: { type: Object, required: true },
+  likes: { type: Number, default: 0 },
+  favId: { type: Number, required: false },
+  refreshFavs: { type: Function, required: false }
 });
+
+const carData = computed(() => {
+    return props.car.Autok ? props.car.Autok : props.car;
+});
+
+const getImageUrl = (path) => {
+  if (!path) return '';
+  try {
+    return new URL(`../assets/${path}`, import.meta.url).href;
+  } catch (error) {
+    return `http://localhost:3300/images/${path}`; 
+  }
+};
 
 const getMyFavs = () => {
     if (props.refreshFavs) {
@@ -32,14 +74,11 @@ const removeFromFavorites = async (favId) => {
     try {
         const res = await fetch(`http://localhost:3300/cars/removeFav/${favId}`, {
             method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json'
-            }
+            headers: { 'Content-Type': 'application/json' }
         });
         if (res.status === 200) {
-            console.log('Sikeres törlés a kedvencek közül');
+            console.log('Sikeres törlés');
             getMyFavs();
-            
         } else {
             console.error('Hiba történt a törlés során');
         }
@@ -47,51 +86,12 @@ const removeFromFavorites = async (favId) => {
         console.error(err);
     }
 };
-
 </script>
 
-
-<template>
-    <div class="card">
- <div class="badge"><i class="ri-heart-pulse-fill"></i><i class="ri-heart-pulse-fill"></i><i class="ri-heart-pulse-fill"></i></div>
- <div class="tilt">
-  <div class="img"><img :src="'http://localhost:3300/images/' + car.Autok.Images[0]?.path" alt="Premium Laptop"></div>
- </div>
- <div class="info">
-  <div class="cat">{{ car.Autok.tipus }}</div>
-  <h2 class="title">{{ car.Autok.model }}</h2>
-  <div class="feats">
-   <span class="feat">Fő: {{ car.Autok.ferohely }}</span>
-   <span class="feat">Üzemanyag: {{ car.Autok.uzemAnyagTipus }}</span>
-   <span class="feat">Váltó: {{ car.Autok.sebessegValtoRendszer }}</span>
-  </div>
-  <div class="bottom">
-   <div class="price">
-    <span class="new">{{ car.Autok.ar }} Ft</span>
-   </div>
-   <button @click="router.push({ name: 'carDetails', params: { id: car.Autok.id } })" class="btn">
-    <span>Az adatlapra</span>
-    <i class="ri-arrow-right-line"></i>
-   </button>
-  </div>
-  <div class="meta">
-   <div class="rating">
-    
-    <i class="ri-hearts-fill"></i>
-    <span class="rcount">{{ likes }} Kedvelés</span>
-   </div>
-   <button class="btn" @click="removeFromFavorites(props.favId)">Törlöm</button>
-  </div>
- </div>
-</div>
-</template>
-
 <style scoped>
-
 .card
 {
     width:220px;
-    /*height: 320px;*/
     background:#fff;
     border-radius:15px;
     box-shadow:0 5px 20px rgba(0,0,0,.1);
@@ -117,13 +117,6 @@ const removeFromFavorites = async (favId) => {
     border-radius:10px;
     box-shadow:0 3px 10px rgba(0,0,0,.2);
     z-index:10}
- /* .tilt{
-  overflow:hidden
-}*/
-/*.img{
-    height:200px;
-    overflow:hidden
-}*/
 .img img{
     width:100%;
     height:140px;

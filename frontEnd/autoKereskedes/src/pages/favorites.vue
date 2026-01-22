@@ -1,24 +1,22 @@
 <script setup>
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import FavCard from '../components/favCard.vue';
 import { useController } from '../stores/UIcontrol';
-import { ref } from 'vue';
 
-const myFavs = ref([])
-const allFavs = ref([])
+const store = useController();
+const myFavs = ref([]);
+const allFavs = ref([]);
 
 const getAllFavs = async () => {
-    const res = await fetch(`http://localhost:3300/cars/allFavs`)
+    const res = await fetch(`http://localhost:3300/cars/allFavs`);
     const data = await res.json();
     allFavs.value = data;
-    console.log(allFavs.value)
 };
-const getMyFavs = async () => {
-    const res = await fetch(`http://localhost:3300/cars/userFavorites/${store.id}`)
 
+const getMyFavs = async () => {
+    const res = await fetch(`http://localhost:3300/cars/userFavorites/${store.id}`);
     const data = await res.json();
     myFavs.value = data;
-    console.log(myFavs.value)
 };
 
 const countLikes = (carId) => {
@@ -31,23 +29,25 @@ const countLikes = (carId) => {
     return count;
 };
 
-
 onMounted(() => {
     getMyFavs();
     getAllFavs();
-})
-
-const store = useController();
+});
 </script>
-
 
 <template>
     <div class="favPage">
         <div class="favContainer">
             <h1 class="pageTitle mt-4">Általam kedvelt autók</h1>
             <section class="favSection">
-                <FavCard v-for="f in myFavs" :key="f.id" :car="f" :likes="countLikes(f.autoId)" :favId="f.id"
-                    :refresh-favs="getMyFavs" />
+                <FavCard 
+                    v-for="f in myFavs" 
+                    :key="f.id" 
+                    :car="f.Autok" 
+                    :likes="countLikes(f.autoId)" 
+                    :favId="f.id"
+                    :refresh-favs="getMyFavs" 
+                />
             </section>
         </div>
     </div>
@@ -65,11 +65,9 @@ const store = useController();
     flex-direction: column;
     align-items: center;
     justify-content: center;
-
 }
 
 .pageTitle {
-
     font-weight: 600;
     color: #213333;
     padding: 20px 150px;

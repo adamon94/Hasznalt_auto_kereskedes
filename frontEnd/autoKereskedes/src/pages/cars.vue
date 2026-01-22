@@ -47,11 +47,9 @@ console.log(yearRange.value[1]);
 <template>
   <section>
     <div class="section__container deals__container">
-      <h2 class="section__header">Most popular car rental deals</h2>
+      <h2 class="section__header">A legnépszerűbb autókölcsönzési ajánlatok</h2>
       <p class="section__description">
-        Explore our top car rental deals, handpicked to give you the best
-        value and experience. Book now and drive your favorite ride at an
-        incredible rate!
+        Fedezze fel legjobb autókölcsönzési ajánlatainkat, amelyeket gondosan válogattunk össze, hogy a legjobb árat és élményt nyújtsuk Önnek. Foglaljon most, és vezesse kedvenc autóját hihetetlen áron!
       </p>
       <div class="deals__tabs">
         <button class="btn" @click="selectedBrand = 'Suzuki'">Suzuki</button>

@@ -305,7 +305,6 @@ const element = document.getElementById('scroll-to-header');
   margin: 0;
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
   .car-details-container {
     padding: 1rem;
